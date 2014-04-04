@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="league_width">50dp</dimen>
+    <dimen name="host_team_width">100dp</dimen>
+    <dimen name="score_width">110dp</dimen>
+    <dimen name="visit_team_width">100dp</dimen>
+</resources>

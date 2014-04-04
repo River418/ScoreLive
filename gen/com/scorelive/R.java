@@ -107,21 +107,78 @@ containing a value of this type.
          */
         public static final int pstsUnderlineHeight=0x7f010004;
     }
+    public static final class color {
+        public static final int bg_gray=0x7f040006;
+        public static final int black=0x7f040003;
+        public static final int dark_blue=0x7f040001;
+        public static final int light_blue=0x7f040002;
+        public static final int text_dark_gray=0x7f040005;
+        public static final int text_light_gray=0x7f040004;
+        public static final int white=0x7f040000;
+    }
+    public static final class dimen {
+        public static final int host_team_width=0x7f050001;
+        public static final int league_width=0x7f050000;
+        public static final int score_width=0x7f050002;
+        public static final int visit_team_width=0x7f050003;
+    }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int arrow_down=0x7f020000;
+        public static final int arrow_up=0x7f020001;
+        public static final int calendar=0x7f020002;
+        public static final int expand_grey_bar=0x7f020003;
+        public static final int filter=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int index=0x7f020006;
+        public static final int index_normal=0x7f020007;
+        public static final int index_pressed=0x7f020008;
+        public static final int profile=0x7f020009;
+        public static final int profile_normal=0x7f02000a;
+        public static final int profile_pressed=0x7f02000b;
+        public static final int rect_noline=0x7f02000c;
+        public static final int score=0x7f02000d;
+        public static final int score_match_header_rect=0x7f02000e;
+        public static final int score_normal=0x7f02000f;
+        public static final int score_pressed=0x7f020010;
     }
     public static final class id {
-        public static final int btn=0x7f060003;
-        public static final int pager=0x7f060001;
-        public static final int section_label=0x7f060002;
-        public static final int tabs=0x7f060000;
+        public static final int expand_img=0x7f08000c;
+        public static final int group_name=0x7f08000b;
+        public static final int index=0x7f080005;
+        public static final int left_btn=0x7f080000;
+        public static final int maintab_layout=0x7f080003;
+        public static final int match_listview=0x7f08000a;
+        public static final int middle_title=0x7f080001;
+        public static final int pager=0x7f080009;
+        public static final int profile=0x7f080006;
+        public static final int right_btn=0x7f080002;
+        public static final int score=0x7f080004;
+        public static final int tabs=0x7f080008;
+        public static final int title=0x7f080007;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int fragment_main_dummy=0x7f030001;
+        public static final int common_title=0x7f030000;
+        public static final int maintabs=0x7f030001;
+        public static final int score_activity=0x7f030002;
+        public static final int score_fragment=0x7f030003;
+        public static final int score_group_item=0x7f030004;
+        public static final int score_match_header=0x7f030005;
+        public static final int score_match_item=0x7f030006;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
+        public static final int app_name=0x7f060000;
+        public static final int host_team=0x7f060006;
+        public static final int indexlive=0x7f060002;
+        /**  score listview header 
+         */
+        public static final int league=0x7f060005;
+        public static final int main_tab_tag=0x7f060004;
+        public static final int mysetting=0x7f060003;
+        public static final int score=0x7f060008;
+        /**  bottom navigation bar & top title 
+         */
+        public static final int scorelive=0x7f060001;
+        public static final int visit_team=0x7f060007;
     }
     public static final class style {
         /** 
@@ -145,11 +202,12 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f070001;
+        public static final int ListHeader=0x7f070002;
+        public static final int main_tab_bottom=0x7f070003;
     }
     public static final class styleable {
         /** Attributes that can be used with a PagerSlidingTabStrip.

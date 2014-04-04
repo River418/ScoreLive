@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:layout_width="@dimen/league_width"
+        android:layout_height="30dp"
+        style="@style/ListHeader"
+        android:background="@drawable/score_match_header_rect"
+        android:text="@string/league" />
+
+    <TextView
+        android:layout_width="@dimen/host_team_width"
+        android:layout_height="30dp"
+        style="@style/ListHeader"
+        android:background="@drawable/score_match_header_rect"
+        android:text="@string/host_team" />
+
+    <TextView
+        android:layout_width="@dimen/score_width"
+        android:layout_height="30dp"
+        style="@style/ListHeader"
+        android:background="@drawable/score_match_header_rect"
+        android:text="@string/score" />
+
+    <TextView
+        android:layout_width="@dimen/visit_team_width"
+        android:layout_height="30dp"
+        style="@style/ListHeader"
+        android:background="@drawable/rect_noline"
+        android:text="@string/visit_team" />
+
+</LinearLayout>

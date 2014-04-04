@@ -1,9 +1,15 @@
 package com.scorelive;
 
+import com.scorelive.fragment.ScoreFragment;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
+/**
+ * 即时比分的Adapter
+ * @author River
+ *
+ */
 public class ScoreFragmentPageAdapter extends FragmentPagerAdapter{
 
 	public ScoreFragmentPageAdapter(FragmentManager fm) {

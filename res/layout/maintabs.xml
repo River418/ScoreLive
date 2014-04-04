@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0" />
+        <LinearLayout
+            android:id="@+id/maintab_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:background="@color/black" >
+
+            <com.scorelive.ui.widget.TabItem
+                android:id="@+id/score"
+                style="@style/main_tab_bottom"
+                android:checked="true" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/score"
+                    android:tag="@string/main_tab_tag"
+                     />
+            </com.scorelive.ui.widget.TabItem>
+
+            <com.scorelive.ui.widget.TabItem
+                android:id="@+id/index"
+                style="@style/main_tab_bottom" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:tag="@string/main_tab_tag"
+                    android:src="@drawable/index" />
+            </com.scorelive.ui.widget.TabItem>
+
+            <com.scorelive.ui.widget.TabItem
+                android:id="@+id/profile"
+                style="@style/main_tab_bottom" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:tag="@string/main_tab_tag"
+                    android:src="@drawable/profile" />
+            </com.scorelive.ui.widget.TabItem>
+        </LinearLayout>
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</TabHost>

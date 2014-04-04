@@ -70,9 +70,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int tabPadding = 29;//tab的左右间距
 	private int dividerWidth = 1;
 
-	private int tabTextSize = 30;
-	private int tabTextColor = 0xFF333333;
-	private int tabSelTextColor = 0xFF12B37D;
+	private int tabTextSize = 32;
+	private int tabTextColor = 0xFFFFFFFF;
+	private int tabSelTextColor = 0xFFFFFFFF;
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.BOLD;
 
