@@ -22,6 +22,10 @@
         </activity>
         <activity android:name=".ScoreFragmentPageActivity" >
         </activity>
+        <activity android:name=".IndexFragmentPActivity" >
+        </activity>
+        <activity android:name=".ProfileFragmentPageActivity" >
+        </activity>
     </application>
 
 </manifest>

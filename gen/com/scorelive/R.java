@@ -135,26 +135,40 @@ containing a value of this type.
         public static final int profile=0x7f020009;
         public static final int profile_normal=0x7f02000a;
         public static final int profile_pressed=0x7f02000b;
-        public static final int rect_noline=0x7f02000c;
+        public static final int redcard=0x7f02000c;
         public static final int score=0x7f02000d;
         public static final int score_match_header_rect=0x7f02000e;
-        public static final int score_normal=0x7f02000f;
-        public static final int score_pressed=0x7f020010;
+        public static final int score_match_header_rect_noline=0x7f02000f;
+        public static final int score_match_item_rect=0x7f020010;
+        public static final int score_normal=0x7f020011;
+        public static final int score_pressed=0x7f020012;
+        public static final int yellowcard=0x7f020013;
     }
     public static final class id {
+        public static final int cards_layout=0x7f080015;
         public static final int expand_img=0x7f08000c;
         public static final int group_name=0x7f08000b;
+        public static final int host_team=0x7f08000e;
         public static final int index=0x7f080005;
+        public static final int league=0x7f08000d;
         public static final int left_btn=0x7f080000;
         public static final int maintab_layout=0x7f080003;
         public static final int match_listview=0x7f08000a;
         public static final int middle_title=0x7f080001;
         public static final int pager=0x7f080009;
         public static final int profile=0x7f080006;
+        public static final int red_card=0x7f080017;
         public static final int right_btn=0x7f080002;
         public static final int score=0x7f080004;
+        public static final int score_layout=0x7f08000f;
         public static final int tabs=0x7f080008;
+        public static final int team_index=0x7f080013;
+        public static final int team_layout=0x7f080012;
+        public static final int team_name=0x7f080014;
+        public static final int time=0x7f080010;
         public static final int title=0x7f080007;
+        public static final int visit_team=0x7f080011;
+        public static final int yellow_card=0x7f080016;
     }
     public static final class layout {
         public static final int common_title=0x7f030000;
@@ -164,6 +178,7 @@ containing a value of this type.
         public static final int score_group_item=0x7f030004;
         public static final int score_match_header=0x7f030005;
         public static final int score_match_item=0x7f030006;
+        public static final int team_status=0x7f030007;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

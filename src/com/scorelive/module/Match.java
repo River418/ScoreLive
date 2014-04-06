@@ -7,7 +7,8 @@ public class Match {
 	public String matchBetId;// 在所属彩票类型中的id
 	public String matchState;// 比赛开始、结束及中场休息的状态
 	public String matchStartTime;// 比赛开始时间
-	public String matchTimeing;// 比赛进行了多久
+	public String matchScore;//比赛比分
+	public String matchTime;// 比赛进行了多久
 	public String hostTeamName;// 主队名称
 	public String hostTeamIndex;// 主队排名
 	public String hostTeamScore;// 主队积分
