@@ -2,7 +2,7 @@ package com.scorelive.module;
 
 public class Match {
 
-	public String matchName;// 所属赛事
+	public String matchLeague;// 所属赛事
 	public String matchBet;// 所属彩票类型,包括竞彩、北单、足彩
 	public String matchBetId;// 在所属彩票类型中的id
 	public String matchState;// 比赛开始、结束及中场休息的状态

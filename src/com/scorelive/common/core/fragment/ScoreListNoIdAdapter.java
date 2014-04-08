@@ -1,4 +1,4 @@
-package com.scorelive.fragment;
+package com.scorelive.common.core.fragment;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.scorelive.R;
 import com.scorelive.module.Match;
 
-public class ScoreListViewAdapter extends BaseExpandableListAdapter {
+public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 
 	private String[] mMatchArray = { "正在进行", "未开始", "已结束" };
 	private ArrayList<Match> mEndedList;// 已结束
@@ -21,7 +21,7 @@ public class ScoreListViewAdapter extends BaseExpandableListAdapter {
 	private ArrayList<Match> mUnstartList;// 未开始
 	private Context mContext;
 
-	public ScoreListViewAdapter(Context context) {
+	public ScoreListNoIdAdapter(Context context) {
 		mContext = context;
 	}
 
@@ -35,14 +35,14 @@ public class ScoreListViewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
-		switch (groupPosition) {
-		case 0:
-			return mMatchingList.get(childPosition);
-		case 1:
-			return mUnstartList.get(childPosition);
-		case 2:
-			return mEndedList.get(childPosition);
-		}
+		// switch (groupPosition) {
+		// case 0:
+		// return mMatchingList.get(childPosition);
+		// case 1:
+		// return mUnstartList.get(childPosition);
+		// case 2:
+		// return mEndedList.get(childPosition);
+		// }
 		return null;
 	}
 
@@ -66,16 +66,19 @@ public class ScoreListViewAdapter extends BaseExpandableListAdapter {
 			matchItem = (MatchItem) convertView.getTag();
 		}
 		Match match = (Match) getChild(groupPosition, childPosition);
-		matchItem.setHostName(match.hostTeamName);
-		matchItem.setHostIndex(match.hostTeamIndex);
-		matchItem.setHostYellow(match.hostTeamYellow);
-		matchItem.setHostRed(match.hostTeamRed);
-		matchItem.setVisitName(match.visitTeamName);
-		matchItem.setVisitIndex(match.visitTeamIndex);
-		matchItem.setVisitYellow(match.visitTeamYellow);
-		matchItem.setVisitRed(match.visitTeamRed);
-		matchItem.setScore(match.matchScore);
-		matchItem.setTime(match.matchTime);
+		if (match != null) {
+			matchItem.setHostName(match.hostTeamName);
+			matchItem.setHostIndex(match.hostTeamIndex);
+			matchItem.setHostYellow(match.hostTeamYellow);
+			matchItem.setHostRed(match.hostTeamRed);
+			matchItem.setVisitName(match.visitTeamName);
+			matchItem.setVisitIndex(match.visitTeamIndex);
+			matchItem.setVisitYellow(match.visitTeamYellow);
+			matchItem.setVisitRed(match.visitTeamRed);
+			matchItem.setScore(match.matchScore);
+			matchItem.setTime(match.matchTime);
+			matchItem.setLeague(match.matchLeague);
+		}
 		return convertView;
 	}
 

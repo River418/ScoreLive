@@ -1,4 +1,4 @@
-package com.scorelive.fragment;
+package com.scorelive.common.core.fragment;
 
 import android.support.v4.app.Fragment;
 

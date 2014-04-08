@@ -16,7 +16,7 @@
         android:layout_height="41dp"
         android:background="@color/dark_blue"
         android:layout_below="@id/title"
-        app:pstsIndicatorHeight="3dp" />
+        app:pstsIndicatorHeight="41dp" />
 
     <android.support.v4.view.ViewPager
         xmlns:tools="http://schemas.android.com/tools"

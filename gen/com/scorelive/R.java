@@ -117,10 +117,15 @@ containing a value of this type.
         public static final int white=0x7f040000;
     }
     public static final class dimen {
+        public static final int event_width_withid=0x7f050005;
         public static final int host_team_width=0x7f050001;
+        public static final int host_team_width_withid=0x7f050006;
         public static final int league_width=0x7f050000;
+        public static final int league_width_withid=0x7f050004;
         public static final int score_width=0x7f050002;
+        public static final int score_width_withid=0x7f050007;
         public static final int visit_team_width=0x7f050003;
+        public static final int visit_team_width_withid=0x7f050008;
     }
     public static final class drawable {
         public static final int arrow_down=0x7f020000;
@@ -145,7 +150,8 @@ containing a value of this type.
         public static final int yellowcard=0x7f020013;
     }
     public static final class id {
-        public static final int cards_layout=0x7f080015;
+        public static final int cards_layout=0x7f080016;
+        public static final int event=0x7f080012;
         public static final int expand_img=0x7f08000c;
         public static final int group_name=0x7f08000b;
         public static final int host_team=0x7f08000e;
@@ -157,18 +163,18 @@ containing a value of this type.
         public static final int middle_title=0x7f080001;
         public static final int pager=0x7f080009;
         public static final int profile=0x7f080006;
-        public static final int red_card=0x7f080017;
+        public static final int red_card=0x7f080018;
         public static final int right_btn=0x7f080002;
         public static final int score=0x7f080004;
         public static final int score_layout=0x7f08000f;
         public static final int tabs=0x7f080008;
-        public static final int team_index=0x7f080013;
-        public static final int team_layout=0x7f080012;
-        public static final int team_name=0x7f080014;
+        public static final int team_index=0x7f080014;
+        public static final int team_layout=0x7f080013;
+        public static final int team_name=0x7f080015;
         public static final int time=0x7f080010;
         public static final int title=0x7f080007;
         public static final int visit_team=0x7f080011;
-        public static final int yellow_card=0x7f080016;
+        public static final int yellow_card=0x7f080017;
     }
     public static final class layout {
         public static final int common_title=0x7f030000;
@@ -177,11 +183,14 @@ containing a value of this type.
         public static final int score_fragment=0x7f030003;
         public static final int score_group_item=0x7f030004;
         public static final int score_match_header=0x7f030005;
-        public static final int score_match_item=0x7f030006;
-        public static final int team_status=0x7f030007;
+        public static final int score_match_header_id=0x7f030006;
+        public static final int score_match_item=0x7f030007;
+        public static final int score_match_item_id=0x7f030008;
+        public static final int team_status=0x7f030009;
     }
     public static final class string {
         public static final int app_name=0x7f060000;
+        public static final int event=0x7f060009;
         public static final int host_team=0x7f060006;
         public static final int indexlive=0x7f060002;
         /**  score listview header 

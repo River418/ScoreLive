@@ -1,9 +1,9 @@
 package com.scorelive.common.itask.pool;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -24,12 +24,14 @@ public class ThreadManager {
 	private static Handler SUB_THREAD_HANDLER;
 	private static HandlerThread SUB_THREAD;
 	private static ThreadPoolExecutor NETWORK_EXECUTOR;
+	private static AtomicInteger mTaskId;
 
 	public static ThreadManager getInstance() {
 		if (mInstance == null) {
 			synchronized (ThreadManager.class) {
 				if (mInstance == null) {
 					mInstance = new ThreadManager();
+					mTaskId = new AtomicInteger(1);
 				}
 			}
 		}
@@ -63,6 +65,10 @@ public class ThreadManager {
 
 	}
 
+	public int getNewTaskId() {
+		return mTaskId.getAndIncrement();
+	}
+
 	/**
 	 * 添加一个任务
 	 * 
@@ -88,7 +94,7 @@ public class ThreadManager {
 		if (task instanceof IShortTask) {// 从HandlerThread中移除任务
 			SUB_THREAD_HANDLER.removeCallbacks(task);
 		}
-		if(task instanceof INetTask){
+		if (task instanceof INetTask) {
 			NETWORK_EXECUTOR.remove(task);
 		}
 	}

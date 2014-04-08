@@ -5,12 +5,13 @@
     <string name="scorelive">即时比分</string>
     <string name="indexlive">即时指数</string>
     <string name="mysetting">我的</string>
-
     <string name="main_tab_tag">tab_image</string>
-    
+
     <!-- score listview header -->
     <string name="league">联赛</string>
     <string name="host_team">主队</string>
     <string name="visit_team">客队</string>
     <string name="score">比分</string>
+    <string name="event">场次</string>
+
 </resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/white"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/league"
+        android:layout_width="@dimen/league_width_withid"
+        android:layout_height="match_parent"
+        android:background="@drawable/score_match_item_rect"
+        android:gravity="center"
+        android:text="西甲"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/event"
+        android:layout_width="@dimen/event_width_withid"
+        android:layout_height="match_parent"
+        android:background="@drawable/score_match_item_rect"
+        android:gravity="center"
+        android:textColor="@color/text_light_gray"
+        android:text="周-001"
+        android:textSize="13dp" />
+
+    <include
+        android:id="@+id/host_team"
+        android:layout_width="@dimen/host_team_width_withid"
+        android:layout_height="match_parent"
+        layout="@layout/team_status" />
+
+    <RelativeLayout
+        android:id="@+id/score_layout"
+        android:layout_width="@dimen/score_width_withid"
+        android:layout_height="match_parent"
+        android:background="@drawable/score_match_item_rect" >
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="上半场 34&apos;"
+            android:textColor="@color/dark_blue"
+            android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="2:1"
+            android:textColor="@color/dark_blue"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/visit_team"
+        android:layout_width="@dimen/visit_team_width_withid"
+        android:layout_height="match_parent"
+        layout="@layout/team_status" />
+
+</LinearLayout>
