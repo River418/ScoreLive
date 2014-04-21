@@ -41,6 +41,7 @@ public abstract class INetTask extends ITask implements Comparable<INetTask> {
 	public INetTask(long taskId) {
 		super(taskId);
 		mContext = ScoreLiveApplication.getInstance().getApplicationContext();
+		int i = 0;
 	}
 
 	public void setPriority(int priority) {

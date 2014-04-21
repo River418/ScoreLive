@@ -1,18 +1,22 @@
 package com.scorelive.common.core.fragment;
 
-import com.scorelive.R;
-import com.scorelive.R.id;
-import com.scorelive.R.layout;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
+
+import com.scorelive.module.Match;
 
 public class ScoreBaseFragment extends Fragment{
 
+	protected ArrayList<Match> mUnstartList = new ArrayList<Match>();
+	protected ArrayList<Match> mMatchingList = new ArrayList<Match>();
+	protected ArrayList<Match> mEndedList = new ArrayList<Match>();
+	
+	public void setData(ArrayList<Match> unstart,ArrayList<Match> matching,ArrayList<Match> ended){
+		mUnstartList = unstart;
+		mMatchingList = matching;
+		mEndedList = ended;
+	}
 	
 }

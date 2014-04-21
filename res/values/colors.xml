@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="white">#ffffff</color>
     <color name="dark_blue">#42b5e8</color>
     <color name="light_blue">#aaebff</color>
@@ -7,4 +8,8 @@
     <color name="text_light_gray">#b7b7b7</color>
     <color name="text_dark_gray">#a0a0a0</color>
     <color name="bg_gray">#ececec</color>
+
+    <!-- 联赛颜色值 -->
+    <color name="league_color_default">#456da8</color>
+
 </resources>

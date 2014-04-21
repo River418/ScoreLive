@@ -11,17 +11,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scorelive.R;
+import com.scorelive.common.utils.Utility;
+import com.scorelive.module.AppConstants;
+import com.scorelive.module.AppConstants.BetType;
 import com.scorelive.module.Match;
 
-public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
+public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
+
+	private int mAdapterType = -1;
+	private Context mContext;
 
 	private String[] mMatchArray = { "正在进行", "未开始", "已结束" };
 	private ArrayList<Match> mEndedList;// 已结束
 	private ArrayList<Match> mMatchingList;// 正在进行
 	private ArrayList<Match> mUnstartList;// 未开始
-	private Context mContext;
 
-	public ScoreListNoIdAdapter(Context context) {
+	public ScoreListBaseAdapter(Context context, int type) {
+		mAdapterType = type;
 		mContext = context;
 	}
 
@@ -30,19 +36,30 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 		mUnstartList = unstartList;
 		mMatchingList = matchingList;
 		mEndedList = endedList;
+		notifyDataSetChanged();
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
-		// switch (groupPosition) {
-		// case 0:
-		// return mMatchingList.get(childPosition);
-		// case 1:
-		// return mUnstartList.get(childPosition);
-		// case 2:
-		// return mEndedList.get(childPosition);
-		// }
+		Object object = null;
+		switch (groupPosition) {
+		case 0:
+			if (mMatchingList != null) {
+				object = mMatchingList.get(childPosition);
+			}
+			return object;
+		case 1:
+			if (mEndedList != null) {
+				object = mEndedList.get(childPosition);
+			}
+			return object;
+		case 2:
+			if (mUnstartList != null) {
+				object = mUnstartList.get(childPosition);
+			}
+			return object;
+		}
 		return null;
 	}
 
@@ -58,34 +75,90 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 		// TODO Auto-generated method stub
 		MatchItem matchItem = null;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(mContext).inflate(
-					R.layout.score_match_item, null);
+			switch (mAdapterType) {
+			case AppConstants.BetType.ALL:
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.score_match_item, null);
+				break;
+			case AppConstants.BetType.CUSTOMIZE:
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.score_match_item, null);
+				break;
+			case AppConstants.BetType.SMG:
+			case AppConstants.BetType.BJ:
+			case AppConstants.BetType.ZC:
+				convertView = LayoutInflater.from(mContext).inflate(
+						R.layout.score_match_item_id, null);
+				break;
+			}
 			matchItem = new MatchItem(convertView);
 			convertView.setTag(matchItem);
 		} else {
 			matchItem = (MatchItem) convertView.getTag();
 		}
 		Match match = (Match) getChild(groupPosition, childPosition);
+		int time = Utility.caculateMatchingTime(match.matchStartTime);
+		if (time > 95) {
+			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
+		} else if (time < 95 && time > 90) {
+			match.matchTime = "下半场90'+";
+		} else if (time <= 90 && time > 45) {
+			match.matchTime = "下半场" + time + "'";
+		} else {
+			match.matchTime = "上半场" + time + "'";
+		}
 		if (match != null) {
+			int leagueId = match.leagueId;
+			int color = Utility.pickLeagueColor(mContext, leagueId);
+			matchItem.setLeagueColor(color);
+			matchItem.setLeague(match.matchLeague);
 			matchItem.setHostName(match.hostTeamName);
-			matchItem.setHostIndex(match.hostTeamIndex);
+			matchItem.setHostIndex("(" + match.hostTeamIndex + ")");
 			matchItem.setHostYellow(match.hostTeamYellow);
 			matchItem.setHostRed(match.hostTeamRed);
 			matchItem.setVisitName(match.visitTeamName);
-			matchItem.setVisitIndex(match.visitTeamIndex);
+			matchItem.setVisitIndex("(" + match.visitTeamIndex + ")");
 			matchItem.setVisitYellow(match.visitTeamYellow);
 			matchItem.setVisitRed(match.visitTeamRed);
 			matchItem.setScore(match.matchScore);
 			matchItem.setTime(match.matchTime);
-			matchItem.setLeague(match.matchLeague);
+			switch (mAdapterType) {
+			case BetType.BJ:
+				matchItem.setEvent(match.bjNum);
+				break;
+			case BetType.SMG:
+				matchItem.setEvent(match.SMGNum);
+				break;
+			case BetType.ZC:
+				matchItem.setEvent(match.zcNum);
+				break;
+			}
 		}
+
 		return convertView;
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		// TODO Auto-generated method stub
-		return 3;
+		switch (groupPosition) {
+		case 0:
+			if (mMatchingList != null) {
+				return mMatchingList.size();
+			}
+			break;
+		case 1:
+			if (mEndedList != null) {
+				return mEndedList.size();
+			}
+			break;
+		case 2:
+			if (mUnstartList != null) {
+				return mUnstartList.size();
+			}
+			break;
+		}
+		return 0;
 	}
 
 	@Override
@@ -149,7 +222,7 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	private class MatchItem {
@@ -164,9 +237,19 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 		TextView visitRed_tv;
 		TextView score_tv;
 		TextView time_tv;
+		TextView event_tv;
+		ImageView league_iv;
 
 		public MatchItem(View view) {
+			league_iv = (ImageView) view.findViewById(R.id.league_color);
 			league_tv = (TextView) view.findViewById(R.id.league);
+			switch (mAdapterType) {
+			case BetType.BJ:
+			case BetType.SMG:
+			case BetType.ZC:
+				event_tv = (TextView) view.findViewById(R.id.event);
+				break;
+			}
 			View hostView = (View) view.findViewById(R.id.host_team);
 			hostName_tv = (TextView) hostView.findViewById(R.id.team_name);
 			hostIndex_tv = (TextView) hostView.findViewById(R.id.team_index);
@@ -180,6 +263,10 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 			visitYellow_tv = (TextView) visitView
 					.findViewById(R.id.yellow_card);
 			visitRed_tv = (TextView) visitView.findViewById(R.id.red_card);
+		}
+
+		public void setLeagueColor(int color) {
+			league_iv.setBackgroundColor(color);
 		}
 
 		public void setLeague(String league) {
@@ -224,6 +311,10 @@ public class ScoreListNoIdAdapter extends BaseExpandableListAdapter {
 
 		public void setVisitRed(String count) {
 			visitRed_tv.setText(count);
+		}
+
+		public void setEvent(String event) {
+			event_tv.setText(event);
 		}
 
 	}

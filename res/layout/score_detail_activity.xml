@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        layout="@layout/common_title" />
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:layout_below="@id/title"
+        android:background="@color/dark_blue" >
+
+        <RelativeLayout
+            android:id="@+id/host"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true" >
+
+            <ImageView
+                android:id="@+id/host_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="33dp"
+                android:background="@drawable/team_logo_bg" />
+
+            <TextView
+                android:id="@+id/host_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/host_logo"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="(12)奥萨苏纳"
+                android:textSize="11dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/visit"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" >
+
+            <ImageView
+                android:id="@+id/visit_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="33dp"
+                android:background="@drawable/team_logo_bg" />
+
+            <TextView
+                android:id="@+id/visit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/visit_logo"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="马加拉(11)"
+                android:textSize="11dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
+                android:text="04-08 23:00"
+                android:textColor="@color/white"
+                android:textSize="11dp" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/start_time"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7dp"
+                android:text="下半场 90+"
+                android:textColor="@color/white"
+                android:textSize="11dp" >
+            </TextView>
+
+            <RelativeLayout
+                android:id="@+id/score"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/status"
+                android:layout_centerHorizontal="true"
+                android:layout_width="66dp"
+                android:layout_height="wrap_content" >
+                <TextView 
+                    android:id="@+id/host_score"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentLeft="true"
+                    android:textStyle="bold"
+                    android:background="@drawable/score_num_bg"
+                     android:textColor="@color/white"
+                    />
+                <TextView 
+                    android:id="@+id/host_score"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold"
+                    android:background="@drawable/score_num_bg"
+                     android:textColor="@color/white"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/half_score"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/score"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="半场 1:1"
+                android:textSize="11dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/light_blue"
+        android:textColor="@color/dark_blue"
+        android:text="比赛实况"
+        android:textSize="14dp"
+        android:layout_below="@id/header"
+        android:gravity="center"
+        />
+</RelativeLayout>

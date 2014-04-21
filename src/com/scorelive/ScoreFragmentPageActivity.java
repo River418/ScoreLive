@@ -2,17 +2,27 @@ package com.scorelive;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scorelive.common.config.MsgType;
+import com.scorelive.common.core.fragment.ScoreBaseFragment;
 import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTaskListener;
 import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.net.task.MatchListTask;
+import com.scorelive.common.utils.JsonUtils;
+import com.scorelive.module.AppConstants;
+import com.scorelive.module.Match;
 import com.scorelive.ui.widget.PagerSlidingTabStrip;
 
 /**
@@ -21,20 +31,32 @@ import com.scorelive.ui.widget.PagerSlidingTabStrip;
  * @author River
  * 
  */
-public class ScoreFragmentPageActivity extends FragmentActivity implements
+public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 		INetTaskListener {
 
 	private ScoreFragmentPageAdapter mScoreFragmentPageAdapter;
 	private ViewPager mViewPager;
 	private PagerSlidingTabStrip mTabs;
 	private TextView mTitle;
+	private ArrayList<Match> mAllList = new ArrayList<Match>(),
+			mBJList = new ArrayList<Match>(),
+			mSMGList = new ArrayList<Match>(),
+			mZCList = new ArrayList<Match>();
+	private FragmentManager mFragmentManager;
+	private ImageView mLeftBtn,mRightBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstantceState);
-		setContentView(R.layout.score_activity);
+		setContentView(R.layout.score_list_activity);
 		initUI();
+		// INetTask task = new MatchListTask(ThreadManager.getInstance()
+		// .getNewTaskId(), "20140419");
+		// task.setListener(this);
+		getMatchList("20140419");
+		// ThreadManager.getInstance().addTask(task);
+		mFragmentManager = getSupportFragmentManager();
 	}
 
 	private void initUI() {
@@ -47,8 +69,13 @@ public class ScoreFragmentPageActivity extends FragmentActivity implements
 		mTabs.setShouldExpand(true);
 		mTabs.setSelectColor(mViewPager.getCurrentItem());
 		mTitle = (TextView) findViewById(R.id.middle_title);
-		mTitle.setText("即时比分");
+		mTitle.setText(getString(R.string.scorelive));
 		mViewPager.setCurrentItem(1);
+		mLeftBtn = (ImageView)findViewById(R.id.left_btn);
+		mLeftBtn.setBackgroundResource(R.drawable.calendar);
+		mRightBtn = (ImageView)findViewById(R.id.right_btn);
+		mRightBtn.setBackgroundResource(R.drawable.filter);
+		
 	}
 
 	@Override
@@ -75,20 +102,66 @@ public class ScoreFragmentPageActivity extends FragmentActivity implements
 		super.onDestroy();
 	}
 
+	private final MyHandler mHandler = new MyHandler();
+
+	private class MyHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			// handleMessage(msg);
+			handlerMessage(msg);
+		}
+
+	}
+
+	protected void handlerMessage(Message msg) {
+		switch (msg.what) {
+		case MsgType.GET_SCORE_LIST_SUCCESS:
+			refreshFragment();
+			break;
+		}
+	}
+
 	/**
 	 * 根据时间拉取全部比赛列表
+	 * 
 	 * @param date
 	 */
 	private void getMatchList(String date) {
-		MatchListTask task = new MatchListTask(ThreadManager.getInstance().getNewTaskId(),"2013-4-10");
+		MatchListTask task = new MatchListTask(ThreadManager.getInstance()
+				.getNewTaskId(), date);
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}
 
+	private void refreshFragment() {
+		ScoreBaseFragment fragment = null;
+		for (int i = 1; i < 5; i++) {
+			switch (i) {
+			case ScoreFragmentPageAdapter.ALL:
+				fragment = mScoreFragmentPageAdapter.getFragment(i);
+				fragment.setData(mAllUnstartList,mAllMatchingList,mAllEndedList);
+				break;
+			case ScoreFragmentPageAdapter.BJ:
+				fragment = mScoreFragmentPageAdapter.getFragment(i);
+				fragment.setData(mBJUnstartList,mBJMatchingList,mBJEndedList);
+				break;
+			case ScoreFragmentPageAdapter.SMG:
+				fragment = mScoreFragmentPageAdapter.getFragment(i);
+				fragment.setData(mSMGUnstartList,mSMGMatchingList,mSMGEndedList);
+				break;
+			case ScoreFragmentPageAdapter.ZC:
+				fragment = mScoreFragmentPageAdapter.getFragment(i);
+				fragment.setData(mZCUnstartList,mZCMatchingList,mZCEndedList);
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void onTaskError(ITask task, Exception exception) {
-		// TODO Auto-generated method stub
-
+		// 任务错误，移除任务
+		ThreadManager.getInstance().removeTask(task);
 	}
 
 	@Override
@@ -96,9 +169,97 @@ public class ScoreFragmentPageActivity extends FragmentActivity implements
 		// TODO Auto-generated method stub
 		try {
 			String str = Http.getString(is);
+			mAllList = JsonUtils.json2MatchList(str);
+			handleMatchList();
+			mHandler.obtainMessage(MsgType.GET_SCORE_LIST_SUCCESS)
+					.sendToTarget();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public List<Match> getAllList() {
+		return mAllList;
+	}
+
+	public List<Match> getBJList() {
+		return mBJList;
+	}
+
+	public List<Match> getSMGList() {
+		return mSMGList;
+	}
+
+	private void handleMatchList() {
+		for (Match match : mAllList) {
+			String typeList = match.matchBet;
+			String[] typeArray = null;
+			if (typeList.contains(",")) {
+				typeArray = typeList.split(",");
+				for (int i = 0; i < typeArray.length; i++) {
+					addMatchToList(Integer.valueOf(typeArray[i]), match);
+				}
+			} else {
+				addMatchToList(Integer.valueOf(typeList), match);
+			}
+
+		}
+	}
+
+	private void addMatchToList(int betType, Match match) {
+		switch (betType) {
+		case AppConstants.BetType.BJ:
+			switch (match.matchState) {
+			case AppConstants.MatchStatus.UNSTART:
+				mBJUnstartList.add(match);
+				mAllUnstartList.add(match);
+				break;
+			case AppConstants.MatchStatus.MATCHING:
+				mBJMatchingList.add(match);
+				mAllMatchingList.add(match);
+				break;
+			case AppConstants.MatchStatus.ENDED:
+				mBJEndedList.add(match);
+				mAllEndedList.add(match);
+				break;
+			}
+			mBJList.add(match);
+			break;
+		case AppConstants.BetType.SMG:
+			switch (match.matchState) {
+			case AppConstants.MatchStatus.UNSTART:
+				mSMGUnstartList.add(match);
+				mAllUnstartList.add(match);
+				break;
+			case AppConstants.MatchStatus.MATCHING:
+				mSMGMatchingList.add(match);
+				mAllMatchingList.add(match);
+				break;
+			case AppConstants.MatchStatus.ENDED:
+				mSMGEndedList.add(match);
+				mAllEndedList.add(match);
+				break;
+			}
+			mSMGList.add(match);
+			break;
+		case AppConstants.BetType.ZC:
+			switch (match.matchState) {
+			case AppConstants.MatchStatus.UNSTART:
+				mZCUnstartList.add(match);
+				mAllUnstartList.add(match);
+				break;
+			case AppConstants.MatchStatus.MATCHING:
+				mZCMatchingList.add(match);
+				mAllMatchingList.add(match);
+				break;
+			case AppConstants.MatchStatus.ENDED:
+				mZCEndedList.add(match);
+				mAllEndedList.add(match);
+				break;
+			}
+			mZCList.add(match);
+			break;
 		}
 	}
 

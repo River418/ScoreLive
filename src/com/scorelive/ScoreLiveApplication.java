@@ -7,16 +7,20 @@ public class ScoreLiveApplication extends Application {
 	private volatile static ScoreLiveApplication mInstance;
 
 	public static ScoreLiveApplication getInstance() {
-		if (mInstance == null) {
-			synchronized (ScoreLiveApplication.class) {
-				if (mInstance == null) {
-					mInstance = new ScoreLiveApplication();
-				}
-			}
-		}
+		// if (mInstance == null) {
+		// synchronized (ScoreLiveApplication.class) {
+		// if (mInstance == null) {
+		// mInstance = new ScoreLiveApplication();
+		// }
+		// }
+		// }
 		return mInstance;
 	}
 
+	public ScoreLiveApplication(){
+		mInstance = this;
+	}
+	
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub

@@ -8,6 +8,7 @@ import android.widget.TabHost;
 
 import com.scorelive.ui.widget.TabItem;
 import com.scorelive.ui.widget.TabItem.OnCheckedChangeListener;
+import com.tencent.android.tpush.XGPushManager;
 
 public class MainActivity extends TabActivity implements
 		OnCheckedChangeListener {
@@ -28,6 +29,7 @@ public class MainActivity extends TabActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maintabs);
+		XGPushManager.registerPush(getApplicationContext());
 		this.mScoreIntent = new Intent(this, ScoreFragmentPageActivity.class);
 		this.mIndexIntent = new Intent(this, IndexFragmentActivity.class);
 		this.mProfileIntent = new Intent(this, ProfileFragmentActivity.class);

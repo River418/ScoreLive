@@ -5,6 +5,7 @@
     <dimen name="score_width">110dp</dimen>
     <dimen name="visit_team_width">100dp</dimen>
     
+    <dimen name="league_color_width">4dp</dimen>
     <dimen name="league_width_withid">50dp</dimen>
     <dimen name="event_width_withid">50dp</dimen>
     <dimen name="host_team_width_withid">90dp</dimen>

@@ -1,5 +1,7 @@
 package com.scorelive.common.itask.pool;
 
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -47,22 +49,6 @@ public class ThreadManager {
 		SUB_THREAD_HANDLER = new Handler(SUB_THREAD.getLooper());
 		NETWORK_EXECUTOR = new ThreadPoolExecutor(3, 256, 0L,
 				TimeUnit.MILLISECONDS, new PriorityBlockingQueue<Runnable>());
-		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-		// NETWORK_EXECUTOR = AsyncTask.THREAD_POOL_EXECUTOR;
-		// } else {
-		// Executor tmp = null;
-		// try {
-		// Field field = AsyncTask.class.getDeclaredField("sExecutor");
-		// field.setAccessible(true);
-		// tmp = (Executor) field.get(null);
-		// } catch (Exception e) {
-		// // 反射失败
-		// tmp = new ThreadPoolExecutor(3, 256, 0L, TimeUnit.MILLISECONDS,
-		// new PriorityBlockingQueue<Runnable>());
-		// }
-		// NETWORK_EXECUTOR = tmp;
-		// }
-
 	}
 
 	public int getNewTaskId() {
@@ -80,7 +66,9 @@ public class ThreadManager {
 			SUB_THREAD_HANDLER.post(task);
 		}
 		if (task instanceof INetTask) {// 网络请求走优先级线程池
-			NETWORK_EXECUTOR.execute(task);
+			if (!isTaskInQueue(task)) {//任务不在队列中，才放入线程池
+				NETWORK_EXECUTOR.execute(task);
+			}
 		}
 	}
 
@@ -97,5 +85,18 @@ public class ThreadManager {
 		if (task instanceof INetTask) {
 			NETWORK_EXECUTOR.remove(task);
 		}
+	}
+
+	private boolean isTaskInQueue(ITask task) {
+		BlockingQueue<Runnable> list = null;
+		if (NETWORK_EXECUTOR != null) {
+			list = NETWORK_EXECUTOR.getQueue();
+			for (Runnable runnable : list) {
+				if (((INetTask) runnable).equals(task)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
