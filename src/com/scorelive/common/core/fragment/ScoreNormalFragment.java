@@ -75,6 +75,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment {
 				Match match = (Match)mAdapter.getChild(groupPosition, childPosition);
 				Intent intent= new Intent();
 				intent.setClass(mContext, ScoreDetailActivity.class);
+				intent.putExtra("match", match);
 				mContext.startActivity(intent);
 				return true;
 			}
