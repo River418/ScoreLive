@@ -125,10 +125,19 @@ containing a value of this type.
         public static final int white=0x7f040000;
     }
     public static final class dimen {
+        public static final int accident_height=0x7f05000b;
+        public static final int accident_margin=0x7f05000d;
+        public static final int accident_pic_margin=0x7f05000e;
+        public static final int accident_time_width=0x7f05000c;
+        /**  比分详情页 
+         */
+        public static final int accident_width=0x7f05000a;
         public static final int event_width_withid=0x7f050006;
         public static final int host_team_width=0x7f050001;
         public static final int host_team_width_withid=0x7f050007;
         public static final int league_color_width=0x7f050004;
+        /**  比分列表页 
+         */
         public static final int league_width=0x7f050000;
         public static final int league_width_withid=0x7f050005;
         public static final int score_width=0x7f050002;
@@ -145,79 +154,94 @@ containing a value of this type.
         public static final int collect_selected=0x7f020005;
         public static final int expand_grey_bar=0x7f020006;
         public static final int filter=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int index=0x7f020009;
-        public static final int index_normal=0x7f02000a;
-        public static final int index_pressed=0x7f02000b;
-        public static final int profile=0x7f02000c;
-        public static final int profile_normal=0x7f02000d;
-        public static final int profile_pressed=0x7f02000e;
-        public static final int redcard=0x7f02000f;
-        public static final int refresh=0x7f020010;
-        public static final int score=0x7f020011;
-        public static final int score_match_header_rect=0x7f020012;
-        public static final int score_match_header_rect_noline=0x7f020013;
-        public static final int score_match_item_rect=0x7f020014;
-        public static final int score_normal=0x7f020015;
-        public static final int score_num_bg=0x7f020016;
-        public static final int score_pressed=0x7f020017;
-        public static final int team_logo_bg=0x7f020018;
-        public static final int yellowcard=0x7f020019;
+        public static final int goal=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int index=0x7f02000a;
+        public static final int index_normal=0x7f02000b;
+        public static final int index_pressed=0x7f02000c;
+        public static final int profile=0x7f02000d;
+        public static final int profile_normal=0x7f02000e;
+        public static final int profile_pressed=0x7f02000f;
+        public static final int redcard=0x7f020010;
+        public static final int redcardsmall=0x7f020011;
+        public static final int refresh=0x7f020012;
+        public static final int score=0x7f020013;
+        public static final int score_match_header_rect=0x7f020014;
+        public static final int score_match_header_rect_noline=0x7f020015;
+        public static final int score_match_item_rect=0x7f020016;
+        public static final int score_normal=0x7f020017;
+        public static final int score_num_bg=0x7f020018;
+        public static final int score_pressed=0x7f020019;
+        public static final int subsitution=0x7f02001a;
+        public static final int team_logo_bg=0x7f02001b;
+        public static final int yellowcard=0x7f02001c;
+        public static final int yellowcardsmall=0x7f02001d;
     }
     public static final class id {
-        public static final int cards_layout=0x7f090025;
-        public static final int event=0x7f090021;
-        public static final int expand_img=0x7f090018;
-        public static final int group_name=0x7f090017;
-        public static final int half_score=0x7f090015;
-        public static final int header=0x7f090009;
-        public static final int host=0x7f09000a;
-        public static final int host_logo=0x7f09000b;
-        public static final int host_name=0x7f09000c;
-        public static final int host_score=0x7f090013;
-        public static final int host_team=0x7f09001d;
+        public static final int accident_time=0x7f09000b;
+        public static final int cards_layout=0x7f09002e;
+        public static final int details=0x7f09001e;
+        public static final int event=0x7f09002a;
+        public static final int expand_img=0x7f090021;
+        public static final int group_name=0x7f090020;
+        public static final int half_score=0x7f09001c;
+        public static final int header=0x7f090010;
+        public static final int home_accident=0x7f090008;
+        public static final int home_accident_content=0x7f09000a;
+        public static final int home_accident_img=0x7f090009;
+        public static final int host=0x7f090011;
+        public static final int host_logo=0x7f090012;
+        public static final int host_name=0x7f090013;
+        public static final int host_score=0x7f09001a;
+        public static final int host_team=0x7f090026;
         public static final int index=0x7f090006;
-        public static final int info=0x7f090010;
-        public static final int league=0x7f09001c;
-        public static final int league_color=0x7f09001b;
+        public static final int info=0x7f090017;
+        public static final int league=0x7f090025;
+        public static final int league_color=0x7f090024;
         public static final int left_btn=0x7f090000;
         public static final int maintab_layout=0x7f090004;
-        public static final int match_listview=0x7f090016;
+        public static final int match_listview=0x7f09001f;
         public static final int middle_title=0x7f090001;
-        public static final int pager=0x7f09001a;
+        public static final int pager=0x7f090023;
         public static final int profile=0x7f090007;
-        public static final int red_card=0x7f090027;
+        public static final int red_card=0x7f090030;
         public static final int refresh_btn=0x7f090003;
         public static final int right_btn=0x7f090002;
         public static final int score=0x7f090005;
-        public static final int score_layout=0x7f09001e;
-        public static final int start_time=0x7f090011;
-        public static final int status=0x7f090012;
-        public static final int tabs=0x7f090019;
-        public static final int team_index=0x7f090023;
-        public static final int team_layout=0x7f090022;
-        public static final int team_name=0x7f090024;
-        public static final int time=0x7f09001f;
-        public static final int title=0x7f090008;
-        public static final int visit=0x7f09000d;
-        public static final int visit_logo=0x7f09000e;
-        public static final int visit_name=0x7f09000f;
-        public static final int visit_score=0x7f090014;
-        public static final int visit_team=0x7f090020;
-        public static final int yellow_card=0x7f090026;
+        public static final int score_layout=0x7f090027;
+        public static final int start_time=0x7f090018;
+        public static final int status=0x7f090019;
+        public static final int sub_title=0x7f09001d;
+        public static final int tabs=0x7f090022;
+        public static final int team_index=0x7f09002c;
+        public static final int team_layout=0x7f09002b;
+        public static final int team_name=0x7f09002d;
+        public static final int time=0x7f090028;
+        public static final int title=0x7f09000f;
+        public static final int visit=0x7f090014;
+        public static final int visit_accident=0x7f09000c;
+        public static final int visit_accident_content=0x7f09000e;
+        public static final int visit_accident_img=0x7f09000d;
+        public static final int visit_logo=0x7f090015;
+        public static final int visit_name=0x7f090016;
+        public static final int visit_score=0x7f09001b;
+        public static final int visit_team=0x7f090029;
+        public static final int yellow_card=0x7f09002f;
     }
     public static final class layout {
         public static final int common_title=0x7f030000;
         public static final int maintabs=0x7f030001;
-        public static final int score_detail_activity=0x7f030002;
-        public static final int score_fragment=0x7f030003;
-        public static final int score_group_item=0x7f030004;
-        public static final int score_list_activity=0x7f030005;
-        public static final int score_match_header=0x7f030006;
-        public static final int score_match_header_id=0x7f030007;
-        public static final int score_match_item=0x7f030008;
-        public static final int score_match_item_id=0x7f030009;
-        public static final int team_status=0x7f03000a;
+        public static final int match_detail_item=0x7f030002;
+        public static final int push_toast=0x7f030003;
+        public static final int score_detail_activity=0x7f030004;
+        public static final int score_fragment=0x7f030005;
+        public static final int score_group_item=0x7f030006;
+        public static final int score_list_activity=0x7f030007;
+        public static final int score_match_header=0x7f030008;
+        public static final int score_match_header_id=0x7f030009;
+        public static final int score_match_item=0x7f03000a;
+        public static final int score_match_item_id=0x7f03000b;
+        public static final int team_status=0x7f03000c;
     }
     public static final class string {
         public static final int app_name=0x7f070000;
@@ -262,7 +286,8 @@ containing a value of this type.
          */
         public static final int AppTheme=0x7f080001;
         public static final int ListHeader=0x7f080002;
-        public static final int main_tab_bottom=0x7f080003;
+        public static final int MatchDetailText=0x7f080003;
+        public static final int main_tab_bottom=0x7f080004;
     }
     public static final class styleable {
         /** Attributes that can be used with a PagerSlidingTabStrip.

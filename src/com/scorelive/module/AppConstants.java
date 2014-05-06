@@ -1,6 +1,10 @@
 package com.scorelive.module;
 
 public class AppConstants {
+	
+	public static final String SERVER_URL="http://203.195.200.238:8080/ScoreLive/";
+	public static final String MATCH_INFO=SERVER_URL+"MatchInfoService?";
+	public static final String MATCH_DETAIL = SERVER_URL+"MatchDetailService?";
 
 	public class BetType{
 		public static final int ALL = 0;

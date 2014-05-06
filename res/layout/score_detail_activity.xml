@@ -77,11 +77,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textStyle="bold"
                 android:layout_marginTop="7dp"
                 android:text="04-08 23:00"
                 android:textColor="@color/white"
-                android:textSize="11dp" />
+                android:textSize="11dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/status"
@@ -97,38 +97,40 @@
 
             <RelativeLayout
                 android:id="@+id/score"
-                android:layout_marginTop="10dp"
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/status"
                 android:layout_centerHorizontal="true"
-                android:layout_width="66dp"
-                android:layout_height="wrap_content" >
-                <TextView 
+                android:layout_marginTop="10dp" >
+
+                <TextView
                     android:id="@+id/host_score"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_alignParentLeft="true"
-                    android:textStyle="bold"
-                    android:gravity="center"
                     android:background="@drawable/score_num_bg"
-                     android:textColor="@color/white"
-                    />
-                <TextView 
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/visit_score"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    android:textStyle="bold"
                     android:background="@drawable/score_num_bg"
-                     android:textColor="@color/white"
-                    />
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:text=":"
-                    android:textColor="@color/white"
-                    android:layout_centerInParent="true"/>
+                    android:textColor="@color/white" />
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/half_score"
                 android:layout_width="wrap_content"
@@ -136,19 +138,29 @@
                 android:layout_below="@id/score"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:textColor="@color/white"
                 android:text="半场 1:1"
+                android:textColor="@color/white"
                 android:textSize="11dp" />
         </RelativeLayout>
     </RelativeLayout>
-    <TextView 
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/light_blue"
-        android:textColor="@color/dark_blue"
-        android:text="比赛实况"
-        android:textSize="14dp"
         android:layout_below="@id/header"
+        android:id="@+id/sub_title"
+        android:background="@color/light_blue"
         android:gravity="center"
+        android:text="比赛实况"
+        android:textColor="@color/dark_blue"
+        android:textSize="14dp" />
+
+    <ListView
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_below="@id/sub_title"
+        android:layout_marginTop="9dp"
         />
+
 </RelativeLayout>

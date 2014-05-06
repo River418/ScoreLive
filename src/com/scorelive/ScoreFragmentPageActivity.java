@@ -22,6 +22,7 @@ import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.net.task.MatchListTask;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.AppConstants;
+import com.scorelive.module.AppConstants.MatchStatus;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.PagerSlidingTabStrip;
 
@@ -43,7 +44,7 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 			mSMGList = new ArrayList<Match>(),
 			mZCList = new ArrayList<Match>();
 	private FragmentManager mFragmentManager;
-	private ImageView mLeftBtn,mRightBtn;
+	private ImageView mLeftBtn, mRightBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
@@ -54,7 +55,7 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 		// INetTask task = new MatchListTask(ThreadManager.getInstance()
 		// .getNewTaskId(), "20140419");
 		// task.setListener(this);
-		getMatchList("20140419");
+		getMatchList("20140424");
 		// ThreadManager.getInstance().addTask(task);
 		mFragmentManager = getSupportFragmentManager();
 	}
@@ -71,11 +72,11 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 		mTitle = (TextView) findViewById(R.id.middle_title);
 		mTitle.setText(getString(R.string.scorelive));
 		mViewPager.setCurrentItem(1);
-		mLeftBtn = (ImageView)findViewById(R.id.left_btn);
+		mLeftBtn = (ImageView) findViewById(R.id.left_btn);
 		mLeftBtn.setBackgroundResource(R.drawable.calendar);
-		mRightBtn = (ImageView)findViewById(R.id.right_btn);
+		mRightBtn = (ImageView) findViewById(R.id.right_btn);
 		mRightBtn.setBackgroundResource(R.drawable.filter);
-		
+
 	}
 
 	@Override
@@ -140,19 +141,21 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 			switch (i) {
 			case ScoreFragmentPageAdapter.ALL:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mAllUnstartList,mAllMatchingList,mAllEndedList);
+				fragment.setData(mAllUnstartList, mAllMatchingList,
+						mAllEndedList);
 				break;
 			case ScoreFragmentPageAdapter.BJ:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mBJUnstartList,mBJMatchingList,mBJEndedList);
+				fragment.setData(mBJUnstartList, mBJMatchingList, mBJEndedList);
 				break;
 			case ScoreFragmentPageAdapter.SMG:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mSMGUnstartList,mSMGMatchingList,mSMGEndedList);
+				fragment.setData(mSMGUnstartList, mSMGMatchingList,
+						mSMGEndedList);
 				break;
 			case ScoreFragmentPageAdapter.ZC:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mZCUnstartList,mZCMatchingList,mZCEndedList);
+				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
 				break;
 			}
 		}
@@ -198,30 +201,55 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 			if (typeList.contains(",")) {
 				typeArray = typeList.split(",");
 				for (int i = 0; i < typeArray.length; i++) {
-					addMatchToList(Integer.valueOf(typeArray[i]), match);
+					addMatchToBetList(Integer.valueOf(typeArray[i]), match);
 				}
 			} else {
-				addMatchToList(Integer.valueOf(typeList), match);
+				addMatchToBetList(Integer.valueOf(typeList), match);
 			}
-
+			addMatchToAllList(match);
 		}
 	}
 
-	private void addMatchToList(int betType, Match match) {
+	private void addMatchToAllList(Match match) {
+		switch (match.matchState) {
+		case AppConstants.MatchStatus.UNSTART:
+			mAllUnstartList.add(match);
+			break;
+		case AppConstants.MatchStatus.MATCHING:
+		case AppConstants.MatchStatus.MIDDLE:
+		case AppConstants.MatchStatus.UPADDED:
+		case AppConstants.MatchStatus.DOWNADDED:
+		case AppConstants.MatchStatus.PAUSEFOUL:
+		case AppConstants.MatchStatus.PAUSEHURT:
+			mAllMatchingList.add(match);
+			break;
+		case AppConstants.MatchStatus.CANCEL:
+		case AppConstants.MatchStatus.ENDED:
+		case AppConstants.MatchStatus.DELAY:
+			mAllEndedList.add(match);
+			break;
+		}
+	}
+
+	private void addMatchToBetList(int betType, Match match) {
 		switch (betType) {
 		case AppConstants.BetType.BJ:
 			switch (match.matchState) {
 			case AppConstants.MatchStatus.UNSTART:
 				mBJUnstartList.add(match);
-				mAllUnstartList.add(match);
 				break;
 			case AppConstants.MatchStatus.MATCHING:
+			case AppConstants.MatchStatus.MIDDLE:
+			case AppConstants.MatchStatus.UPADDED:
+			case AppConstants.MatchStatus.DOWNADDED:
+			case AppConstants.MatchStatus.PAUSEFOUL:
+			case AppConstants.MatchStatus.PAUSEHURT:
 				mBJMatchingList.add(match);
-				mAllMatchingList.add(match);
 				break;
+			case AppConstants.MatchStatus.CANCEL:
 			case AppConstants.MatchStatus.ENDED:
+			case AppConstants.MatchStatus.DELAY:
 				mBJEndedList.add(match);
-				mAllEndedList.add(match);
 				break;
 			}
 			mBJList.add(match);
@@ -230,15 +258,19 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 			switch (match.matchState) {
 			case AppConstants.MatchStatus.UNSTART:
 				mSMGUnstartList.add(match);
-				mAllUnstartList.add(match);
 				break;
 			case AppConstants.MatchStatus.MATCHING:
+			case AppConstants.MatchStatus.MIDDLE:
+			case AppConstants.MatchStatus.UPADDED:
+			case AppConstants.MatchStatus.DOWNADDED:
+			case AppConstants.MatchStatus.PAUSEFOUL:
+			case AppConstants.MatchStatus.PAUSEHURT:
 				mSMGMatchingList.add(match);
-				mAllMatchingList.add(match);
 				break;
+			case AppConstants.MatchStatus.CANCEL:
 			case AppConstants.MatchStatus.ENDED:
+			case AppConstants.MatchStatus.DELAY:
 				mSMGEndedList.add(match);
-				mAllEndedList.add(match);
 				break;
 			}
 			mSMGList.add(match);
@@ -247,20 +279,25 @@ public class ScoreFragmentPageActivity extends ScoreBaseActivity implements
 			switch (match.matchState) {
 			case AppConstants.MatchStatus.UNSTART:
 				mZCUnstartList.add(match);
-				mAllUnstartList.add(match);
 				break;
 			case AppConstants.MatchStatus.MATCHING:
+			case AppConstants.MatchStatus.MIDDLE:
+			case AppConstants.MatchStatus.UPADDED:
+			case AppConstants.MatchStatus.DOWNADDED:
+			case AppConstants.MatchStatus.PAUSEFOUL:
+			case AppConstants.MatchStatus.PAUSEHURT:
 				mZCMatchingList.add(match);
-				mAllMatchingList.add(match);
 				break;
+			case AppConstants.MatchStatus.CANCEL:
 			case AppConstants.MatchStatus.ENDED:
+			case AppConstants.MatchStatus.DELAY:
 				mZCEndedList.add(match);
-				mAllEndedList.add(match);
 				break;
 			}
 			mZCList.add(match);
 			break;
 		}
+
 	}
 
 }

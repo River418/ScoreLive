@@ -31,7 +31,7 @@
         <!-- 信鸽push服务 -->
         <receiver
             android:name="com.tencent.android.tpush.XGPushReceiver"
-            android:process=":xg_service_v2" >
+            android:process=":push_service" >
             <intent-filter android:priority="0x7fffffff" >
                 <action android:name="com.tencent.android.tpush.action.SDK" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -59,8 +59,20 @@
         <service
             android:name="com.tencent.android.tpush.service.XGPushService"
             android:exported="true"
-            android:process=":xg_service_v2" />
+            android:process=":push_service" />
 
+        <!-- APP实现的Receiver，用于接收消息和结果反馈 -->
+        <!-- com.tencent.android.tpushdemo.CustomPushReceiver需要改为自己的Receiver -->
+        <receiver android:name="com.scorelive.common.push.PushReceiver" >
+            <intent-filter>
+
+                <!-- 接收消息透传 -->
+                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
+            </intent-filter>
+        </receiver>
+        
         <meta-data
             android:name="XG_V2_ACCESS_ID"
             android:value="2100016774" />

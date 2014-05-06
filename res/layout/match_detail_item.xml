@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/home_accident"
+        android:layout_width="@dimen/accident_width"
+        android:layout_height="@dimen/accident_height"
+        android:layout_marginLeft="@dimen/accident_margin" >
+
+        <ImageView
+            android:id="@+id/home_accident_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/accident_pic_margin"
+            android:src="@drawable/goal" />
+
+        <TextView
+            android:id="@+id/home_accident_content"
+            style="@style/MatchDetailText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/home_accident_img"
+            android:text="进球队员" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/accident_time"
+        android:layout_width="@dimen/accident_time_width"
+        android:layout_height="@dimen/accident_height"
+        android:layout_toRightOf="@id/home_accident"
+        style="@style/MatchDetailText"
+        android:text="45&apos;" />
+
+    <RelativeLayout
+        android:id="@+id/visit_accident"
+        android:layout_width="@dimen/accident_width"
+        android:layout_height="@dimen/accident_height"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/accident_margin" >
+
+        <ImageView
+            android:id="@+id/visit_accident_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/accident_pic_margin"
+            android:src="@drawable/goal" />
+
+        <TextView
+            android:id="@+id/visit_accident_content"
+            style="@style/MatchDetailText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/visit_accident_img"
+            android:text="进球队员" />
+    </RelativeLayout>
+
+</RelativeLayout>

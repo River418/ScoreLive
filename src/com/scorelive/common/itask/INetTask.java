@@ -32,11 +32,10 @@ public abstract class INetTask extends ITask implements Comparable<INetTask> {
 
 	private INetTaskListener mListener;
 
-	private int mPriority;
-
 	public static final int PRIORITY_HIGH = 0X3;// 高优先级
 	public static final int PRIORITY_MID = 0X2;// 中等优先级
 	public static final int PRIORITY_LOW = 0X1;// 低优先级
+	private int mPriority = PRIORITY_MID;
 
 	public INetTask(long taskId) {
 		super(taskId);

@@ -1,13 +1,14 @@
 package com.scorelive.common.utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.scorelive.module.Match;
+import com.scorelive.module.MatchAccident;
+import com.scorelive.module.PushInfo;
 
 public class JsonUtils {
 	
@@ -32,7 +33,36 @@ public class JsonUtils {
 	private static final String NAME="name";
 	private static final String MATCHSTATUS = "matchStatus";
 	
-	
+	public static PushInfo pushJson2Match(String str){
+		PushInfo match = new PushInfo();
+		try {
+			JSONObject object = new JSONObject(str);
+			int id = object.optInt("id");
+			String liveScore = object.optString("liveScore");
+			String time = object.optString("runningTime");
+			int redHome = object.optInt("redHome");
+			int redVisiting = object.optInt("redVisiting");
+			int yellowHome = object.optInt("yellowHome");
+			int yellowVisiting = object.optInt("yellowVisiting");
+			String homeName = object.optString("homeName");
+			String visitName = object.optString("visitingName");
+			match.homeName = homeName;
+			match.id = id;
+			match.time = time;
+			match.redHome = redHome;
+			match.redVisiting = redVisiting;
+			match.yellowHome = yellowHome;
+			match.yellowVisiting = yellowVisiting;
+			match.liveScore = liveScore;
+			match.homeName = homeName;
+			match.visitName = visitName;
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return match;
+	}
 	
 
 	public static ArrayList<Match> json2MatchList(String str) {
@@ -97,5 +127,26 @@ public class JsonUtils {
 		match.matchStartTime = startTime;
 		match.matchState = matchStatus;
 		return match;
+	}
+	
+	public static ArrayList<MatchAccident> json2MatchAccident(String str){
+		ArrayList<MatchAccident> list = new ArrayList<MatchAccident>();
+		try {
+			JSONObject object = new JSONObject(str);
+			JSONArray array = object.optJSONArray("smalist");
+			for(int i = 0;i<array.length();i++){
+				JSONObject accident = array.getJSONObject(i);
+				MatchAccident aMatch = new MatchAccident();
+				aMatch.accident_content = accident.optString("accident_content");
+				aMatch.accident_time = accident.optString("accident_time");
+				aMatch.accident_type = accident.optInt("accident_type");
+				aMatch.accident_team = accident.optInt("which_team");
+				list.add(aMatch);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

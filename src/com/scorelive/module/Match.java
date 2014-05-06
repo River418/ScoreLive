@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class Match implements Parcelable {
 
 	public String matchLeague;// 所属赛事
-	public int matchId;// 当日比赛Id
+	public int matchId;// 比赛Id
 	public String matchBet;// 所属彩票类型,包括竞彩、北单、足彩
 	public int leagueId;// 联赛Id
 	public int matchState;// 比赛开始、结束、延期及中场休息的状态

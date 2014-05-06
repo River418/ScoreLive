@@ -4,13 +4,13 @@ import org.apache.http.message.BasicHeader;
 
 import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTask;
+import com.scorelive.module.AppConstants;
 
 public class MatchListTask extends INetTask {
 
 	public MatchListTask(long taskId, String date) {
 		super(taskId);
-
-		mUrl = "http://203.195.200.238:8080/ScoreLive/MatchInfoService?date="
+		mUrl = AppConstants.MATCH_INFO+"date="
 				+ date;
 	}
 
