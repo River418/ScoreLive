@@ -19,11 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScoreFragmentPageActivity" >
+        <activity android:name=".ScorePageActivity" >
         </activity>
-        <activity android:name=".IndexFragmentPActivity" >
+        <activity android:name=".IndexActivity" >
         </activity>
-        <activity android:name=".ProfileFragmentPageActivity" >
+        <activity android:name=".ProfileFragmentActivity" >
         </activity>
         <activity android:name=".ScoreDetailActivity" >
         </activity>

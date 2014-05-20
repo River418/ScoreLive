@@ -37,10 +37,9 @@ public abstract class INetTask extends ITask implements Comparable<INetTask> {
 	public static final int PRIORITY_LOW = 0X1;// 低优先级
 	private int mPriority = PRIORITY_MID;
 
-	public INetTask(long taskId) {
-		super(taskId);
+	public INetTask(int type,long taskId) {
+		super(type,taskId);
 		mContext = ScoreLiveApplication.getInstance().getApplicationContext();
-		int i = 0;
 	}
 
 	public void setPriority(int priority) {

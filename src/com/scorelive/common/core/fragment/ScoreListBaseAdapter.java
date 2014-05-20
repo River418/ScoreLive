@@ -5,21 +5,22 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scorelive.R;
+import com.scorelive.common.utils.AppConstants;
 import com.scorelive.common.utils.Utility;
-import com.scorelive.module.AppConstants;
-import com.scorelive.module.AppConstants.BetType;
+import com.scorelive.common.utils.AppConstants.BetType;
 import com.scorelive.module.Match;
 
 public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 
-	private int mAdapterType = -1;
-	private Context mContext;
+	protected int mAdapterType = -1;
+	protected Context mContext;
 
 	private String[] mMatchArray = { "正在进行", "未开始", "已结束" };
 	private ArrayList<Match> mEndedList;// 已结束
@@ -134,6 +135,15 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 				break;
 			}
 		}
+//		convertView.setOnLongClickListener(new OnLongClickListener(){
+//
+//			@Override
+//			public boolean onLongClick(View v) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//			
+//		});
 
 		return convertView;
 	}
@@ -225,7 +235,7 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
-	private class MatchItem {
+	class MatchItem {
 		TextView league_tv;
 		TextView hostName_tv;
 		TextView hostIndex_tv;

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="150dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/comm_progress_dialog_title"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:background="@color/white"
+        android:gravity="left|center_vertical" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/comm_progress_dialog_title"
+        android:background="@color/white" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" >
+
+            <ProgressBar
+                android:id="@+id/custom_progress_dialog_progressbar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:indeterminateDrawable="@drawable/progress_new_style"
+                android:indeterminateDuration="1000"
+                android:indeterminateOnly="true"
+                android:maxHeight="28dp"
+                android:maxWidth="28dp"
+                android:minHeight="28dp"
+                android:minWidth="28dp" />
+            
+            <TextView
+                android:id="@+id/custom_progress_dialog_loading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:textColor="#ff555555"
+                android:textSize="16dp" >
+            </TextView>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -44,8 +44,8 @@ public class JsonUtils {
 			int redVisiting = object.optInt("redVisiting");
 			int yellowHome = object.optInt("yellowHome");
 			int yellowVisiting = object.optInt("yellowVisiting");
-			String homeName = object.optString("homeName");
-			String visitName = object.optString("visitingName");
+			String homeName = object.optString("nameHome");
+			String visitName = object.optString("nameVisiting");
 			match.homeName = homeName;
 			match.id = id;
 			match.time = time;

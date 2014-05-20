@@ -14,24 +14,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/accident_pic_margin"
-            android:src="@drawable/goal" />
+            android:layout_marginLeft="@dimen/accident_pic_margin" />
 
         <TextView
             android:id="@+id/home_accident_content"
             style="@style/MatchDetailText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/home_accident_img"
-            android:text="进球队员" />
+            android:layout_toRightOf="@id/home_accident_img" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/accident_time"
+        style="@style/MatchDetailText"
         android:layout_width="@dimen/accident_time_width"
         android:layout_height="@dimen/accident_height"
-        android:layout_toRightOf="@id/home_accident"
-        style="@style/MatchDetailText"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="45&apos;" />
 
     <RelativeLayout
@@ -47,16 +46,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/accident_pic_margin"
-            android:src="@drawable/goal" />
+            android:layout_marginRight="@dimen/accident_pic_margin" />
 
         <TextView
             android:id="@+id/visit_accident_content"
             style="@style/MatchDetailText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/visit_accident_img"
-            android:text="进球队员" />
+            android:layout_toLeftOf="@id/visit_accident_img" />
     </RelativeLayout>
 
 </RelativeLayout>

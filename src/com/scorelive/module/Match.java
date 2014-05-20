@@ -26,6 +26,7 @@ public class Match implements Parcelable {
 	public String bjNum;// 北单num
 	public String SMGNum;// 竞赛num
 	public String zcNum;// 足彩num
+	public int groupId;//分组id
 
 	@Override
 	public int describeContents() {
@@ -57,6 +58,7 @@ public class Match implements Parcelable {
 		dest.writeString(bjNum);
 		dest.writeString(SMGNum);
 		dest.writeString(zcNum);
+		dest.writeInt(groupId);
 	}
 
 	
@@ -87,6 +89,7 @@ public class Match implements Parcelable {
 			match.bjNum= source.readString();
 			match.SMGNum= source.readString();
 			match.zcNum= source.readString();
+			match.groupId = source.readInt();
 			return match;
 		}
 

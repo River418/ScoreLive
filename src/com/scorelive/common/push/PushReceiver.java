@@ -1,13 +1,17 @@
 package com.scorelive.common.push;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import com.scorelive.MainActivity;
+import com.scorelive.R;
+import com.scorelive.common.utils.JsonUtils;
+import com.scorelive.module.PushInfo;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -49,19 +53,6 @@ public class PushReceiver extends XGPushBaseReceiver {
 	@Override
 	public void onRegisterResult(Context context, int errorCode,
 			XGPushRegisterResult registerMessage) {
-		if (context == null || registerMessage == null) {
-			return;
-		}
-		String text = null;
-		if (errorCode == XGPushBaseReceiver.SUCCESS) {
-			text = registerMessage + "注册成功";
-			// 在这里拿token
-			String token = registerMessage.getToken();
-		} else {
-			text = registerMessage + "注册失败，错误码：" + errorCode;
-		}
-		Log.d(LogTag, text);
-		show(context, text);
 	}
 
 	/**
@@ -74,17 +65,6 @@ public class PushReceiver extends XGPushBaseReceiver {
 	 */
 	@Override
 	public void onUnregisterResult(Context context, int errorCode) {
-		if (context == null) {
-			return;
-		}
-		String text = null;
-		if (errorCode == XGPushBaseReceiver.SUCCESS) {
-			text = "反注册成功";
-		} else {
-			text = "反注册失败" + errorCode;
-		}
-		Log.d(LogTag, text);
-		show(context, text);
 	}
 
 	/**
@@ -98,17 +78,6 @@ public class PushReceiver extends XGPushBaseReceiver {
 	 */
 	@Override
 	public void onSetTagResult(Context context, int errorCode, String tagName) {
-		if (context == null) {
-			return;
-		}
-		String text = null;
-		if (errorCode == XGPushBaseReceiver.SUCCESS) {
-			text = "\"" + tagName + "\"设置成功";
-		} else {
-			text = "\"" + tagName + "\"设置失败,错误码：" + errorCode;
-		}
-		Log.d(LogTag, text);
-		show(context, text);
 	}
 
 	/**
@@ -122,17 +91,6 @@ public class PushReceiver extends XGPushBaseReceiver {
 	 */
 	@Override
 	public void onDeleteTagResult(Context context, int errorCode, String tagName) {
-		if (context == null) {
-			return;
-		}
-		String text = null;
-		if (errorCode == XGPushBaseReceiver.SUCCESS) {
-			text = "\"" + tagName + "\"删除成功";
-		} else {
-			text = "\"" + tagName + "\"删除失败,错误码：" + errorCode;
-		}
-		Log.d(LogTag, text);
-		show(context, text);
 	}
 
 	/**
@@ -149,24 +107,37 @@ public class PushReceiver extends XGPushBaseReceiver {
 			return;
 		}
 		String text = "收到消息:" + message.toString();
-		// 获取自定义key-value
-		String customContent = message.getCustomContent();
-		if (customContent != null && customContent.length() != 0) {
-			try {
-				JSONObject obj = new JSONObject(customContent);
-				// key1为前台配置的key
-				if (!obj.isNull("key")) {
-					String value = obj.getString("key");
-					Log.d(LogTag, "get custom value:" + value);
-				}
-				// ...
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		// APP自主处理消息的过程。。。
-		Log.d(LogTag, text);
-		show(context, text);
+		String content = message.getContent();
+		PushInfo info = JsonUtils.pushJson2Match(content);
+		NotificationManager nm = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		Intent noticeIntent = new Intent();
+		String tickerText = "";
+		PendingIntent contentIntent = null;
+		StringBuffer sb = new StringBuffer();
+		String updateTitle = null;
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context.getApplicationContext());
+		builder.setWhen(System.currentTimeMillis());
+		builder.setAutoCancel(true);
+
+		tickerText = message.getTitle();
+		builder.setTicker(tickerText);
+		updateTitle = info.homeName + "vs" + info.visitName;
+		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setContentTitle(updateTitle);
+		builder.setContentText(info.liveScore);
+		noticeIntent.setClass(context, MainActivity.class);
+		noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		// notification = new Notification(R.drawable.icon_notify,
+		// tickerText, System.currentTimeMillis());
+		contentIntent = PendingIntent.getActivity(context, 1001, noticeIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		builder.setContentIntent(contentIntent);
+		Notification notification = builder.build();
+		nm.notify(1001, notification);
+		Toast.makeText(context, updateTitle+" "+info.liveScore, Toast.LENGTH_LONG).show();
 	}
 
 	/**
@@ -180,40 +151,10 @@ public class PushReceiver extends XGPushBaseReceiver {
 	@Override
 	public void onNotifactionClickedResult(Context context,
 			XGPushClickedResult message) {
-		if (context == null || message == null) {
-			return;
-		}
-		String text = "通知被打开 :" + message;
-		// 获取自定义key-value
-		String customContent = message.getCustomContent();
-		if (customContent != null && customContent.length() != 0) {
-			try {
-				JSONObject obj = new JSONObject(customContent);
-				// key1为前台配置的key
-				if (!obj.isNull("key")) {
-					String value = obj.getString("key");
-					Log.d(LogTag, "get custom value:" + value);
-				}
-				// ...
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		// APP自主处理的过程。。。
-		Log.d(LogTag, text);
-		// show(context, text);
 	}
 
 	@Override
 	public void onNotifactionShowedResult(Context context,
 			XGPushShowedResult notifiShowedRlt) {
-		if (context == null || notifiShowedRlt == null) {
-			return;
-		}
-		String text = "通知被展示 ，title:" + notifiShowedRlt.getTitle()
-				+ ",content:" + notifiShowedRlt.getContent()
-				+ ",custom_content:" + notifiShowedRlt.getCustomContent();
-		Log.d(LogTag, text);
-		show(context, text);
 	}
 }

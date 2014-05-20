@@ -19,8 +19,8 @@ import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTask;
 import com.scorelive.common.itask.INetTaskListener;
 import com.scorelive.common.itask.ITask;
+import com.scorelive.common.itask.net.task.MatchDetailTask;
 import com.scorelive.common.itask.pool.ThreadManager;
-import com.scorelive.common.net.task.MatchDetailTask;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.Match;
 import com.scorelive.module.MatchAccident;
@@ -41,6 +41,7 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 	private Match mMatch;
 	private ArrayList<MatchAccident> mList;
 	private ListView mListView;
+	private ScoreDetailAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +54,14 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 			processData();
 			getMatchDetail();
 		} else {
-			//TODO 增加判空的逻辑，不过一般不会出现null
+			// TODO 增加判空的逻辑，不过一般不会出现null
 		}
 	}
 
 	private void getMatchDetail() {
 
-		MatchDetailTask task = new MatchDetailTask(ThreadManager.getInstance()
-				.getNewTaskId(), mMatch.matchId);
+		MatchDetailTask task = new MatchDetailTask(ITask.TYPE_MATCH_DETAIL,
+				ThreadManager.getInstance().getNewTaskId(), mMatch.matchId);
 		task.setListener(ScoreDetailActivity.this);
 		task.setPriority(INetTask.PRIORITY_HIGH);
 		ThreadManager.getInstance().addTask(task);
@@ -89,7 +90,9 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		mStatusTV = (TextView) findViewById(R.id.status);
 		mHostScoreTV = (TextView) findViewById(R.id.host_score);
 		mVisitScoreTV = (TextView) findViewById(R.id.visit_score);
-		mListView = (ListView)findViewById(R.id.details);
+		mListView = (ListView) findViewById(R.id.details);
+		mAdapter = new ScoreDetailAdapter(this);
+		mListView.setAdapter(mAdapter);
 	}
 
 	private void processData() {
@@ -121,14 +124,15 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 	protected void handlerMessage(Message msg) {
 		switch (msg.what) {
 		case MsgType.GET_MATCH_DETAIL_SUCCESS:
+			setDetailView();
 			break;
 		}
 	}
-	
-	private void setDetailView(){
-		
+
+	private void setDetailView() {
+		mAdapter.setData(mList);
 	}
-	
+
 	@Override
 	public void onTaskError(ITask task, Exception exception) {
 		// TODO Auto-generated method stub
@@ -137,12 +141,17 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 
 	@Override
 	public void onTaskFinish(ITask task, InputStream is) {
-		try {
-			String str = Http.getString(is);
-			mList = JsonUtils.json2MatchAccident(str);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		switch (task.getTaskType()) {
+		case ITask.TYPE_MATCH_DETAIL:
+			try {
+				String str = Http.getString(is);
+				mList = JsonUtils.json2MatchAccident(str);
+				mHandler.sendEmptyMessage(MsgType.GET_MATCH_DETAIL_SUCCESS);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		}
 
 	}

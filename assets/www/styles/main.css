@@ -1,0 +1,784 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+/* line 17, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000318;
+  }
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000328;
+  }
+}
+
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000333;
+  }
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+/* line 26, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000338;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000344;
+  }
+}
+
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000351;
+  }
+}
+
+q,
+blockquote {
+  quotes: none;
+}
+
+/* line 103, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000355;
+  }
+}
+
+q:before,
+q:after,
+blockquote:before,
+blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000361;
+  }
+}
+
+a img {
+  border: none;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000365;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+/* line 116, ../../.rvm/gems/ruby-2.1.1@global/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+  }
+
+  line {
+    font-family: \0000370;
+  }
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000313;
+  }
+}
+
+body {
+  width: 100%;
+  max-width: 730px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000317;
+  }
+}
+
+.pull-left {
+  float: left;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000320;
+  }
+}
+
+.pull-right {
+  float: right;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000323;
+  }
+}
+
+.header {
+  height: 96px;
+  line-height: 96px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000326;
+  }
+}
+
+.header ul {
+  height: 100%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000329;
+  }
+}
+
+.header .match-date {
+  width: 25%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000332;
+  }
+}
+
+.header .page-name {
+  width: 50%;
+  font-size: 2em;
+  color: #41b5e8;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000337;
+  }
+}
+
+.header .company-type {
+  width: 23.8%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000340;
+  }
+}
+
+.header .page-name-2 {
+  width: 90%;
+  font-size: 2em;
+  color: #41b5e8;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000346;
+  }
+}
+
+.nav {
+  background: #41b5e8;
+  height: 82px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000350;
+  }
+}
+
+.category {
+  display: inline-block;
+  line-height: 82px;
+  color: white;
+  font-size: 2.5em;
+  width: 19%;
+  text-align: center;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000357;
+  }
+}
+
+.category:hover {
+  background: #2f9bcc;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000361;
+  }
+}
+
+.choose {
+  background: #2f9bcc;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000365;
+  }
+}
+
+.list-inline li {
+  display: inline-block;
+  text-align: center;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000370;
+  }
+}
+
+.match-team {
+  height: 56.0px;
+  color: white;
+  background: #aaebff;
+  line-height: 56.0px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000375;
+  }
+}
+
+.match-team .match-league {
+  width: 18%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000378;
+  }
+}
+
+.match-team .team-info {
+  width: 28.5%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000381;
+  }
+}
+
+.match-team .vs {
+  width: 10%;
+  color: #41b5e8;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000385;
+  }
+}
+
+.match-team .match-detail {
+  width: 12%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000389;
+  }
+}
+
+.match-info {
+  height: 56.0px;
+  line-height: 56.0px;
+  color: #636363;
+  background: #f9f9f9;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000394;
+  }
+}
+
+.match-info li {
+  width: 16.2%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000397;
+  }
+}
+
+.match-info .time {
+  color: #2f3942;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003101;
+  }
+}
+
+.match-data {
+  height: 122px;
+  color: #636363;
+  text-align: center;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003105;
+  }
+}
+
+.match-data .ave {
+  width: 16.2%;
+  height: 100%;
+  background: #acafb4;
+  color: white;
+  font-size: 1.5em;
+  line-height: 122px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003113;
+  }
+}
+
+.match-data section {
+  height: 100%;
+  line-height: 61px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003116;
+  }
+}
+
+.match-data section ul {
+  height: 50%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003118;
+  }
+}
+
+.match-data section ul li {
+  width: 16.2%;
+  color: #a0a0a0;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003122;
+  }
+}
+
+.match-data section ul .now,
+.match-data section ul .custom-win {
+  color: #d12728;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003125;
+  }
+}
+
+.match-data section ul .primary-win {
+  color: #8ee587;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003128;
+  }
+}
+
+.match-data section ul .begin-status {
+  color: #636363;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003135;
+  }
+}
+
+.odds li {
+  width: 24%;
+  color: #a0a0a0;
+  height: 50px;
+  line-height: 50px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003141;
+  }
+}
+
+.odds .odds-li {
+  height: 80px;
+  line-height: 80px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003146;
+  }
+}
+
+.split-line {
+  height: 5px;
+  background: #ececec;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \00003151;
+  }
+}
+
+.back-page {
+  background: url("../images/backbutton.png") 0px 20px no-repeat;
+  width: 48px;
+  height: 96px;
+  display: block;
+  text-indent: -9999px;
+}

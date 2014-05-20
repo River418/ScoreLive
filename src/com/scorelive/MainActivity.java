@@ -30,8 +30,8 @@ public class MainActivity extends TabActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maintabs);
 		XGPushManager.registerPush(getApplicationContext());
-		this.mScoreIntent = new Intent(this, ScoreFragmentPageActivity.class);
-		this.mIndexIntent = new Intent(this, IndexFragmentActivity.class);
+		this.mScoreIntent = new Intent(this, ScorePageActivity.class);
+		this.mIndexIntent = new Intent(this, IndexActivity.class);
 		this.mProfileIntent = new Intent(this, ProfileFragmentActivity.class);
 		initRadios();
 		setupIntent();
