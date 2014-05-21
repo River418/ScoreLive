@@ -8,7 +8,9 @@ import java.util.List;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,12 +70,34 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		mScoreFragmentPageAdapter = new ScorePageAdapter(
 				getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mScoreFragmentPageAdapter);
 		mViewPager.setOffscreenPageLimit(0);
+		mViewPager.setAdapter(mScoreFragmentPageAdapter);
 		mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		mTabs.setViewPager(mViewPager);
 		mTabs.setShouldExpand(true);
 		mTabs.setSelectColor(mViewPager.getCurrentItem());
+		mTabs.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onPageSelected(int arg0) {
+				if (arg0 == ScorePageAdapter.CUSTOMIZE) {
+					mScoreFragmentPageAdapter.refreshFragment(arg0);
+				}
+			}
+
+		});
 		mTitle = (TextView) findViewById(R.id.middle_title);
 		mTitle.setText(getString(R.string.scorelive));
 		mViewPager.setCurrentItem(1);
@@ -134,14 +158,15 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	 * @param date
 	 */
 	private void initMatchList(String date) {
-		ITask task = new MatchListTask(ITask.TYPE_MATCH_LIST,
-				ThreadManager.getInstance().getNewTaskId(), date);
+		ITask task = new MatchListTask(ITask.TYPE_MATCH_LIST, ThreadManager
+				.getInstance().getNewTaskId(), date);
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}
 
 	private void initGroupList() {
-		ITask task = new GroupListTask(ITask.TYPE_GROUP_LIST,ThreadManager.getInstance().getNewTaskId());
+		ITask task = new GroupListTask(ITask.TYPE_GROUP_LIST, ThreadManager
+				.getInstance().getNewTaskId());
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}
@@ -332,10 +357,6 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			mGroupList = (ArrayList<Group>) object;
 			break;
 		}
-	}
-	
-	public ArrayList<Group> getGroupList(){
-		return mGroupList;
 	}
 
 }

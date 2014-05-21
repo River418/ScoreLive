@@ -49,8 +49,8 @@ public class ScoreDBHandler {
 			throws SQLiteException {
 		ArrayList<Match> matchList = new ArrayList<Match>();
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
-		Cursor cursor = db.query(SCORE_TABLE_NAME, null, MATCH_GROUP +"="+groupId, null, null,
-				null, MATCH_ID + " asc");
+		Cursor cursor = db.query(SCORE_TABLE_NAME, null, MATCH_GROUP + "="
+				+ groupId, null, null, null, MATCH_ID + " asc");
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			int match_id = cursor.getInt(cursor.getColumnIndex(MATCH_ID));
@@ -91,6 +91,22 @@ public class ScoreDBHandler {
 		return matchList;
 	}
 
+	public synchronized boolean isMatchInGroup(int groupId, int matchId)
+			throws SQLiteException {
+		SQLiteDatabase db = mDBHelper.getReadableDatabase();
+		Cursor cursor = db.query(SCORE_TABLE_NAME, null, MATCH_GROUP + "="
+				+ groupId + " and " + MATCH_ID + "=" + matchId, null, null,
+				null, MATCH_ID + " asc");
+		cursor.moveToFirst();
+		if (cursor.isAfterLast()) {
+			db.close();
+			return false;
+		} else {
+			db.close();
+			return true;
+		}
+	}
+
 	/**
 	 * 添加一场比赛到指定分组
 	 * 
@@ -99,21 +115,28 @@ public class ScoreDBHandler {
 	 */
 	public synchronized void addMatchToGroup(int groupId, Match match)
 			throws SQLiteException {
-		SQLiteDatabase db = mDBHelper.getReadableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(MATCH_ID, match.matchId);
-		values.put(MATCH_STARTTIME, match.matchStartTime);
-		values.put(HOST_TEAM_NAME, match.hostTeamName);
-		values.put(VISIT_TEAM_NAME, match.visitTeamName);
-		values.put(LEAGUE_ID, match.leagueId);
-		values.put(MATCH_BET, match.matchBet);
-		values.put(MATCH_STATE, match.matchState);
-		values.put(MATCH_SCORE, match.matchScore);
-		values.put(HOST_TEAM_INDEX, match.hostTeamIndex);
-		values.put(VISIT_TEAM_INDEX, match.visitTeamIndex);
-		values.put(MATCH_GROUP, groupId);
-		db.insert(SCORE_TABLE_NAME, null, values);
-		db.close();
+		if (!isMatchInGroup(groupId, match.matchId)) {
+			SQLiteDatabase db = mDBHelper.getReadableDatabase();
+			ContentValues values = new ContentValues();
+			values.put(MATCH_ID, match.matchId);
+			values.put(MATCH_STARTTIME, match.matchStartTime);
+			values.put(HOST_TEAM_NAME, match.hostTeamName);
+			values.put(VISIT_TEAM_NAME, match.visitTeamName);
+			values.put(LEAGUE_ID, match.leagueId);
+			values.put(MATCH_BET, match.matchBet);
+			values.put(MATCH_STATE, match.matchState);
+			values.put(MATCH_SCORE, match.matchScore);
+			values.put(HOST_TEAM_INDEX, match.hostTeamIndex);
+			values.put(VISIT_TEAM_INDEX, match.visitTeamIndex);
+			values.put(MATCH_GROUP, groupId);
+			values.put(HOST_TEAM_YELLOW, match.hostTeamYellow);
+			values.put(HOST_TEAM_RED, match.hostTeamRed);
+			values.put(VISIT_TEAM_YELLOW, match.visitTeamYellow);
+			values.put(VISIT_TEAM_RED, match.visitTeamRed);
+			values.put(LEAGUE_NAME, match.matchLeague);
+			db.insert(SCORE_TABLE_NAME, null, values);
+			db.close();
+		}
 	}
 
 	/**

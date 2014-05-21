@@ -119,5 +119,9 @@ public class ScorePageAdapter extends FragmentPagerAdapter {
 		}
 		return super.getPageTitle(position);
 	}
+	
+	public void refreshFragment(int position){
+		((ScoreNormalFragment)getFragment(position)).refreshCustomFragment();
+	}
 
 }

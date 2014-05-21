@@ -32,6 +32,7 @@ import com.scorelive.common.utils.AppConstants;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.ProgressDialogMe;
+import com.scorelive.ui.widget.dialog.EditGroupDialog;
 
 public class ScoreNormalFragment extends ScoreBaseFragment implements
 		IShortTaskListener {
@@ -147,8 +148,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 				menu.setHeaderTitle("更改定制分组");
 				menu.add(MENU_MANAGER_MATCH, 1, 0, "从该分组删除");
-				ArrayList<Group> list = ((ScorePageActivity) getActivity())
-						.getGroupList();
+				List<Group> list = ScoreDBHandler.getInstance().getGroupList();
 				if (list != null) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
@@ -204,8 +204,13 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				int childPos = ExpandableListView
 						.getPackedPositionChild(info.packedPosition);
 				Match match = (Match) mAdapter.getChild(groupPos, childPos);
-				ScoreDBHandler.getInstance().addMatchToGroup(item.getItemId(),
-						match);
+				if (item.getGroupId() == MENU_MANAGER_GROUP) {
+					EditGroupDialog dialog = new EditGroupDialog(getActivity(),EditGroupDialog.ADD_GROUP,null);
+					dialog.show();
+				} else {
+					ScoreDBHandler.getInstance().addMatchToGroup(
+							item.getItemId(), match);
+				}
 			} else {
 				return false;
 			}
@@ -213,6 +218,10 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		}
 		return true;
 
+	}
+
+	public void refreshCustomFragment() {
+		initGroupList();
 	}
 
 	private void initGroupList() {
@@ -249,9 +258,9 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		super.onResume();
 		switch (mFragmentType) {
 		case AppConstants.BetType.CUSTOMIZE:
-			mProgressDialog = ProgressDialogMe.show(mContext, "", "正在加载...");
-			initGroupList();
-			break;
+			// mProgressDialog = ProgressDialogMe.show(mContext, "", "正在加载...");
+			// initGroupList();
+			// break;
 		default:
 			mAdapter.setData(mUnstartList, mMatchingList, mEndedList);
 		}
