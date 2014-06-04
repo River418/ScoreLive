@@ -123,6 +123,7 @@ containing a value of this type.
         public static final int match_accident_first_bg=0x7f050008;
         public static final int match_accident_second_bg=0x7f050009;
         public static final int match_accident_time_color=0x7f05000a;
+        public static final int profile_bg=0x7f05000c;
         public static final int text_dark_gray=0x7f050005;
         public static final int text_hint_color=0x7f05000b;
         public static final int text_light_gray=0x7f050004;
@@ -144,6 +145,11 @@ containing a value of this type.
          */
         public static final int league_width=0x7f060000;
         public static final int league_width_withid=0x7f060005;
+        public static final int login_logo_marginTop=0x7f06000f;
+        public static final int login_margin=0x7f060010;
+        public static final int login_text_height=0x7f060012;
+        public static final int login_text_marginBottom=0x7f060013;
+        public static final int normal_large_margin=0x7f060011;
         public static final int score_width=0x7f060002;
         public static final int score_width_withid=0x7f060008;
         public static final int visit_team_width=0x7f060003;
@@ -284,6 +290,9 @@ containing a value of this type.
         /**  score listview header 
          */
         public static final int league=0x7f080005;
+        public static final int login_mobile_text=0x7f08000b;
+        public static final int login_qq_text=0x7f08000d;
+        public static final int login_sina_text=0x7f08000c;
         public static final int main_tab_tag=0x7f080004;
         public static final int mysetting=0x7f080003;
         public static final int score=0x7f080008;
@@ -291,6 +300,7 @@ containing a value of this type.
          */
         public static final int scorelive=0x7f080001;
         public static final int visit_team=0x7f080007;
+        public static final int weibo_auth_cancel=0x7f08000a;
     }
     public static final class style {
         /** 
