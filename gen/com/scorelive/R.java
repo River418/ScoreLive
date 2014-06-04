@@ -123,6 +123,7 @@ containing a value of this type.
         public static final int match_accident_first_bg=0x7f050008;
         public static final int match_accident_second_bg=0x7f050009;
         public static final int match_accident_time_color=0x7f05000a;
+        public static final int profile_bg=0x7f05000c;
         public static final int text_dark_gray=0x7f050005;
         public static final int text_hint_color=0x7f05000b;
         public static final int text_light_gray=0x7f050004;
@@ -144,6 +145,11 @@ containing a value of this type.
          */
         public static final int league_width=0x7f060000;
         public static final int league_width_withid=0x7f060005;
+        public static final int login_logo_marginTop=0x7f06000f;
+        public static final int login_margin=0x7f060010;
+        public static final int login_text_height=0x7f060012;
+        public static final int login_text_marginBottom=0x7f060013;
+        public static final int normal_large_margin=0x7f060011;
         public static final int score_width=0x7f060002;
         public static final int score_width_withid=0x7f060008;
         public static final int visit_team_width=0x7f060003;
@@ -156,35 +162,41 @@ containing a value of this type.
         public static final int calendar=0x7f020003;
         public static final int collect_normal=0x7f020004;
         public static final int collect_selected=0x7f020005;
-        public static final int edit_text_bg=0x7f020006;
-        public static final int expand_grey_bar=0x7f020007;
-        public static final int filter=0x7f020008;
-        public static final int goal=0x7f020009;
-        public static final int ic_launcher=0x7f02000a;
-        public static final int index=0x7f02000b;
-        public static final int index_normal=0x7f02000c;
-        public static final int index_pressed=0x7f02000d;
-        public static final int loading_new=0x7f02000e;
-        public static final int profile=0x7f02000f;
-        public static final int profile_normal=0x7f020010;
-        public static final int profile_pressed=0x7f020011;
-        public static final int progress_new_style=0x7f020012;
-        public static final int redcard=0x7f020013;
-        public static final int redcardsmall=0x7f020014;
-        public static final int refresh=0x7f020015;
-        public static final int score=0x7f020016;
-        public static final int score_accident_header_rect=0x7f020017;
-        public static final int score_match_header_rect=0x7f020018;
-        public static final int score_match_header_rect_noline=0x7f020019;
-        public static final int score_match_item_rect=0x7f02001a;
-        public static final int score_normal=0x7f02001b;
-        public static final int score_num_bg=0x7f02001c;
-        public static final int score_pressed=0x7f02001d;
-        public static final int subsitution=0x7f02001e;
-        public static final int team_logo_bg=0x7f02001f;
-        public static final int toast_bg=0x7f020020;
-        public static final int yellowcard=0x7f020021;
-        public static final int yellowcardsmall=0x7f020022;
+        public static final int dashi=0x7f020006;
+        public static final int edit_text_bg=0x7f020007;
+        public static final int expand_grey_bar=0x7f020008;
+        public static final int filter=0x7f020009;
+        public static final int goal=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int index=0x7f02000c;
+        public static final int index_normal=0x7f02000d;
+        public static final int index_pressed=0x7f02000e;
+        public static final int loading_new=0x7f02000f;
+        public static final int login_logo=0x7f020010;
+        public static final int login_qq_logo=0x7f020011;
+        public static final int login_weibo_logo=0x7f020012;
+        public static final int profile=0x7f020013;
+        public static final int profile_normal=0x7f020014;
+        public static final int profile_pressed=0x7f020015;
+        public static final int progress_new_style=0x7f020016;
+        public static final int redcard=0x7f020017;
+        public static final int redcardsmall=0x7f020018;
+        public static final int refresh=0x7f020019;
+        public static final int score=0x7f02001a;
+        public static final int score_accident_header_rect=0x7f02001b;
+        public static final int score_match_header_rect=0x7f02001c;
+        public static final int score_match_header_rect_noline=0x7f02001d;
+        public static final int score_match_item_rect=0x7f02001e;
+        public static final int score_normal=0x7f02001f;
+        public static final int score_num_bg=0x7f020020;
+        public static final int score_pressed=0x7f020021;
+        public static final int shape_corner_line=0x7f020022;
+        public static final int star_customized_login=0x7f020023;
+        public static final int subsitution=0x7f020024;
+        public static final int team_logo_bg=0x7f020025;
+        public static final int toast_bg=0x7f020026;
+        public static final int yellowcard=0x7f020027;
+        public static final int yellowcardsmall=0x7f020028;
     }
     public static final class id {
         public static final int accident_header=0x7f0a002a;
@@ -224,14 +236,19 @@ containing a value of this type.
         public static final int maintab_layout=0x7f0a000c;
         public static final int match_listview=0x7f0a0031;
         public static final int middle_title=0x7f0a0001;
+        public static final int mobile_login_btn=0x7f0a0046;
         public static final int name=0x7f0a000a;
         public static final int pager=0x7f0a0035;
         public static final int profile=0x7f0a000f;
+        public static final int qq_login_btn=0x7f0a0048;
         public static final int red_card=0x7f0a0042;
         public static final int refresh_btn=0x7f0a0003;
         public static final int right_btn=0x7f0a0002;
         public static final int score=0x7f0a000d;
         public static final int score_layout=0x7f0a0039;
+        public static final int splash_logo=0x7f0a0044;
+        public static final int splash_logo_image=0x7f0a0045;
+        public static final int star_customized_bg=0x7f0a0043;
         public static final int start_time=0x7f0a0024;
         public static final int status=0x7f0a0025;
         public static final int sub_title=0x7f0a0029;
@@ -253,6 +270,7 @@ containing a value of this type.
         public static final int visit_score=0x7f0a0027;
         public static final int visit_team=0x7f0a003b;
         public static final int webview=0x7f0a000b;
+        public static final int weibo_login_btn=0x7f0a0047;
         public static final int yellow_card=0x7f0a0041;
     }
     public static final class layout {
@@ -261,20 +279,22 @@ containing a value of this type.
         public static final int group_list_menu=0x7f030002;
         public static final int group_list_menu_item=0x7f030003;
         public static final int index_activity=0x7f030004;
-        public static final int maintabs=0x7f030005;
-        public static final int match_detail_item=0x7f030006;
-        public static final int progress_dialog=0x7f030007;
-        public static final int push_toast=0x7f030008;
-        public static final int score_date_picker=0x7f030009;
-        public static final int score_detail_activity=0x7f03000a;
-        public static final int score_fragment=0x7f03000b;
-        public static final int score_group_item=0x7f03000c;
-        public static final int score_list_activity=0x7f03000d;
-        public static final int score_match_header=0x7f03000e;
-        public static final int score_match_header_id=0x7f03000f;
-        public static final int score_match_item=0x7f030010;
-        public static final int score_match_item_id=0x7f030011;
-        public static final int team_status=0x7f030012;
+        public static final int layout_login_star_customized=0x7f030005;
+        public static final int maintabs=0x7f030006;
+        public static final int match_detail_item=0x7f030007;
+        public static final int progress_dialog=0x7f030008;
+        public static final int push_toast=0x7f030009;
+        public static final int score_date_picker=0x7f03000a;
+        public static final int score_detail_activity=0x7f03000b;
+        public static final int score_fragment=0x7f03000c;
+        public static final int score_group_item=0x7f03000d;
+        public static final int score_list_activity=0x7f03000e;
+        public static final int score_match_header=0x7f03000f;
+        public static final int score_match_header_id=0x7f030010;
+        public static final int score_match_item=0x7f030011;
+        public static final int score_match_item_id=0x7f030012;
+        public static final int team_status=0x7f030013;
+        public static final int user_profile=0x7f030014;
     }
     public static final class string {
         public static final int app_name=0x7f080000;
@@ -284,6 +304,9 @@ containing a value of this type.
         /**  score listview header 
          */
         public static final int league=0x7f080005;
+        public static final int login_mobile_text=0x7f08000b;
+        public static final int login_qq_text=0x7f08000d;
+        public static final int login_sina_text=0x7f08000c;
         public static final int main_tab_tag=0x7f080004;
         public static final int mysetting=0x7f080003;
         public static final int score=0x7f080008;
@@ -291,6 +314,7 @@ containing a value of this type.
          */
         public static final int scorelive=0x7f080001;
         public static final int visit_team=0x7f080007;
+        public static final int weibo_auth_cancel=0x7f08000a;
     }
     public static final class style {
         /** 
