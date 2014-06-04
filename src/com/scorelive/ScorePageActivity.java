@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,7 +57,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			mZCList = new ArrayList<Match>();
 	private ImageView mLeftBtn, mRightBtn;
 	private ArrayList<Group> mGroupList;
-	private Dialog mDatePickerDialog;
+	private DatePickerDialog mDatePickerDialog;
 	private Context mContext;
 
 	@Override
@@ -118,6 +120,33 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 						Calendar.getInstance().get(Calendar.YEAR), Calendar
 								.getInstance().get(Calendar.MONTH), Calendar
 								.getInstance().get(Calendar.DAY_OF_MONTH));
+				mDatePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,
+						"确定", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								int year = mDatePickerDialog.getDatePicker().getYear();
+								int month = mDatePickerDialog.getDatePicker().getMonth()+1;
+								int day = mDatePickerDialog.getDatePicker().getDayOfMonth();
+								String date = null;
+								if(month<10){
+									date = year+"0"+month+day;
+								}else{
+									date = String.valueOf(year)+String.valueOf(month)+String.valueOf(day);
+								}
+								initMatchList(date);
+							}
+						});
+				mDatePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+						"取消", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mDatePickerDialog.dismiss();
+							}
+						});
 				mDatePickerDialog.show();
 			}
 
