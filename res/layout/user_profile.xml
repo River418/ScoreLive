@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/profile_bg" >
+
+    <ViewStub 
+        android:id="@+id/star_customized_bg" 
+        android:layout="@layout/layout_login_star_customized" 
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent" />
+    <RelativeLayout 
+        android:layout_gravity="center_horizontal" 
+        android:orientation="vertical" 
+        android:id="@+id/splash_logo"
+        android:layout_marginTop="@dimen/login_logo_marginTop" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/splash_logo_image" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:src="@drawable/login_logo" 
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <LinearLayout 
+        android:layout_gravity="bottom" 
+        android:orientation="vertical" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:layout_marginLeft="@dimen/login_margin" 
+        android:layout_marginRight="@dimen/login_margin" 
+        android:layout_marginBottom="@dimen/login_text_marginBottom">
+        
+        <RelativeLayout
+            android:id="@+id/mobile_login_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_text_height"
+            android:background="@drawable/shape_corner_line"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+	         <TextView 
+	              android:layout_width="wrap_content" 
+	              android:layout_height="wrap_content" 
+	              android:text="@string/login_mobile_text" 
+	              android:textColor="@color/white" 
+	              android:textSize="16.0sp" 
+	              android:layout_centerInParent="true" />
+	    </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/weibo_login_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_text_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_corner_line"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:padding="12.0dip" >
+
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/login_weibo_logo"
+                android:text="@string/login_sina_text"
+                android:textColor="@color/white"
+                android:textSize="16.0sp" 
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/qq_login_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_text_height"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_corner_line"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:padding="12.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/login_qq_logo"
+                android:text="@string/login_qq_text"
+                android:textColor="@color/white"
+                android:textSize="16.0sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>
