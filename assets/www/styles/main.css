@@ -7,7 +7,7 @@
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -108,7 +108,7 @@ video {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -124,7 +124,7 @@ html {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -141,7 +141,7 @@ ul {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -158,7 +158,7 @@ table {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -178,7 +178,7 @@ td {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -195,7 +195,7 @@ blockquote {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -215,7 +215,7 @@ blockquote:after {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -229,7 +229,7 @@ a img {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -245,7 +245,7 @@ a {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/reset\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/reset\.scss;
   }
 
   line {
@@ -270,7 +270,7 @@ summary {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -285,7 +285,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -299,7 +299,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -313,7 +313,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -328,7 +328,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -342,7 +342,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -351,12 +351,12 @@ body {
 }
 
 .header .match-date {
-  width: 25%;
+  width: 20%;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -366,13 +366,13 @@ body {
 
 .header .page-name {
   width: 50%;
-  font-size: 2em;
+  font-size: 1.5em;
   color: #41b5e8;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -386,7 +386,7 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
@@ -394,19 +394,51 @@ body {
   }
 }
 
+.header .back-page {
+  width: 15%;
+  text-indent: -9999px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000343;
+  }
+}
+
+.header .back-page a {
+  background: url("../images/backbutton.png") 0px 20px no-repeat;
+  height: 96px;
+  width: 100%;
+  display: block;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
+  }
+
+  line {
+    font-family: \0000349;
+  }
+}
+
 .header .page-name-2 {
-  width: 90%;
+  width: 80%;
   font-size: 2em;
   color: #41b5e8;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000346;
+    font-family: \0000355;
   }
 }
 
@@ -417,11 +449,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000350;
+    font-family: \0000359;
   }
 }
 
@@ -429,18 +461,18 @@ body {
   display: inline-block;
   line-height: 82px;
   color: white;
-  font-size: 2.5em;
+  font-size: 1.5em;
   width: 19%;
   text-align: center;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000357;
+    font-family: \0000366;
   }
 }
 
@@ -450,11 +482,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000361;
+    font-family: \0000370;
   }
 }
 
@@ -464,11 +496,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000365;
+    font-family: \0000374;
   }
 }
 
@@ -479,11 +511,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000370;
+    font-family: \0000379;
   }
 }
 
@@ -496,11 +528,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000375;
+    font-family: \0000384;
   }
 }
 
@@ -510,25 +542,25 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000378;
+    font-family: \0000387;
   }
 }
 
 .match-team .team-info {
-  width: 28.5%;
+  width: 28%;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000381;
+    font-family: \0000390;
   }
 }
 
@@ -539,25 +571,25 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000385;
+    font-family: \0000394;
   }
 }
 
 .match-team .match-detail {
-  width: 12%;
+  width: 10%;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000389;
+    font-family: \0000398;
   }
 }
 
@@ -570,25 +602,25 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000394;
+    font-family: \00003103;
   }
 }
 
 .match-info li {
-  width: 16.2%;
+  width: 15.5%;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \0000397;
+    font-family: \00003106;
   }
 }
 
@@ -598,11 +630,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003101;
+    font-family: \00003110;
   }
 }
 
@@ -614,16 +646,16 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003105;
+    font-family: \00003114;
   }
 }
 
 .match-data .ave {
-  width: 16.2%;
+  width: 15.5%;
   height: 100%;
   background: #acafb4;
   color: white;
@@ -633,11 +665,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003113;
+    font-family: \00003122;
   }
 }
 
@@ -648,11 +680,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003116;
+    font-family: \00003125;
   }
 }
 
@@ -662,26 +694,26 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003118;
+    font-family: \00003127;
   }
 }
 
 .match-data section ul li {
-  width: 16.2%;
+  width: 15.5%;
   color: #a0a0a0;
 }
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003122;
+    font-family: \00003131;
   }
 }
 
@@ -692,11 +724,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003125;
+    font-family: \00003134;
   }
 }
 
@@ -706,11 +738,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003128;
+    font-family: \00003137;
   }
 }
 
@@ -720,11 +752,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003135;
+    font-family: \00003144;
   }
 }
 
@@ -737,11 +769,11 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003141;
+    font-family: \00003150;
   }
 }
 
@@ -752,33 +784,15 @@ body {
 
 @media -sass-debug-info {
   filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
+    font-family: file\:\/\/\/Users\/yuqiu\/scorelive-new\/app\/styles\/main\.scss;
   }
 
   line {
-    font-family: \00003146;
+    font-family: \00003155;
   }
 }
 
 .split-line {
   height: 5px;
   background: #ececec;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/yuqiu\/scorelive\/app\/styles\/main\.scss;
-  }
-
-  line {
-    font-family: \00003151;
-  }
-}
-
-.back-page {
-  background: url("../images/backbutton.png") 0px 20px no-repeat;
-  width: 48px;
-  height: 96px;
-  display: block;
-  text-indent: -9999px;
 }

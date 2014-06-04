@@ -21,7 +21,6 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.scorelive.R;
 import com.scorelive.ScoreDetailActivity;
-import com.scorelive.ScorePageActivity;
 import com.scorelive.common.db.ScoreDBHandler;
 import com.scorelive.common.itask.IShortTaskListener;
 import com.scorelive.common.itask.ITask;
@@ -31,8 +30,9 @@ import com.scorelive.common.itask.quick.task.QueryMatchListByGroup;
 import com.scorelive.common.utils.AppConstants;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
-import com.scorelive.ui.widget.ProgressDialogMe;
 import com.scorelive.ui.widget.dialog.EditGroupDialog;
+import com.scorelive.ui.widget.dialog.ProgressDialogMe;
+import com.scorelive.ui.widget.dialog.EditGroupDialog.ActionResult;
 
 public class ScoreNormalFragment extends ScoreBaseFragment implements
 		IShortTaskListener {
@@ -152,7 +152,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				if (list != null) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
-						menu.add(MENU_MANAGER_MATCH, group.id, group.id, "移动到"
+						menu.add(MENU_MANAGER_MATCH, group.id, i+1, "移动到"
 								+ group.grounName);
 					}
 				}
@@ -171,7 +171,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				if (list.size() > 0) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
-						menu.add(MENU_MANAGER_MATCH, group.id, group.id,
+						menu.add(MENU_MANAGER_MATCH, group.id, i,
 								group.grounName);
 					}
 				}
@@ -195,6 +195,27 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 			}
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+				int groupPos = ExpandableListView
+						.getPackedPositionGroup(info.packedPosition);
+				Group group = (Group) mAdapter.getGroup(groupPos);
+				switch (item.getItemId()) {
+				case 1:// 删除
+					ScoreDBHandler.getInstance().deleteGroup(group.id);
+					initGroupList();
+					break;
+				case 2:// 重命名
+					EditGroupDialog dialog = new EditGroupDialog(getActivity(),
+							EditGroupDialog.EDIT_NAME, group.grounName);
+					dialog.setGroupId(group.id);
+					dialog.setActionResultListener(new ActionResult(){
+						public void onActionSuccess(){
+							initGroupList();
+						}
+					});
+					dialog.show();
+					break;
+				}
+
 			}
 			break;
 		default:
@@ -205,7 +226,13 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 						.getPackedPositionChild(info.packedPosition);
 				Match match = (Match) mAdapter.getChild(groupPos, childPos);
 				if (item.getGroupId() == MENU_MANAGER_GROUP) {
-					EditGroupDialog dialog = new EditGroupDialog(getActivity(),EditGroupDialog.ADD_GROUP,null);
+					EditGroupDialog dialog = new EditGroupDialog(getActivity(),
+							EditGroupDialog.ADD_GROUP, null);
+					dialog.setActionResultListener(new ActionResult(){
+						public void onActionSuccess(){
+							
+						}
+					});
 					dialog.show();
 				} else {
 					ScoreDBHandler.getInstance().addMatchToGroup(

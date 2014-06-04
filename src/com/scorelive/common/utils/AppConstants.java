@@ -14,7 +14,7 @@ public class AppConstants {
 	public static final String SCORELIVE_FOLDER = SDCARD_PATH + File.separator
 			+ "ScoreLive/";
 	public static final String ASSET_PATH = "file:///android_asset/www/";
-	public static final String INDEX = SCORELIVE_FOLDER + "www/index.html";
+	public static final String INDEX = ASSET_PATH + "index.html";
 	
 	public class MsgType{
 		public static final int QUERY_MATCH_BY_GROUP_SUCCESS = 1;

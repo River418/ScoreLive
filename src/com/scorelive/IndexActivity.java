@@ -2,7 +2,8 @@ package com.scorelive;
 
 import java.io.File;
 
-import android.app.Activity;
+import org.apache.cordova.DroidGap;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.webkit.WebChromeClient;
@@ -13,22 +14,23 @@ import android.webkit.WebViewClient;
 
 import com.scorelive.common.utils.AppConstants;
 
-public class IndexActivity extends Activity {
+public class IndexActivity extends DroidGap {
 
 	private WebView mWebPage;
 	private WebSettings mWebSettings;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.index_activity);
-		mWebPage = (WebView) findViewById(R.id.webview);
-		initWebView();
-		File file = new File(AppConstants.INDEX);
-		if (file.exists()) {
-			mWebPage.loadUrl("file:///"+AppConstants.INDEX);
-		}
+//		setContentView(R.layout.index_activity);
+//		mWebPage = (WebView) findViewById(R.id.webview);
+//		initWebView();
+//		File file = new File(AppConstants.INDEX);
+//		if (file.exists()) {
+//			mWebPage.loadUrl("file:///"+AppConstants.INDEX);
+//		}
+		super.loadUrl(AppConstants.INDEX);
 
 	}
 

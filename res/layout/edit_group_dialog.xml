@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_height="150dp"
-    android:background="@color/white"
+    android:layout_height="140dp"
+    android:background="@color/match_accident_first_bg"
      >
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="43dp"
         android:layout_alignParentTop="true"
-        android:gravity="center_vertical"
-        android:background="@color/dark_blue"
-        android:textColor="@color/white"
-        android:padding="5dp"
-        android:textSize="20dp" />
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
     <EditText 
         android:id="@+id/edit"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_margin="15dp"
-        android:textColorHint="@color/text_light_gray"
+        android:layout_width="270dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColorHint="@color/text_hint_color"
         android:background="@drawable/edit_text_bg"
         android:layout_below="@id/title"
-        android:paddingLeft="3dp"
+        android:paddingLeft="12dp"
+        android:textSize="18dp"
+        android:gravity="center_vertical|left"
         android:hint="请输入分组名称"
         
         />
     <RelativeLayout 
         android:id="@+id/btns"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/edit"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         >
         <TextView
             android:id="@+id/confirm"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:background="@color/light_blue"
-            android:textSize="15dp"
-            android:gravity="center"
+            android:layout_width="63dp"
+            android:layout_height="33dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/dark_blue"
+            android:textSize="18dp"
+             android:gravity="center"
+             android:textColor="@color/white"
             android:text="确定"/>
         <TextView
             android:id="@+id/cancel"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@color/light_blue"
-            android:textSize="15dp"
-             android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical|left"
+            android:textSize="18dp"
+            android:textColor="@color/text_dark_gray"
             android:text="取消"/>
+        
         
     </RelativeLayout>
 

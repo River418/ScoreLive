@@ -91,6 +91,13 @@ public class ScoreDBHandler {
 		return matchList;
 	}
 
+	/**
+	 * 该分组中是否已经包含该比赛
+	 * @param groupId
+	 * @param matchId
+	 * @return
+	 * @throws SQLiteException
+	 */
 	public synchronized boolean isMatchInGroup(int groupId, int matchId)
 			throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
@@ -189,7 +196,7 @@ public class ScoreDBHandler {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(GROUP_NAME, name);
-		db.update(GROUP_TABLE_NAME, values, "id=?",
+		db.update(GROUP_TABLE_NAME, values, GROUP_ID+"=?",
 				new String[] { String.valueOf(id) });
 		db.close();
 	}
@@ -201,7 +208,7 @@ public class ScoreDBHandler {
 	 */
 	public synchronized void deleteGroup(int id) throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
-		db.delete(GROUP_TABLE_NAME, "id=?", new String[] { String.valueOf(id) });
+		db.delete(GROUP_TABLE_NAME, GROUP_ID+"=?", new String[] { String.valueOf(id) });
 	}
 
 	/*----------------------------------------------数据库的创建及升级代码-----------------------------------------*/

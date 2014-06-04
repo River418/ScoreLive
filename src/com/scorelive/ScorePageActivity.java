@@ -3,14 +3,19 @@ package com.scorelive;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,12 +55,15 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			mZCList = new ArrayList<Match>();
 	private ImageView mLeftBtn, mRightBtn;
 	private ArrayList<Group> mGroupList;
+	private Dialog mDatePickerDialog;
+	private Context mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstantceState);
 		setContentView(R.layout.score_list_activity);
+		mContext = this;
 		initUI();
 		// INetTask task = new MatchListTask(ThreadManager.getInstance()
 		// .getNewTaskId(), "20140419");
@@ -102,6 +110,18 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		mTitle.setText(getString(R.string.scorelive));
 		mViewPager.setCurrentItem(1);
 		mLeftBtn = (ImageView) findViewById(R.id.left_btn);
+		mLeftBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mDatePickerDialog = new DatePickerDialog(mContext, null,
+						Calendar.getInstance().get(Calendar.YEAR), Calendar
+								.getInstance().get(Calendar.MONTH), Calendar
+								.getInstance().get(Calendar.DAY_OF_MONTH));
+				mDatePickerDialog.show();
+			}
+
+		});
 		mLeftBtn.setBackgroundResource(R.drawable.calendar);
 		mRightBtn = (ImageView) findViewById(R.id.right_btn);
 		mRightBtn.setBackgroundResource(R.drawable.filter);

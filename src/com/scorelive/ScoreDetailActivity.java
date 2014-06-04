@@ -83,6 +83,15 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		mCollectBtn.setBackgroundResource(R.drawable.collect_normal);
 		mRefreshBtn = (ImageView) findViewById(R.id.refresh_btn);
 		mRefreshBtn.setBackgroundResource(R.drawable.refresh);
+		mRefreshBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getMatchDetail();
+			}
+			
+		});
 		mTitleTV = (TextView) findViewById(R.id.middle_title);
 		mHostNameTV = (TextView) findViewById(R.id.host_name);
 		mVisitNameTV = (TextView) findViewById(R.id.visit_name);
