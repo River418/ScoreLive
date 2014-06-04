@@ -27,6 +27,21 @@
         </activity>
         <activity android:name=".ScoreDetailActivity" >
         </activity>
+                <activity
+       		android:name="com.tencent.tauth.AuthActivity"
+       		android:noHistory="true"
+       		android:launchMode="singleTask" >
+    		<intent-filter>
+           		<action android:name="android.intent.action.VIEW" />
+       			<category android:name="android.intent.category.DEFAULT" />
+       			<category android:name="android.intent.category.BROWSABLE" />
+           		<data android:scheme="1101484810" />
+   			 </intent-filter>
+		</activity>
+		<activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> 
 
         <!-- 信鸽push服务 -->
         <receiver
