@@ -18,8 +18,8 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/splash_logo_image" 
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content" 
+            android:layout_width="116dp" 
+            android:layout_height="116dp" 
             android:src="@drawable/login_logo" 
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
@@ -45,7 +45,7 @@
 	              android:layout_height="wrap_content" 
 	              android:text="@string/login_mobile_text" 
 	              android:textColor="@color/white" 
-	              android:textSize="16.0sp" 
+	              android:textSize="16.0dp" 
 	              android:layout_centerInParent="true" />
 	    </RelativeLayout>
         
@@ -66,7 +66,7 @@
                 android:drawableLeft="@drawable/login_weibo_logo"
                 android:text="@string/login_sina_text"
                 android:textColor="@color/white"
-                android:textSize="16.0sp" 
+                android:textSize="16.0dp" 
                 android:layout_centerInParent="true" />
         </RelativeLayout>
 
@@ -87,7 +87,7 @@
                 android:drawableLeft="@drawable/login_qq_logo"
                 android:text="@string/login_qq_text"
                 android:textColor="@color/white"
-                android:textSize="16.0sp" />
+                android:textSize="16.0dp" />
 
         </RelativeLayout>
     </LinearLayout>

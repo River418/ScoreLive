@@ -1,4 +1,4 @@
-package com.scorelive.common.utils;
+package com.scorelive.common.config;
 
 import java.io.File;
 
@@ -15,9 +15,23 @@ public class AppConstants {
 			+ "ScoreLive/";
 	public static final String ASSET_PATH = "file:///android_asset/www/";
 	public static final String INDEX = ASSET_PATH + "index.html";
-	
-	public class MsgType{
-		public static final int QUERY_MATCH_BY_GROUP_SUCCESS = 1;
+
+	public static final String SINA_APP_KEY = "3456776882";
+
+	public static final String Tencent_APP_ID = "1101484810";
+
+	public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
+
+	public static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
+			+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
+			+ "follow_app_official_microblog," + "invitation_write";
+
+	public class MsgType {
+		public static final int QUERY_MATCH_BY_GROUP_SUCCESS = 0X5;
+		public static final int GET_SCORE_LIST_SUCCESS = 0X0;
+		public static final int GET_MATCH_DETAIL_SUCCESS = 0X1;
+		public static final int LOGIN_SUCCESS = 0X2;
+		public static final int LOGIN_ERROR = 0X3;
 	}
 
 	public class BetType {

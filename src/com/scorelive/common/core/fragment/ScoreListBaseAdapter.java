@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scorelive.R;
-import com.scorelive.common.utils.AppConstants;
+import com.scorelive.common.config.AppConstants;
+import com.scorelive.common.config.AppConstants.BetType;
 import com.scorelive.common.utils.Utility;
-import com.scorelive.common.utils.AppConstants.BetType;
 import com.scorelive.module.Match;
 
 public class ScoreListBaseAdapter extends BaseExpandableListAdapter {

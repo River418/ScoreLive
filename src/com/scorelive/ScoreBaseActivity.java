@@ -1,38 +1,51 @@
 package com.scorelive;
 
-import java.util.ArrayList;
-
+import android.app.ProgressDialog;
 import android.support.v4.app.FragmentActivity;
 
-import com.scorelive.module.Match;
+import com.scorelive.ui.widget.dialog.ProgressDialogMe;
 
-public class ScoreBaseActivity extends FragmentActivity{
-	
-	protected ArrayList<Match> mAllUnstartList = new ArrayList<Match>(),mAllMatchingList= new ArrayList<Match>(),mAllEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mBJUnstartList= new ArrayList<Match>(),mBJMatchingList= new ArrayList<Match>(),mBJEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mSMGUnstartList= new ArrayList<Match>(),mSMGMatchingList= new ArrayList<Match>(),mSMGEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mZCUnstartList= new ArrayList<Match>(),mZCMatchingList= new ArrayList<Match>(),mZCEndedList= new ArrayList<Match>();
-	
-	
-//	public MyHandler getHandler(){
-//		return mHandler;
-//	}
+public class ScoreBaseActivity extends FragmentActivity {
 
-//	private final MyHandler mHandler = new MyHandler();
-//
-//	private class MyHandler extends Handler {
-//		@Override
-//		public void handleMessage(Message msg) {
-//			// TODO Auto-generated method stub
-//			handleMessage(msg);
-//		}
-//
-//	}
-//	
-//	protected void handleMessage(Message msg){
-//		switch (msg.what) {
-//		case MsgType.GET_SCORE_LIST_SUCCESS:
-//			break;
-//		}
-//	}
+	// protected ProgressDialogMe mProgressDialog;
+	protected ProgressDialog mProgressDialog;
+
+	protected ProgressDialog getProgressDialog() {
+		if (mProgressDialog == null) {
+			// mProgressDialog = new ProgressDialogMe(this);
+			mProgressDialog = new ProgressDialog(this);
+		}
+		return mProgressDialog;
+	}
+
+	protected void showProgressDialog(String text) {
+		if (mProgressDialog == null) {
+			mProgressDialog = ProgressDialog
+					.show(this, null, text, false, true);
+		} else {
+			mProgressDialog.show();
+		}
+	}
+
+	protected void dismissProgressDialog() {
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
+	}
+
+	// public MyHandler getHandler() {
+	// return mHandler;
+	// }
+	//
+	// private final MyHandler mHandler = new MyHandler();
+	//
+	// private class MyHandler extends Handler {
+	// @Override
+	// public void handleMessage(Message msg) {
+	// // TODO Auto-generated method stub
+	// handleMessage(msg);
+	// }
+	//
+	// }
+
 }

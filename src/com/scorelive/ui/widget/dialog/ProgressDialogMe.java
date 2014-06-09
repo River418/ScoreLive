@@ -86,22 +86,22 @@ public class ProgressDialogMe extends android.app.Dialog {
 		super(context, R.style.oppoTheme);
 	}
 
-	public static ProgressDialogMe show(Context context, CharSequence title,
+	public ProgressDialogMe show(Context context, CharSequence title,
 			CharSequence message) {
 		return show(context, title, message, false);
 	}
 
-	public static ProgressDialogMe show(Context context, CharSequence title,
+	public ProgressDialogMe show(Context context, CharSequence title,
 			CharSequence message, boolean indeterminate) {
 		return show(context, title, message, indeterminate, false, null);
 	}
 
-	public static ProgressDialogMe show(Context context, CharSequence title,
+	public ProgressDialogMe show(Context context, CharSequence title,
 			CharSequence message, boolean indeterminate, boolean cancelable) {
 		return show(context, title, message, indeterminate, cancelable, null);
 	}
 
-	public static ProgressDialogMe show(Context context, CharSequence title,
+	public ProgressDialogMe show(Context context, CharSequence title,
 			CharSequence message, boolean indeterminate, boolean cancelable,
 			OnCancelListener cancelListener) {
 		ProgressDialogMe dialog = new ProgressDialogMe(context);
@@ -149,7 +149,7 @@ public class ProgressDialogMe extends android.app.Dialog {
 		if (mMessage != null) {
 			setMessage(mMessage);
 		}
-		if(mTitle != null){
+		if (mTitle != null) {
 			setTitle(mTitle);
 		}
 		setIndeterminate(mIndeterminate);
@@ -315,7 +315,7 @@ public class ProgressDialogMe extends android.app.Dialog {
 			} else {
 				mTitleView.setText(title);
 			}
-		}else{
+		} else {
 			mTitle = title;
 		}
 	}

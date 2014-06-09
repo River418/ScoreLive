@@ -12,7 +12,7 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.scorelive.common.utils.AppConstants;
+import com.scorelive.common.config.AppConstants;
 
 public class IndexActivity extends DroidGap {
 

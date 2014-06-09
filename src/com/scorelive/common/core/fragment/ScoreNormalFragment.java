@@ -21,13 +21,13 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.scorelive.R;
 import com.scorelive.ScoreDetailActivity;
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.db.ScoreDBHandler;
 import com.scorelive.common.itask.IShortTaskListener;
 import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.itask.quick.task.GroupListTask;
 import com.scorelive.common.itask.quick.task.QueryMatchListByGroup;
-import com.scorelive.common.utils.AppConstants;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.dialog.EditGroupDialog;

@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.core.fragment.ScoreBaseFragment;
 import com.scorelive.common.core.fragment.ScoreNormalFragment;
-import com.scorelive.common.utils.AppConstants;
 
 /**
  * 即时比分的Adapter

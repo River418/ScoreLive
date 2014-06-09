@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.scorelive.common.config.MsgType;
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTask;
 import com.scorelive.common.itask.INetTaskListener;
@@ -132,7 +132,7 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 
 	protected void handlerMessage(Message msg) {
 		switch (msg.what) {
-		case MsgType.GET_MATCH_DETAIL_SUCCESS:
+		case AppConstants.MsgType.GET_MATCH_DETAIL_SUCCESS:
 			setDetailView();
 			break;
 		}
@@ -155,7 +155,7 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 			try {
 				String str = Http.getString(is);
 				mList = JsonUtils.json2MatchAccident(str);
-				mHandler.sendEmptyMessage(MsgType.GET_MATCH_DETAIL_SUCCESS);
+				mHandler.sendEmptyMessage(AppConstants.MsgType.GET_MATCH_DETAIL_SUCCESS);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

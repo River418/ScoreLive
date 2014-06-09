@@ -2,9 +2,9 @@ package com.scorelive.common.itask.net.task;
 
 import org.apache.http.message.BasicHeader;
 
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTask;
-import com.scorelive.common.utils.AppConstants;
 
 public class MatchDetailTask extends INetTask{
 

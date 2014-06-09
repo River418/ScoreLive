@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -21,7 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.scorelive.common.config.MsgType;
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.core.fragment.ScoreBaseFragment;
 import com.scorelive.common.http.Http;
 import com.scorelive.common.itask.INetTask;
@@ -32,7 +30,6 @@ import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.net.task.MatchListTask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.itask.quick.task.GroupListTask;
-import com.scorelive.common.utils.AppConstants;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
@@ -59,6 +56,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	private ArrayList<Group> mGroupList;
 	private DatePickerDialog mDatePickerDialog;
 	private Context mContext;
+	protected ArrayList<Match> mAllUnstartList = new ArrayList<Match>(),mAllMatchingList= new ArrayList<Match>(),mAllEndedList= new ArrayList<Match>();
+	protected ArrayList<Match> mBJUnstartList= new ArrayList<Match>(),mBJMatchingList= new ArrayList<Match>(),mBJEndedList= new ArrayList<Match>();
+	protected ArrayList<Match> mSMGUnstartList= new ArrayList<Match>(),mSMGMatchingList= new ArrayList<Match>(),mSMGEndedList= new ArrayList<Match>();
+	protected ArrayList<Match> mZCUnstartList= new ArrayList<Match>(),mZCMatchingList= new ArrayList<Match>(),mZCEndedList= new ArrayList<Match>();
 
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
@@ -195,7 +196,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 
 	protected void handlerMessage(Message msg) {
 		switch (msg.what) {
-		case MsgType.GET_SCORE_LIST_SUCCESS:
+		case AppConstants.MsgType.GET_SCORE_LIST_SUCCESS:
 			refreshFragment();
 			break;
 		}
@@ -270,7 +271,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				String str = Http.getString(is);
 				mAllList = JsonUtils.json2MatchList(str);
 				handleMatchList();
-				mHandler.obtainMessage(MsgType.GET_SCORE_LIST_SUCCESS)
+				mHandler.obtainMessage(AppConstants.MsgType.GET_SCORE_LIST_SUCCESS)
 						.sendToTarget();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
