@@ -16,8 +16,8 @@
     
        <string name="weibo_auth_cancel">取消授权</string>
    
-    <string name="login_mobile_text">账户登陆</string>
-    <string name="login_sina_text">使用微博登陆</string>
-     <string name="login_qq_text">使用 QQ 登陆</string>
+    <string name="login_mobile_text">账户登录</string>
+    <string name="login_sina_text">  微博登录</string>
+     <string name="login_qq_text">  QQ登录</string>
 
 </resources>

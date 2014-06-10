@@ -1,36 +1,33 @@
 package com.scorelive.common.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import org.apache.http.impl.cookie.DateParseException;
-import org.apache.http.impl.cookie.DateUtils;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.scorelive.R;
 
 public class Utility {
 	private static Toast mToast;
+
 	/**
 	 * 网络是否可用
 	 * 
@@ -105,13 +102,13 @@ public class Utility {
 			long millStartTime = format.parse(startTime).getTime();
 			long time = Calendar.getInstance().getTimeInMillis()
 					- millStartTime;
-			if (time > 0) {//比赛进行时间
-				int minuteTime = (int) (time/(60*1000));
-				if(minuteTime>60){
-					return minuteTime-15;
-				}else if(minuteTime == 0){
+			if (time > 0) {// 比赛进行时间
+				int minuteTime = (int) (time / (60 * 1000));
+				if (minuteTime > 60) {
+					return minuteTime - 15;
+				} else if (minuteTime == 0) {
 					return 1;
-				}else{
+				} else {
 					return minuteTime;
 				}
 			}
@@ -121,11 +118,11 @@ public class Utility {
 		}
 		return -1;
 	}
-	
-	public static String parseTimeToDate(String startTime){
+
+	public static String parseTimeToDate(String startTime) {
 		return startTime.substring(0, 10);
 	}
-	
+
 	/**
 	 * 转换图片成圆形
 	 * 
@@ -134,6 +131,9 @@ public class Utility {
 	 * @return
 	 */
 	public static Bitmap toRoundBitmap(Bitmap bitmap) {
+		if (bitmap == null) {
+			return null;
+		}
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
 		int x = Math.max(w, h);
@@ -155,49 +155,40 @@ public class Utility {
 		// 返回Bitmap对象
 		return output;
 	}
-	
-	/**
-	 * 打印消息并且用Toast显示消息
-	 * 
-	 * @param activity
-	 * @param message
-	 * @param logLevel
-	 *            填d, w, e分别代表debug, warn, error; 默认是debug
-	 */
-	public static final void toastMessage(final Activity activity,
-			final String message, String logLevel) {
-		if ("w".equals(logLevel)) {
-			Log.w("sdkDemo", message);
-		} else if ("e".equals(logLevel)) {
-			Log.e("sdkDemo", message);
-		} else {
-			Log.d("sdkDemo", message);
-		}
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (mToast != null) {
-					mToast.cancel();
-					mToast = null;
-				}
-				mToast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
-				mToast.show();
+
+	public static boolean saveFile(InputStream is, String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-		});
+		}
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(file);
+			int len = 0;
+			byte[] buf = new byte[1024];
+			while ((len = is.read(buf)) != -1) {
+				fos.write(buf, 0, len);
+			}
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			if (file != null) {
+				file.delete();
+			}
+			return false;
+		}
+		return true;
 	}
 
-	/**
-	 * 打印消息并且用Toast显示消息
-	 * 
-	 * @param activity
-	 * @param message
-	 * @param logLevel
-	 *            填d, w, e分别代表debug, warn, error; 默认是debug
-	 */
-	public static final void toastMessage(final Activity activity,
-			final String message) {
-		toastMessage(activity, message, null);
+	public static Bitmap getBitmapFromFile(String path) {
+		return BitmapFactory.decodeFile(path);
 	}
 
 }

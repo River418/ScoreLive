@@ -1,8 +1,7 @@
 package com.scorelive;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
@@ -19,11 +18,13 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scorelive.common.config.AppConstants;
-import com.scorelive.common.http.Http;
+import com.scorelive.common.config.Config;
 import com.scorelive.common.itask.INetTaskListener;
 import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.net.task.DownloadPicTask;
@@ -40,7 +41,7 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.utils.LogUtil;
 
 public class ProfileFragmentActivity extends ScoreBaseActivity implements
-		LoginListener ,INetTaskListener{
+		LoginListener, INetTaskListener {
 	private static final String TAG = "WeiBo_Login";
 	/** 授权认证所需要的信息 */
 	private AuthInfo mAuthInfo;
@@ -57,23 +58,66 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 
 	private Bitmap mAvator;
 	private ImageView mAvatorIV;
+	private TextView mNameTV, mTitleTV;
 	private String mNickName;
+	private LinearLayout mLoginLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_profile);
-		mContext = ProfileFragmentActivity.this;
+		mContext = this;
 		initUI();
 		initWeiboOauth();
 	}
 
 	private void initUI() {
 		mAvatorIV = (ImageView) findViewById(R.id.splash_logo_image);
-		mQQBtn = (RelativeLayout) findViewById(R.id.qq_login_btn);
-		OnClickListener listener = new QQButtonOnClickListener();
-		mQQBtn.setOnClickListener(listener);
+		mAvatorIV.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				if (Config.getIsLogin(mContext)) {// 如果是登录状态中则点击退出登录
+					Config.setIsLogin(mContext, false);
+					Config.setNickName(mContext, null);
+					File file = new File(AppConstants.AVATOR_PATH);
+					file.deleteOnExit();
+					mAvatorIV.setImageResource(R.drawable.login_logo);
+					mNameTV.setText("");
+					setLoginLayout();
+				}
+			}
+
+		});
+		mTitleTV = (TextView) findViewById(R.id.middle_title);
+		mTitleTV.setText("用户信息");
+		mNameTV = (TextView)findViewById(R.id.nickname);
+		if (Config.getIsLogin(mContext)) {
+			mAvator = Utility.toRoundBitmap(BitmapFactory
+					.decodeFile(AppConstants.AVATOR_PATH));
+			mAvatorIV.setImageBitmap(mAvator);
+			mNameTV.setText(Config.getNickName(mContext));
+		}
+		
+		setLoginLayout();
+
+	}
+
+	private void setLoginLayout() {
+		mLoginLayout = (LinearLayout) findViewById(R.id.login_layout);
+		if (Config.getIsLogin(mContext)) {
+			mLoginLayout.setVisibility(View.GONE);
+		} else {
+			mLoginLayout.setVisibility(View.VISIBLE);
+			mQQBtn = (RelativeLayout) findViewById(R.id.qq_login_btn);
+			OnClickListener listener = new QQButtonOnClickListener();
+			mQQBtn.setOnClickListener(listener);
+		}
+	}
+
+	private void setUserInfoLayout() {
+
 	}
 
 	private class AuthOnClickListener implements OnClickListener {
@@ -188,6 +232,12 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 			if (mAvatorIV != null && mAvator != null) {
 				mAvatorIV.setImageBitmap(mAvator);
 			}
+			if (mNameTV != null && mNickName != null) {
+				mNameTV.setText(mNickName);
+			}
+			
+			Config.setIsLogin(mContext, true);
+			setLoginLayout();
 			dismissProgressDialog();
 			break;
 		}
@@ -246,8 +296,11 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 			try {
 				object = new JSONObject(values);
 				mNickName = object.optString("nickname");
+				Config.setNickName(mContext, mNickName);
 				String userPhoto = object.optString("figureurl_qq_2");
-				DownloadPicTask task = new DownloadPicTask(ITask.TYPE_DOWNLOAD_PIC,ThreadManager.getInstance().getNewTaskId(),userPhoto);
+				DownloadPicTask task = new DownloadPicTask(
+						ITask.TYPE_DOWNLOAD_PIC, ThreadManager.getInstance()
+								.getNewTaskId(), userPhoto);
 				task.setListener(ProfileFragmentActivity.this);
 				ThreadManager.getInstance().addTask(task);
 			} catch (JSONException e) {
@@ -275,13 +328,14 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 	@Override
 	public void onTaskError(ITask task, Exception exception) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onTaskFinish(ITask task, InputStream is) {
 		// TODO Auto-generated method stub
-		Bitmap temp = BitmapFactory.decodeStream(is);
+		Utility.saveFile(is, AppConstants.AVATOR_PATH);
+		Bitmap temp = BitmapFactory.decodeFile(AppConstants.AVATOR_PATH);
 		mAvator = Utility.toRoundBitmap(temp);
 		temp.recycle();
 		temp = null;

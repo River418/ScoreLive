@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/profile_bg" >
 
-    <ViewStub 
-        android:id="@+id/star_customized_bg" 
-        android:layout="@layout/layout_login_star_customized" 
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" />
-    <RelativeLayout 
-        android:layout_gravity="center_horizontal" 
-        android:orientation="vertical" 
-        android:id="@+id/splash_logo"
-        android:layout_marginTop="@dimen/login_logo_marginTop" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/splash_logo_image" 
-            android:layout_width="116dp" 
-            android:layout_height="116dp" 
-            android:src="@drawable/login_logo" 
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-    <LinearLayout 
-        android:layout_gravity="bottom" 
-        android:orientation="vertical" 
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:layout_marginLeft="@dimen/login_margin" 
-        android:layout_marginRight="@dimen/login_margin" 
-        android:layout_marginBottom="@dimen/login_text_marginBottom">
-        
-        <RelativeLayout
-            android:id="@+id/mobile_login_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/login_text_height"
-            android:background="@drawable/shape_corner_line"
-            android:gravity="center"
-            android:orientation="horizontal" >
+    <include
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/common_title" />
 
-	         <TextView 
-	              android:layout_width="wrap_content" 
-	              android:layout_height="wrap_content" 
-	              android:text="@string/login_mobile_text" 
-	              android:textColor="@color/white" 
-	              android:textSize="16.0dp" 
-	              android:layout_centerInParent="true" />
-	    </RelativeLayout>
-        
+    <RelativeLayout
+        android:id="@+id/splash_logo"
+        android:layout_width="116dp"
+        android:layout_height="116dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/login_logo_marginTop"
+        android:background="@drawable/avator_circle_bg"
+        android:layout_below="@id/title" >
+
+        <ImageView
+            android:id="@+id/splash_logo_image"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/login_logo" />
+    </RelativeLayout>
+
+    <TextView 
+        android:id="@+id/nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/splash_logo"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+/>
+    
+    <LinearLayout
+        android:id="@+id/login_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/login_text_marginBottom"
+        android:layout_marginLeft="@dimen/login_margin"
+        android:layout_marginRight="@dimen/login_margin"
+        android:orientation="vertical" >
+
         <RelativeLayout
             android:id="@+id/weibo_login_btn"
             android:layout_width="fill_parent"
@@ -60,14 +60,14 @@
             android:orientation="horizontal"
             android:padding="12.0dip" >
 
-            <TextView 
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:drawableLeft="@drawable/login_weibo_logo"
                 android:text="@string/login_sina_text"
                 android:textColor="@color/white"
-                android:textSize="16.0dp" 
-                android:layout_centerInParent="true" />
+                android:textSize="18.0dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -87,8 +87,8 @@
                 android:drawableLeft="@drawable/login_qq_logo"
                 android:text="@string/login_qq_text"
                 android:textColor="@color/white"
-                android:textSize="16.0dp" />
-
+                android:textSize="18.0dp" />
         </RelativeLayout>
     </LinearLayout>
-</FrameLayout>
+
+</RelativeLayout>

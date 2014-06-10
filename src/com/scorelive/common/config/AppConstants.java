@@ -13,6 +13,7 @@ public class AppConstants {
 			.getExternalStorageDirectory().getPath();
 	public static final String SCORELIVE_FOLDER = SDCARD_PATH + File.separator
 			+ "ScoreLive/";
+	public static final String AVATOR_PATH = SCORELIVE_FOLDER + "avator.p"; 
 	public static final String ASSET_PATH = "file:///android_asset/www/";
 	public static final String INDEX = ASSET_PATH + "index.html";
 

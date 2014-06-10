@@ -21,7 +21,7 @@
     <dimen name="accident_pic_margin">2.5dp</dimen>
     
        
-    <dimen name="login_logo_marginTop">60.0dip</dimen>
+    <dimen name="login_logo_marginTop">35.0dip</dimen>
     <dimen name="login_margin">36.0dp</dimen>
     <dimen name="normal_large_margin">18.0dip</dimen>
     <dimen name="login_text_height">48.0dip</dimen>
