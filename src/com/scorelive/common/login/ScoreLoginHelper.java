@@ -1,11 +1,21 @@
 package com.scorelive.common.login;
 
+import java.text.SimpleDateFormat;
+
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.config.Config;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuth;
+import com.sina.weibo.sdk.auth.WeiboAuth.AuthInfo;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.sina.weibo.sdk.exception.WeiboException;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQAuth;
 import com.tencent.tauth.IUiListener;
@@ -22,12 +32,18 @@ public class ScoreLoginHelper {
 	private Activity mAct;
 	private LoginListener mListener;
 	private UserInfo mInfo;
+	/** 授权认证所需要的信息 */
+	private AuthInfo mAuthInfo;
+	/** 微博授权认证回调 */
+	private WeiboAuthListener mAuthListener;
+	/** SSO 授权认证实例 */
+	private SsoHandler mSsoHandler;
 
 	public ScoreLoginHelper(Activity act, int type) {
 		mAct = act;
+		mLoginType = type;
 		switch (type) {
 		case LOGIN_TYPE_QQ:
-			mLoginType = type;
 			break;
 		case LOGIN_TYPE_SINA:
 			break;
@@ -48,6 +64,15 @@ public class ScoreLoginHelper {
 			mTencent.login(mAct, "all", new LoginUiListener());
 			break;
 		case LOGIN_TYPE_SINA:
+			mAuthInfo = new AuthInfo(mAct, AppConstants.SINA_APP_KEY,
+					AppConstants.REDIRECT_URL, AppConstants.SCOPE);
+			if (null == mSsoHandler && mAuthInfo != null) {
+				WeiboAuth weiboAuth = new WeiboAuth(mAct, mAuthInfo);
+				mSsoHandler = new SsoHandler(mAct, weiboAuth);
+			}
+			if (mSsoHandler != null) {
+				mSsoHandler.authorize(new AuthListener());
+			}
 			break;
 		}
 	}
@@ -116,6 +141,30 @@ public class ScoreLoginHelper {
 
 		}
 
+	}
+
+	/**
+	 * 登入按钮的监听器，接收授权结果。
+	 */
+	private class AuthListener implements WeiboAuthListener {
+		@Override
+		public void onComplete(Bundle values) {
+			Oauth2AccessToken accessToken = Oauth2AccessToken
+					.parseAccessToken(values);
+			if (accessToken != null && accessToken.isSessionValid()) {
+				String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+						.format(new java.util.Date(accessToken.getExpiresTime()));
+			}
+		}
+
+		@Override
+		public void onWeiboException(WeiboException e) {
+			Log.e("weibo", e.getMessage());
+		}
+
+		@Override
+		public void onCancel() {
+		}
 	}
 
 	public interface LoginListener {

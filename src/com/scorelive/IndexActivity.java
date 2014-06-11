@@ -1,9 +1,6 @@
 package com.scorelive;
 
-import java.io.File;
-
-import org.apache.cordova.DroidGap;
-
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.webkit.WebChromeClient;
@@ -14,7 +11,7 @@ import android.webkit.WebViewClient;
 
 import com.scorelive.common.config.AppConstants;
 
-public class IndexActivity extends DroidGap {
+public class IndexActivity extends Activity {
 
 	private WebView mWebPage;
 	private WebSettings mWebSettings;
@@ -30,7 +27,6 @@ public class IndexActivity extends DroidGap {
 //		if (file.exists()) {
 //			mWebPage.loadUrl("file:///"+AppConstants.INDEX);
 //		}
-		super.loadUrl(AppConstants.INDEX);
 
 	}
 
