@@ -10,25 +10,36 @@ public class Config {
 	private static final String QQ_ACCESS_TOKEN="qq_token_access";
 	private static final String IS_LOGIN="is_login";
 	private static final String NICK_NAME="nickname";
+	private static final String EXPIRES_TIME="expires_time";
 	
-	public static void setQQOpenId(Context context,String openid){
+	public static void setOpenId(Context context,String openid){
 		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 		sp.edit().putString(QQ_OPEN_ID, openid).commit();
 	}
 	
-	public static String getQQOpenId(Context context){
+	public static String getOpenId(Context context){
 		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 		return sp.getString(QQ_OPEN_ID, null);
 	}
 	
-	public static void setQQAccessToken(Context context,String token){
+	public static void setAccessToken(Context context,String token){
 		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 		sp.edit().putString(QQ_ACCESS_TOKEN, token).commit();
 	}
 	
-	public static String getQQAccessToken(Context context){
+	public static String getAccessToken(Context context){
 		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 		return sp.getString(QQ_ACCESS_TOKEN, null);
+	}
+	
+	public static void setExpiresTime(Context context,long time){
+		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+		sp.edit().putLong(EXPIRES_TIME, time).commit();
+	}
+	
+	public static long getExpiresTime(Context context){
+		SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+		return sp.getLong(EXPIRES_TIME, 0);
 	}
 	
 	public static void setIsLogin(Context context,boolean isLogin){

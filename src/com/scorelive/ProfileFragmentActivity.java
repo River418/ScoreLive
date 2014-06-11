@@ -2,12 +2,10 @@ package com.scorelive;
 
 import java.io.File;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,14 +29,9 @@ import com.scorelive.common.itask.net.task.DownloadPicTask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.login.ScoreLoginHelper;
 import com.scorelive.common.login.ScoreLoginHelper.LoginListener;
+import com.scorelive.common.login.User;
 import com.scorelive.common.utils.Utility;
-import com.sina.weibo.sdk.auth.Oauth2AccessToken;
-import com.sina.weibo.sdk.auth.WeiboAuth;
-import com.sina.weibo.sdk.auth.WeiboAuth.AuthInfo;
-import com.sina.weibo.sdk.auth.WeiboAuthListener;
-import com.sina.weibo.sdk.auth.sso.SsoHandler;
-import com.sina.weibo.sdk.exception.WeiboException;
-import com.sina.weibo.sdk.utils.LogUtil;
+import com.scorelive.ui.widget.ScoreToast;
 
 public class ProfileFragmentActivity extends ScoreBaseActivity implements
 		LoginListener, INetTaskListener {
@@ -54,6 +47,7 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 	private TextView mNameTV, mTitleTV;
 	private String mNickName;
 	private LinearLayout mLoginLayout;
+	private ScoreLoginHelper mLoginHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +78,14 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 		});
 		mTitleTV = (TextView) findViewById(R.id.middle_title);
 		mTitleTV.setText("用户信息");
-		mNameTV = (TextView)findViewById(R.id.nickname);
+		mNameTV = (TextView) findViewById(R.id.nickname);
 		if (Config.getIsLogin(mContext)) {
 			mAvator = Utility.toRoundBitmap(BitmapFactory
 					.decodeFile(AppConstants.AVATOR_PATH));
 			mAvatorIV.setImageBitmap(mAvator);
 			mNameTV.setText(Config.getNickName(mContext));
 		}
-		
+
 		setLoginLayout();
 
 	}
@@ -109,30 +103,34 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 		}
 	}
 
-
 	class AuthOnClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			showProgressDialog("正在登录");
-			ScoreLoginHelper loginHelper = new ScoreLoginHelper(
-					ProfileFragmentActivity.this,
+			mLoginHelper = new ScoreLoginHelper(ProfileFragmentActivity.this,
 					ScoreLoginHelper.LOGIN_TYPE_SINA);
-			loginHelper.setLoginListener(ProfileFragmentActivity.this);
-			loginHelper.login();
+			mLoginHelper.setLoginListener(ProfileFragmentActivity.this);
+			mLoginHelper.login();
 		}
 	}
-
 
 	class QQButtonOnClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			showProgressDialog("正在登录");
-			ScoreLoginHelper loginHelper = new ScoreLoginHelper(
-					ProfileFragmentActivity.this,
+			mLoginHelper = new ScoreLoginHelper(ProfileFragmentActivity.this,
 					ScoreLoginHelper.LOGIN_TYPE_QQ);
-			loginHelper.setLoginListener(ProfileFragmentActivity.this);
-			loginHelper.login();
+			mLoginHelper.setLoginListener(ProfileFragmentActivity.this);
+			mLoginHelper.login();
 
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		// TODO Auto-generated method stub
+		if (mLoginHelper != null) {
+			mLoginHelper.onActivityResult(arg0, arg1, arg2);
 		}
 	}
 
@@ -155,17 +153,21 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 			if (mNameTV != null && mNickName != null) {
 				mNameTV.setText(mNickName);
 			}
-			
+
 			Config.setIsLogin(mContext, true);
 			setLoginLayout();
 			dismissProgressDialog();
 			break;
+		case AppConstants.MsgType.LOGIN_ERROR:
+			ScoreToast.makeText(mContext, "网络异常，请稍后重试", Toast.LENGTH_SHORT).show();
+			dismissProgressDialog();
 		}
 	}
 
-
 	@Override
 	public void onLoginFinish(int type, String values) {
+		String userPhoto = null;
+
 		switch (type) {
 		case ScoreLoginHelper.LOGIN_TYPE_QQ:
 			JSONObject object = null;
@@ -173,19 +175,24 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 				object = new JSONObject(values);
 				mNickName = object.optString("nickname");
 				Config.setNickName(mContext, mNickName);
-				String userPhoto = object.optString("figureurl_qq_2");
-				DownloadPicTask task = new DownloadPicTask(
-						ITask.TYPE_DOWNLOAD_PIC, ThreadManager.getInstance()
-								.getNewTaskId(), userPhoto);
-				task.setListener(ProfileFragmentActivity.this);
-				ThreadManager.getInstance().addTask(task);
+				userPhoto = object.optString("figureurl_qq_2");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
 		case ScoreLoginHelper.LOGIN_TYPE_SINA:
+			User user = User.parse(values);
+			mNickName = user.name;
+			Config.setNickName(mContext, mNickName);
+			userPhoto = user.avatar_large;
 			break;
+		}
+		if (userPhoto != null) {
+			DownloadPicTask task = new DownloadPicTask(ITask.TYPE_DOWNLOAD_PIC,
+					ThreadManager.getInstance().getNewTaskId(), userPhoto);
+			task.setListener(ProfileFragmentActivity.this);
+			ThreadManager.getInstance().addTask(task);
 		}
 	}
 
@@ -203,7 +210,7 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 
 	@Override
 	public void onTaskError(ITask task, Exception exception) {
-		// TODO Auto-generated method stub
+		mHandler.sendEmptyMessage(AppConstants.MsgType.LOGIN_ERROR);
 
 	}
 

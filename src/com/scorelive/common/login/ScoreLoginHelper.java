@@ -1,10 +1,9 @@
 package com.scorelive.common.login;
 
-import java.text.SimpleDateFormat;
-
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,6 +15,7 @@ import com.sina.weibo.sdk.auth.WeiboAuth.AuthInfo;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQAuth;
 import com.tencent.tauth.IUiListener;
@@ -38,6 +38,7 @@ public class ScoreLoginHelper {
 	private WeiboAuthListener mAuthListener;
 	/** SSO 授权认证实例 */
 	private SsoHandler mSsoHandler;
+	public UsersAPI mUsersAPI;
 
 	public ScoreLoginHelper(Activity act, int type) {
 		mAct = act;
@@ -102,8 +103,10 @@ public class ScoreLoginHelper {
 			JSONObject object = (JSONObject) response;
 			String openId = object.optString("openid");
 			String access_token = object.optString("access_token");
-			Config.setQQAccessToken(mAct, access_token);
-			Config.setQQOpenId(mAct, openId);
+			long expires_in = object.optLong("expires_in");
+			Config.setAccessToken(mAct, access_token);
+			Config.setOpenId(mAct, openId);
+			Config.setExpiresTime(mAct, expires_in);
 			mInfo = new UserInfo(mAct, mQQAuth.getQQToken());
 			mInfo.getUserInfo(new UnpdateUserInfoListener());
 		}
@@ -138,34 +141,67 @@ public class ScoreLoginHelper {
 		@Override
 		public void onError(UiError arg0) {
 			// TODO Auto-generated method stub
-
+			if(mListener != null){
+				mListener.onLoginError(mLoginType, arg0.errorMessage);
+			}
 		}
 
 	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mSsoHandler != null) {
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
+    }
 
 	/**
 	 * 登入按钮的监听器，接收授权结果。
 	 */
-	private class AuthListener implements WeiboAuthListener {
+	class AuthListener implements WeiboAuthListener {
 		@Override
 		public void onComplete(Bundle values) {
 			Oauth2AccessToken accessToken = Oauth2AccessToken
 					.parseAccessToken(values);
 			if (accessToken != null && accessToken.isSessionValid()) {
-				String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-						.format(new java.util.Date(accessToken.getExpiresTime()));
+				Config.setAccessToken(mAct, accessToken.getToken());
+				Config.setOpenId(mAct, accessToken.getUid());
+				Config.setExpiresTime(mAct, accessToken.getExpiresTime());
+				mUsersAPI = new UsersAPI(accessToken);
+				long uid = Long.parseLong(accessToken.getUid());
+				mUsersAPI.show(uid, mRequestListener);
 			}
 		}
 
 		@Override
 		public void onWeiboException(WeiboException e) {
-			Log.e("weibo", e.getMessage());
+			if(mListener != null){
+				mListener.onLoginError(mLoginType, e.getMessage());
+			}
 		}
 
 		@Override
 		public void onCancel() {
 		}
 	}
+
+	/**
+	 * 微博 OpenAPI 回调接口。
+	 */
+	private RequestListener mRequestListener = new RequestListener() {
+		@Override
+		public void onComplete(String response) {
+			if (mListener != null) {
+				mListener.onLoginFinish(mLoginType, response);
+			}
+		}
+
+		@Override
+		public void onWeiboException(WeiboException e) {
+			if(mListener != null){
+				mListener.onLoginError(mLoginType, e.getMessage());
+			}
+		}
+	};
 
 	public interface LoginListener {
 		public void onLoginFinish(int type, String values);
