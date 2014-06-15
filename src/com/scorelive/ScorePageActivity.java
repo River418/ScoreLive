@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scorelive.common.cache.GroupListCacheHandler;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.core.fragment.ScoreBaseFragment;
 import com.scorelive.common.http.Http;
@@ -72,7 +73,8 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		// .getNewTaskId(), "20140419");
 		// task.setListener(this);
 		initMatchList("20140424");
-		initGroupList();
+//		initGroupList();
+		mGroupList = GroupListCacheHandler.getInstance().getGroupCache();
 		// ThreadManager.getInstance().addTask(task);
 		// ScoreDBHandler.getInstance().addGroup("自定义分组1");
 	}

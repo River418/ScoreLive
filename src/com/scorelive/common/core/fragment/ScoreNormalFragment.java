@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,9 +19,11 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
 
 import com.scorelive.R;
 import com.scorelive.ScoreDetailActivity;
+import com.scorelive.common.cache.GroupListCacheHandler;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.db.ScoreDBHandler;
 import com.scorelive.common.itask.IShortTaskListener;
@@ -30,6 +33,7 @@ import com.scorelive.common.itask.quick.task.GroupListTask;
 import com.scorelive.common.itask.quick.task.QueryMatchListByGroup;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
+import com.scorelive.ui.widget.ScoreToast;
 import com.scorelive.ui.widget.dialog.EditGroupDialog;
 import com.scorelive.ui.widget.dialog.ProgressDialogMe;
 import com.scorelive.ui.widget.dialog.EditGroupDialog.ActionResult;
@@ -62,6 +66,58 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				setData();
 				if (mProgressDialog != null) {
 					mProgressDialog.dismiss();
+				}
+				break;
+			case AppConstants.MsgType.ADD_MATCH_TO_GROUP:
+				switch (msg.arg1) {
+				case ScoreDBHandler.SUCCESS:
+					ScoreToast.makeText(mContext, "添加成功", Toast.LENGTH_SHORT)
+							.show();
+					break;
+				case ScoreDBHandler.ALREADY_HAVE:
+					ScoreToast.makeText(mContext, "分组中该比赛已存在",
+							Toast.LENGTH_SHORT).show();
+					break;
+				case ScoreDBHandler.FAIL:
+					ScoreToast.makeText(mContext, "添加失败，请重试",
+							Toast.LENGTH_SHORT).show();
+					break;
+				}
+				break;
+			case AppConstants.MsgType.DEL_GROUP:
+				switch (msg.arg1) {
+				case ScoreDBHandler.SUCCESS:
+					ScoreToast.makeText(mContext, "删除分组成功", Toast.LENGTH_SHORT)
+							.show();
+					break;
+				case ScoreDBHandler.FAIL:
+					ScoreToast.makeText(mContext, "删除分组失败，请重试",
+							Toast.LENGTH_SHORT).show();
+					break;
+				}
+				break;
+			case AppConstants.MsgType.DEL_MATCH_IN_GROUP:
+				switch (msg.arg1) {
+				case ScoreDBHandler.SUCCESS:
+					ScoreToast.makeText(mContext, "移除比赛成功", Toast.LENGTH_SHORT)
+							.show();
+					break;
+				case ScoreDBHandler.FAIL:
+					ScoreToast.makeText(mContext, "移除比赛失败，请重试",
+							Toast.LENGTH_SHORT).show();
+					break;
+				}
+				break;
+			case AppConstants.MsgType.CHANGE_MATCH_GROUP:
+				switch (msg.arg1) {
+				case ScoreDBHandler.SUCCESS:
+					ScoreToast.makeText(mContext, "移动成功", Toast.LENGTH_SHORT)
+							.show();
+					break;
+				case ScoreDBHandler.FAIL:
+					ScoreToast.makeText(mContext, "移动失败，请重试",
+							Toast.LENGTH_SHORT).show();
+					break;
 				}
 				break;
 			}
@@ -143,16 +199,25 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		super.onCreateContextMenu(menu, v, menuInfo);
 		int type = ExpandableListView
 				.getPackedPositionType(((ExpandableListContextMenuInfo) menuInfo).packedPosition);
+		int groupPos = ExpandableListView
+				.getPackedPositionGroup(((ExpandableListContextMenuInfo) menuInfo).packedPosition);
+		int childPos = ExpandableListView
+				.getPackedPositionChild(((ExpandableListContextMenuInfo) menuInfo).packedPosition);
 		switch (mFragmentType) {
 		case AppConstants.BetType.CUSTOMIZE:
 			if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+				Match match = (Match) mAdapter.getChild(groupPos, childPos);
 				menu.setHeaderTitle("更改定制分组");
 				menu.add(MENU_MANAGER_MATCH, 1, 0, "从该分组删除");
 				List<Group> list = ScoreDBHandler.getInstance().getGroupList();
 				if (list != null) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
-						menu.add(MENU_MANAGER_MATCH, group.id, i+1, "移动到"
+						if (group.id == match.groupId) {// 过滤到比赛所在分组
+							continue;
+						}
+						// item id 就是group id
+						menu.add(MENU_MANAGER_MATCH, group.id, i + 1, "移动到"
 								+ group.grounName);
 					}
 				}
@@ -190,61 +255,107 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				.getMenuInfo();
 		int type = ExpandableListView
 				.getPackedPositionType(info.packedPosition);
-		switch (mFragmentType) {
-		case AppConstants.BetType.CUSTOMIZE:
-			if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-			}
-			if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-				int groupPos = ExpandableListView
-						.getPackedPositionGroup(info.packedPosition);
-				Group group = (Group) mAdapter.getGroup(groupPos);
-				switch (item.getItemId()) {
-				case 1:// 删除
-					ScoreDBHandler.getInstance().deleteGroup(group.id);
-					initGroupList();
-					break;
-				case 2:// 重命名
-					EditGroupDialog dialog = new EditGroupDialog(getActivity(),
-							EditGroupDialog.EDIT_NAME, group.grounName);
-					dialog.setGroupId(group.id);
-					dialog.setActionResultListener(new ActionResult(){
-						public void onActionSuccess(){
-							initGroupList();
+		int groupPos = ExpandableListView
+				.getPackedPositionGroup(info.packedPosition);
+		int childPos = ExpandableListView
+				.getPackedPositionChild(info.packedPosition);
+		if (!getUserVisibleHint()) {
+			return false;
+		} else {
+			switch (mFragmentType) {
+			case AppConstants.BetType.CUSTOMIZE:
+				if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+					// 删除及移动比赛
+					int ret = 0;
+					Message msg = mHandler.obtainMessage();
+					msg.arg1 = ret;
+					Match match = (Match) mAdapter.getChild(groupPos, childPos);
+					switch (item.getOrder()) {
+					case 0://删除
+						msg.what = AppConstants.MsgType.DEL_MATCH_IN_GROUP;
+						try {
+							ret = ScoreDBHandler.getInstance().delMatchInGroup(
+									match);
+						} catch (SQLiteException e) {
+							ret = ScoreDBHandler.FAIL;
 						}
-					});
-					dialog.show();
-					break;
+						break;
+					default://移动到指定分组
+						msg.what = AppConstants.MsgType.CHANGE_MATCH_GROUP;
+						try {
+							ret = ScoreDBHandler.getInstance()
+									.changeMatchGroup(match, item.getItemId());
+						} catch (SQLiteException e) {
+							ret = ScoreDBHandler.FAIL;
+						}
+						break;
+					}
+					mHandler.sendMessage(msg);
+					return true;
 				}
+				if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+					Group group = (Group) mAdapter.getGroup(groupPos);
+					switch (item.getItemId()) {
+					case 1:// 删除
+						EditGroupDialog delDialog = new EditGroupDialog(
+								getActivity(), EditGroupDialog.DEL_GROUP,
+								group.grounName);
+						delDialog.setGroupId(group.id);
+						delDialog.setActionResultListener(new ActionResult() {
+							public void onActionSuccess() {
+								initGroupList();
+							}
+						});
+						delDialog.show();
+						break;
+					case 2:// 重命名
+						EditGroupDialog dialog = new EditGroupDialog(
+								getActivity(), EditGroupDialog.EDIT_NAME,
+								group.grounName);
+						dialog.setGroupId(group.id);
+						dialog.setActionResultListener(new ActionResult() {
+							public void onActionSuccess() {
+								initGroupList();
+							}
+						});
+						dialog.show();
+						break;
+					}
+					return true;
+				}
+			default:
+				if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+					// Match match = (Match) mAdapter.getChild(groupPos,
+					// childPos);
+					if (item.getGroupId() == MENU_MANAGER_GROUP) {
+						EditGroupDialog dialog = new EditGroupDialog(
+								getActivity(), EditGroupDialog.ADD_GROUP, null);
+						dialog.setActionResultListener(new ActionResult() {
+							public void onActionSuccess() {
 
-			}
-			break;
-		default:
-			if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-				int groupPos = ExpandableListView
-						.getPackedPositionGroup(info.packedPosition);
-				int childPos = ExpandableListView
-						.getPackedPositionChild(info.packedPosition);
-				Match match = (Match) mAdapter.getChild(groupPos, childPos);
-				if (item.getGroupId() == MENU_MANAGER_GROUP) {
-					EditGroupDialog dialog = new EditGroupDialog(getActivity(),
-							EditGroupDialog.ADD_GROUP, null);
-					dialog.setActionResultListener(new ActionResult(){
-						public void onActionSuccess(){
-							
+							}
+						});
+						dialog.show();
+					} else {
+						int ret = 0;
+						Match match = (Match) mAdapter.getChild(groupPos, childPos);
+						try {
+							ret = ScoreDBHandler.getInstance().addMatchToGroup(
+									item.getItemId(), match);
+						} catch (SQLiteException e) {
+							ret = ScoreDBHandler.FAIL;
 						}
-					});
-					dialog.show();
+						Message msg = mHandler.obtainMessage();
+						msg.what = AppConstants.MsgType.ADD_MATCH_TO_GROUP;
+						msg.arg1 = ret;
+						mHandler.sendMessage(msg);
+					}
+					return true;
 				} else {
-					ScoreDBHandler.getInstance().addMatchToGroup(
-							item.getItemId(), match);
+					return false;
 				}
-			} else {
-				return false;
 			}
-			break;
 		}
-		return true;
-
 	}
 
 	public void refreshCustomFragment() {

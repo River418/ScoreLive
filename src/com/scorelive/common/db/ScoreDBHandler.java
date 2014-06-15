@@ -20,6 +20,9 @@ public class ScoreDBHandler {
 	private Context mContext;
 	private volatile static ScoreDBHandler mInstance;
 	private SQLiteOpenHelper mDBHelper;
+	public static final int SUCCESS = 0;
+	public static final int FAIL = 1;
+	public static final int ALREADY_HAVE = 2;
 
 	public static ScoreDBHandler getInstance() {
 		if (mInstance == null) {
@@ -72,6 +75,7 @@ public class ScoreDBHandler {
 					.getColumnIndex(MATCH_SCORE));
 			int match_status = cursor
 					.getInt(cursor.getColumnIndex(MATCH_STATE));
+			String league_name = cursor.getString(cursor.getColumnIndex(LEAGUE_NAME));
 			Match match = new Match();
 			match.matchId = match_id;
 			match.groupId = group_id;
@@ -84,6 +88,7 @@ public class ScoreDBHandler {
 			match.matchBet = match_bet;
 			match.matchScore = match_score;
 			match.matchState = match_status;
+			match.matchLeague = league_name;
 			matchList.add(match);
 			cursor.moveToNext();
 		}
@@ -120,7 +125,7 @@ public class ScoreDBHandler {
 	 * @param groupId
 	 * @param match
 	 */
-	public synchronized void addMatchToGroup(int groupId, Match match)
+	public synchronized int addMatchToGroup(int groupId, Match match)
 			throws SQLiteException {
 		if (!isMatchInGroup(groupId, match.matchId)) {
 			SQLiteDatabase db = mDBHelper.getReadableDatabase();
@@ -143,7 +148,39 @@ public class ScoreDBHandler {
 			values.put(LEAGUE_NAME, match.matchLeague);
 			db.insert(SCORE_TABLE_NAME, null, values);
 			db.close();
+			return SUCCESS;
+		}else{
+			return ALREADY_HAVE;
 		}
+	}
+	
+	/**
+	 * 从一个分组中移除一场比赛
+	 * @param match
+	 * @return
+	 * @throws SQLiteException
+	 */
+	public synchronized int delMatchInGroup(Match match) throws SQLiteException{
+		SQLiteDatabase db = mDBHelper.getReadableDatabase();
+		db.delete(SCORE_TABLE_NAME, MATCH_GROUP+"=? and "+MATCH_ID+"=?", new String[] { String.valueOf(match.groupId),String.valueOf(match.matchId) });
+		return SUCCESS;
+	}
+	
+	/**
+	 * 将一场比赛从一个分组移动到其他分组
+	 * @param match
+	 * @param toGroupId
+	 * @return
+	 * @throws SQLiteException
+	 */
+	public synchronized int changeMatchGroup(Match match ,int toGroupId) throws SQLiteException{
+		SQLiteDatabase db = mDBHelper.getReadableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(MATCH_GROUP, toGroupId);
+		db.update(SCORE_TABLE_NAME, values, MATCH_ID+"=?",
+				new String[] { String.valueOf(match.matchId) });
+		db.close();
+		return SUCCESS;
 	}
 
 	/**
@@ -177,12 +214,13 @@ public class ScoreDBHandler {
 	 * 
 	 * @param name
 	 */
-	public synchronized void addGroup(String name) throws SQLiteException {
+	public synchronized int addGroup(String name) throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(GROUP_NAME, name);
 		db.insert(GROUP_TABLE_NAME, null, values);
 		db.close();
+		return SUCCESS;
 	}
 
 	/**
@@ -191,7 +229,7 @@ public class ScoreDBHandler {
 	 * @param name
 	 * @param id
 	 */
-	public synchronized void renameGroup(String name, int id)
+	public synchronized int renameGroup(String name, int id)
 			throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		ContentValues values = new ContentValues();
@@ -199,6 +237,7 @@ public class ScoreDBHandler {
 		db.update(GROUP_TABLE_NAME, values, GROUP_ID+"=?",
 				new String[] { String.valueOf(id) });
 		db.close();
+		return SUCCESS;
 	}
 
 	/**
@@ -206,9 +245,10 @@ public class ScoreDBHandler {
 	 * 
 	 * @param id
 	 */
-	public synchronized void deleteGroup(int id) throws SQLiteException {
+	public synchronized int deleteGroup(int id) throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		db.delete(GROUP_TABLE_NAME, GROUP_ID+"=?", new String[] { String.valueOf(id) });
+		return SUCCESS;
 	}
 
 	/*----------------------------------------------数据库的创建及升级代码-----------------------------------------*/

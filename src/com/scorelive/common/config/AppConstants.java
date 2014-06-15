@@ -28,20 +28,24 @@ public class AppConstants {
 			+ "follow_app_official_microblog," + "invitation_write";
 
 	public class MsgType {
-		public static final int QUERY_MATCH_BY_GROUP_SUCCESS = 0X5;
 		public static final int GET_SCORE_LIST_SUCCESS = 0X0;
 		public static final int GET_MATCH_DETAIL_SUCCESS = 0X1;
 		public static final int LOGIN_SUCCESS = 0X2;
 		public static final int LOGIN_ERROR = 0X3;
+		public static final int QUERY_MATCH_BY_GROUP_SUCCESS = 0X4;
+		public static final int ADD_MATCH_TO_GROUP = 0X5;
+		public static final int DEL_MATCH_IN_GROUP = 0X6;
+		public static final int ADD_GROUP = 0X7;
+		public static final int DEL_GROUP = 0X8;
+		public static final int CHANGE_MATCH_GROUP = 0X9;
 	}
 
 	public class BetType {
-		public static final int ALL = 0;
-		public static final int NORMAL = 1;
-		public static final int BJ = 3;
-		public static final int SMG = 2;
+		public static final int ALL = 1;
+		public static final int BJ = 2;
+		public static final int SMG = 3;
 		public static final int ZC = 4;
-		public static final int CUSTOMIZE = -1;
+		public static final int CUSTOMIZE = 0;
 	}
 
 	public class MatchStatus {

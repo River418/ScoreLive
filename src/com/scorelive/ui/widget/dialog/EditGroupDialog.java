@@ -9,16 +9,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scorelive.R;
+import com.scorelive.common.cache.GroupListCacheHandler;
 import com.scorelive.common.db.ScoreDBHandler;
+import com.scorelive.ui.widget.ScoreToast;
 
 public class EditGroupDialog extends BaseDialog implements OnClickListener {
 
 	public static final int EDIT_NAME = 1;
 	public static final int ADD_GROUP = 0;
+	public static final int DEL_GROUP = 2;
 	private int mType;
 	private int mId;// group id
 	private Activity mAct;
-	private TextView mTitle;
+	private TextView mTitle,mDelText;
 	private EditText mEditText;
 	private TextView mConfirmBtn, mCancelBtn;
 	private ActionResult mListener;
@@ -28,6 +31,7 @@ public class EditGroupDialog extends BaseDialog implements OnClickListener {
 		mAct = act;
 		mTitle = (TextView) mDialog.findViewById(R.id.title);
 		mEditText = (EditText) mDialog.findViewById(R.id.edit);
+		mDelText = (TextView)mDialog.findViewById(R.id.del_text);
 		mConfirmBtn = (TextView) mDialog.findViewById(R.id.confirm);
 		mConfirmBtn.setOnClickListener(this);
 		mCancelBtn = (TextView) mDialog.findViewById(R.id.cancel);
@@ -42,6 +46,11 @@ public class EditGroupDialog extends BaseDialog implements OnClickListener {
 			break;
 		case ADD_GROUP:
 			mTitle.setText("新建分组");
+			break;
+		case DEL_GROUP:
+			mTitle.setText("删除分组");
+			mEditText.setVisibility(View.GONE);
+			mDelText.setVisibility(View.VISIBLE);
 			break;
 		}
 	}
@@ -59,24 +68,41 @@ public class EditGroupDialog extends BaseDialog implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.confirm:
-			if (mType == ADD_GROUP) {
+			switch(mType){
+			case ADD_GROUP:
 				try {
-					ScoreDBHandler.getInstance().addGroup(
-							mEditText.getText().toString());
+//					ScoreDBHandler.getInstance().addGroup(
+//							mEditText.getText().toString());
+					GroupListCacheHandler.getInstance().addGroupToCache(mEditText.getText().toString());
 					mListener.onActionSuccess();
-					Toast.makeText(mAct, "添加成功", Toast.LENGTH_SHORT).show();
+					ScoreToast.makeText(mAct, "添加成功", Toast.LENGTH_SHORT).show();
 				} catch (SQLiteException e) {
-					Toast.makeText(mAct, "添加失败", Toast.LENGTH_SHORT).show();
+					ScoreToast.makeText(mAct, "添加失败", Toast.LENGTH_SHORT).show();
 				}
-			} else {
+				break;
+			case EDIT_NAME:
 				try {
-					ScoreDBHandler.getInstance().renameGroup(
-							mEditText.getText().toString(), mId);
+//					ScoreDBHandler.getInstance().renameGroup(
+//							mEditText.getText().toString(), mId);
+					GroupListCacheHandler.getInstance().renameGroupInCache(mId, mEditText.getText().toString());
 					mListener.onActionSuccess();
-					Toast.makeText(mAct, "修改成功", Toast.LENGTH_SHORT).show();
+					ScoreToast.makeText(mAct, "修改成功", Toast.LENGTH_SHORT).show();
 				} catch (SQLiteException e) {
-					Toast.makeText(mAct, "修改失败", Toast.LENGTH_SHORT).show();
+					ScoreToast.makeText(mAct, "修改失败", Toast.LENGTH_SHORT).show();
 				}
+				break;
+			case DEL_GROUP:
+				try {
+//					ScoreDBHandler.getInstance().renameGroup(
+//							mEditText.getText().toString(), mId);
+					GroupListCacheHandler.getInstance().delGroupInCache(mId);
+					mListener.onActionSuccess();
+					ScoreToast.makeText(mAct, "修改成功", Toast.LENGTH_SHORT).show();
+				} catch (SQLiteException e) {
+					ScoreToast.makeText(mAct, "修改失败", Toast.LENGTH_SHORT).show();
+				}
+				break;
+				
 			}
 			mDialog.dismiss();
 			break;
