@@ -3,7 +3,8 @@ package com.scorelive.module;
 public class PushInfo {
 
 	public int id;
-	public String liveScore;
+	public String homeGoal;
+	public String visitGoal;
 	public String time;
 	public int redHome;
 	public int redVisiting;

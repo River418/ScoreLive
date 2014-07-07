@@ -50,6 +50,15 @@ public class MainActivity extends TabActivity implements
 		super.onNewIntent(intent);
 	}
 
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		XGPushManager.unregisterPush(getApplicationContext());
+	}
+
 	private void initRadios() {
 		radio_button0 = (TabItem) findViewById(R.id.score);
 		radio_button0.setOnCheckedChangeListener(this);

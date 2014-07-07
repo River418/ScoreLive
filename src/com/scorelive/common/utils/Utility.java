@@ -159,6 +159,9 @@ public class Utility {
 	public static boolean saveFile(InputStream is, String path) {
 		File file = new File(path);
 		if (!file.exists()) {
+			if (!file.getParentFile().exists()) {
+				file.mkdirs();
+			}
 			try {
 				file.createNewFile();
 			} catch (IOException e1) {

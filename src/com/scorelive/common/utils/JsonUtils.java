@@ -11,41 +11,42 @@ import com.scorelive.module.MatchAccident;
 import com.scorelive.module.PushInfo;
 
 public class JsonUtils {
-	
-	private static final String MATCH="match";
-	private static final String Score="liveScore";
-	private static final String BJNUM="beidanNum";
-	private static final String SMGNUM="jingcaiNum";
-	private static final String ZCNUM="zucaiNum";
-	private static final String HOSTNAME="homeTeamName";
-	private static final String HOSTINDEX="homeTeamRank";
-	private static final String VISITNAME="visitingTeamName";
-	private static final String VISITINDEX="visitingTeamRank";
-	private static final String HOSTRED="redHome";
-	private static final String HOSTYELLOW="yellowHome";
-	private static final String VISITRED="redVisiting";
-	private static final String VISITYELLOW="yellowVisiting";
-	private static final String STARTTIME="time";
-	private static final String TYPE="type";
-	private static final String ID="id";
-	private static final String LEAGUE="league";
-	private static final String LEAGUEBASE="leagueBase";
-	private static final String NAME="name";
+
+	private static final String MATCH = "match";
+	private static final String Score = "liveScore";
+	private static final String BJNUM = "beidanNum";
+	private static final String SMGNUM = "jingcaiNum";
+	private static final String ZCNUM = "zucaiNum";
+	private static final String HOSTNAME = "homeTeamName";
+	private static final String HOSTINDEX = "homeTeamRank";
+	private static final String VISITNAME = "visitingTeamName";
+	private static final String VISITINDEX = "visitingTeamRank";
+	private static final String HOSTRED = "redHome";
+	private static final String HOSTYELLOW = "yellowHome";
+	private static final String VISITRED = "redVisiting";
+	private static final String VISITYELLOW = "yellowVisiting";
+	private static final String STARTTIME = "time";
+	private static final String TYPE = "type";
+	private static final String ID = "id";
+	private static final String LEAGUE = "league";
+	private static final String LEAGUEBASE = "leagueBase";
+	private static final String NAME = "name";
 	private static final String MATCHSTATUS = "matchStatus";
-	
-	public static PushInfo pushJson2Match(String str){
+
+	public static PushInfo pushJson2Match(String str) {
 		PushInfo match = new PushInfo();
 		try {
 			JSONObject object = new JSONObject(str);
-			int id = object.optInt("id");
-			String liveScore = object.optString("liveScore");
-			String time = object.optString("runningTime");
-			int redHome = object.optInt("redHome");
-			int redVisiting = object.optInt("redVisiting");
-			int yellowHome = object.optInt("yellowHome");
-			int yellowVisiting = object.optInt("yellowVisiting");
-			String homeName = object.optString("nameHome");
-			String visitName = object.optString("nameVisiting");
+			int id = object.optInt("matchId");
+			String homeGoal = object.optString("hg");
+			String visitGoal = object.optString("vg");
+			String time = object.optString("rt");
+			int redHome = object.optInt("hrc");
+			int redVisiting = object.optInt("vrc");
+			int yellowHome = object.optInt("hyc");
+			int yellowVisiting = object.optInt("vyc");
+			String homeName = object.optString("hn");
+			String visitName = object.optString("vn");
 			match.homeName = homeName;
 			match.id = id;
 			match.time = time;
@@ -53,25 +54,25 @@ public class JsonUtils {
 			match.redVisiting = redVisiting;
 			match.yellowHome = yellowHome;
 			match.yellowVisiting = yellowVisiting;
-			match.liveScore = liveScore;
+			match.homeGoal = homeGoal;
+			match.visitGoal = visitGoal;
 			match.homeName = homeName;
 			match.visitName = visitName;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return match;
 	}
-	
 
 	public static ArrayList<Match> json2MatchList(String str) {
 		JSONObject object;
 		ArrayList<Match> list = new ArrayList<Match>();
 		try {
-//			object = new JSONObject(str);
+			// object = new JSONObject(str);
 			JSONArray array = new JSONArray(str);
-//			JSONArray array = object.getJSONArray("list");
+			// JSONArray array = object.getJSONArray("list");
 			for (int i = 0; i < array.length(); i++) {
 				Match match = json2Match(array.getJSONObject(i));
 				list.add(match);
@@ -104,7 +105,7 @@ public class JsonUtils {
 		JSONObject leagueBaseObject = leagueObject.optJSONObject(LEAGUEBASE);
 		String leagueName = leagueBaseObject.optString(NAME);
 		int leagueId = leagueBaseObject.optInt(ID);
-		int matchId  = matchObject.optInt(ID);
+		int matchId = matchObject.optInt(ID);
 		Match match = new Match();
 		match.bjNum = bjNum;
 		match.SMGNum = smgNum;
@@ -128,16 +129,17 @@ public class JsonUtils {
 		match.matchState = matchStatus;
 		return match;
 	}
-	
-	public static ArrayList<MatchAccident> json2MatchAccident(String str){
+
+	public static ArrayList<MatchAccident> json2MatchAccident(String str) {
 		ArrayList<MatchAccident> list = new ArrayList<MatchAccident>();
 		try {
 			JSONObject object = new JSONObject(str);
 			JSONArray array = object.optJSONArray("smalist");
-			for(int i = 0;i<array.length();i++){
+			for (int i = 0; i < array.length(); i++) {
 				JSONObject accident = array.getJSONObject(i);
 				MatchAccident aMatch = new MatchAccident();
-				aMatch.accident_content = accident.optString("accident_content");
+				aMatch.accident_content = accident
+						.optString("accident_content");
 				aMatch.accident_time = accident.optString("accident_time");
 				aMatch.accident_type = accident.optInt("accident_type");
 				aMatch.accident_team = accident.optInt("which_team");

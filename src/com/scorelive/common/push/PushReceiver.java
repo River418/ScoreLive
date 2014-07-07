@@ -12,6 +12,7 @@ import com.scorelive.MainActivity;
 import com.scorelive.R;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.PushInfo;
+import com.scorelive.ui.widget.ScoreToast;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -126,18 +127,18 @@ public class PushReceiver extends XGPushBaseReceiver {
 		updateTitle = info.homeName + "vs" + info.visitName;
 		builder.setSmallIcon(R.drawable.ic_launcher);
 		builder.setContentTitle(updateTitle);
-		builder.setContentText(info.liveScore);
+		builder.setContentText(info.homeGoal+":"+info.visitGoal);
 		noticeIntent.setClass(context, MainActivity.class);
 		noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		// notification = new Notification(R.drawable.icon_notify,
 		// tickerText, System.currentTimeMillis());
-		contentIntent = PendingIntent.getActivity(context, 1001, noticeIntent,
+		contentIntent = PendingIntent.getActivity(context, info.id, noticeIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		builder.setContentIntent(contentIntent);
 		Notification notification = builder.build();
-		nm.notify(1001, notification);
-		Toast.makeText(context, updateTitle+" "+info.liveScore, Toast.LENGTH_LONG).show();
+		nm.notify(info.id, notification);
+		ScoreToast.makeText(context, updateTitle+" "+info.homeGoal+":"+info.visitGoal, Toast.LENGTH_LONG).show();
 	}
 
 	/**

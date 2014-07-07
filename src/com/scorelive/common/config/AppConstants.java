@@ -8,6 +8,7 @@ public class AppConstants {
 	public static final String MATCH_INFO = SERVER_URL + "MatchInfoService?";
 	public static final String MATCH_DETAIL = SERVER_URL
 			+ "MatchDetailService?";
+	public static final String LOGIN_URL = SERVER_URL+"SignInService?";
 
 	public static final String SDCARD_PATH = android.os.Environment
 			.getExternalStorageDirectory().getPath();
