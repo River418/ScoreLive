@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -72,7 +73,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		// INetTask task = new MatchListTask(ThreadManager.getInstance()
 		// .getNewTaskId(), "20140419");
 		// task.setListener(this);
-		initMatchList("20140424");
+		initMatchList("20140711");
 //		initGroupList();
 		mGroupList = GroupListCacheHandler.getInstance().getGroupCache();
 		// ThreadManager.getInstance().addTask(task);
@@ -271,6 +272,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		case ITask.TYPE_MATCH_LIST:
 			try {
 				String str = Http.getString(is);
+				Log.e("json",str);
 				mAllList = JsonUtils.json2MatchList(str);
 				handleMatchList();
 				mHandler.obtainMessage(AppConstants.MsgType.GET_SCORE_LIST_SUCCESS)
@@ -304,7 +306,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				for (int i = 0; i < typeArray.length; i++) {
 					addMatchToBetList(Integer.valueOf(typeArray[i]), match);
 				}
-			} else {
+			} else if(!typeList.equalsIgnoreCase("")){
 				addMatchToBetList(Integer.valueOf(typeList), match);
 			}
 			addMatchToAllList(match);
@@ -316,12 +318,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		case AppConstants.MatchStatus.UNSTART:
 			mAllUnstartList.add(match);
 			break;
-		case AppConstants.MatchStatus.MATCHING:
 		case AppConstants.MatchStatus.MIDDLE:
-		case AppConstants.MatchStatus.UPADDED:
-		case AppConstants.MatchStatus.DOWNADDED:
-		case AppConstants.MatchStatus.PAUSEFOUL:
-		case AppConstants.MatchStatus.PAUSEHURT:
+		case AppConstants.MatchStatus.UP:
+		case AppConstants.MatchStatus.DOWN:
+		case AppConstants.MatchStatus.ADDED:
 			mAllMatchingList.add(match);
 			break;
 		case AppConstants.MatchStatus.CANCEL:
@@ -339,12 +339,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			case AppConstants.MatchStatus.UNSTART:
 				mBJUnstartList.add(match);
 				break;
-			case AppConstants.MatchStatus.MATCHING:
 			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UPADDED:
-			case AppConstants.MatchStatus.DOWNADDED:
-			case AppConstants.MatchStatus.PAUSEFOUL:
-			case AppConstants.MatchStatus.PAUSEHURT:
+			case AppConstants.MatchStatus.UP:
+			case AppConstants.MatchStatus.DOWN:
+			case AppConstants.MatchStatus.ADDED:
 				mBJMatchingList.add(match);
 				break;
 			case AppConstants.MatchStatus.CANCEL:
@@ -360,12 +358,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			case AppConstants.MatchStatus.UNSTART:
 				mSMGUnstartList.add(match);
 				break;
-			case AppConstants.MatchStatus.MATCHING:
 			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UPADDED:
-			case AppConstants.MatchStatus.DOWNADDED:
-			case AppConstants.MatchStatus.PAUSEFOUL:
-			case AppConstants.MatchStatus.PAUSEHURT:
+			case AppConstants.MatchStatus.UP:
+			case AppConstants.MatchStatus.DOWN:
+			case AppConstants.MatchStatus.ADDED:
 				mSMGMatchingList.add(match);
 				break;
 			case AppConstants.MatchStatus.CANCEL:
@@ -381,12 +377,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			case AppConstants.MatchStatus.UNSTART:
 				mZCUnstartList.add(match);
 				break;
-			case AppConstants.MatchStatus.MATCHING:
 			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UPADDED:
-			case AppConstants.MatchStatus.DOWNADDED:
-			case AppConstants.MatchStatus.PAUSEFOUL:
-			case AppConstants.MatchStatus.PAUSEHURT:
+			case AppConstants.MatchStatus.UP:
+			case AppConstants.MatchStatus.DOWN:
+			case AppConstants.MatchStatus.ADDED:
 				mZCMatchingList.add(match);
 				break;
 			case AppConstants.MatchStatus.CANCEL:

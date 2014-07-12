@@ -3,6 +3,7 @@ package com.scorelive.common.core.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +54,8 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 
 	public ScoreNormalFragment(int type) {
 		mFragmentType = type;
+		updateTimer = new Timer();
+		updateTimer.schedule(task, 1000*60, 1000*60);
 	}
 
 	private final MyHandler mHandler = new MyHandler();
@@ -402,6 +405,13 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		default:
 			mAdapter.setData(mUnstartList, mMatchingList, mEndedList);
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		updateTimer.cancel();
 	}
 
 	@Override

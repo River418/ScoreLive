@@ -106,16 +106,14 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 
 	private void processData() {
 
-		mTitleTV.setText(mMatch.matchLeague);
+		mTitleTV.setText(mMatch.leagueName);
 		mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
 				+ mMatch.hostTeamName);
 		mVisitNameTV.setText(mMatch.visitTeamName + "(" + mMatch.visitTeamIndex
 				+ ")");
 		mStartTimeTV.setText(mMatch.matchStartTime);
-		mHostScoreTV.setText(mMatch.matchScore.substring(0,
-				mMatch.matchScore.indexOf(":")));
-		mVisitScoreTV.setText(mMatch.matchScore.substring(mMatch.matchScore
-				.indexOf(":") + 1));
+		mHostScoreTV.setText(mMatch.hostTeamScore);
+		mVisitScoreTV.setText(mMatch.visitTeamScore);
 	}
 
 	private final MyHandler mHandler = new MyHandler();

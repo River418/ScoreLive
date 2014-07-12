@@ -56,7 +56,7 @@ public class ScoreDBHandler {
 				+ groupId, null, null, null, MATCH_ID + " asc");
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			int match_id = cursor.getInt(cursor.getColumnIndex(MATCH_ID));
+			String match_id = cursor.getString(cursor.getColumnIndex(MATCH_ID));
 			int group_id = cursor.getInt(cursor.getColumnIndex(MATCH_GROUP));
 			String hostName = cursor.getString(cursor
 					.getColumnIndex(HOST_TEAM_NAME));
@@ -71,8 +71,12 @@ public class ScoreDBHandler {
 					.getColumnIndex(MATCH_STARTTIME));
 			String match_bet = cursor.getString(cursor
 					.getColumnIndex(MATCH_BET));
-			String match_score = cursor.getString(cursor
-					.getColumnIndex(MATCH_SCORE));
+			String host_score = cursor.getString(cursor
+					.getColumnIndex(HOST_TEAM_SCORE));
+			String visit_score = cursor.getString(cursor
+					.getColumnIndex(VISIT_TEAM_SCORE));
+			String leagueColor = cursor.getString(cursor
+					.getColumnIndex(LEAGUE_COLOR));
 			int match_status = cursor
 					.getInt(cursor.getColumnIndex(MATCH_STATE));
 			String league_name = cursor.getString(cursor.getColumnIndex(LEAGUE_NAME));
@@ -86,9 +90,12 @@ public class ScoreDBHandler {
 			match.leagueId = league_id;
 			match.matchStartTime = matchStartTime;
 			match.matchBet = match_bet;
-			match.matchScore = match_score;
+			match.hostTeamScore = host_score;
+			match.visitTeamScore = visit_score;
 			match.matchState = match_status;
-			match.matchLeague = league_name;
+			match.leagueName = league_name;
+			match.leagueColor = leagueColor;
+			
 			matchList.add(match);
 			cursor.moveToNext();
 		}
@@ -103,7 +110,7 @@ public class ScoreDBHandler {
 	 * @return
 	 * @throws SQLiteException
 	 */
-	public synchronized boolean isMatchInGroup(int groupId, int matchId)
+	public synchronized boolean isMatchInGroup(int groupId, String matchId)
 			throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		Cursor cursor = db.query(SCORE_TABLE_NAME, null, MATCH_GROUP + "="
@@ -137,15 +144,17 @@ public class ScoreDBHandler {
 			values.put(LEAGUE_ID, match.leagueId);
 			values.put(MATCH_BET, match.matchBet);
 			values.put(MATCH_STATE, match.matchState);
-			values.put(MATCH_SCORE, match.matchScore);
+			values.put(HOST_TEAM_SCORE, match.hostTeamScore);
 			values.put(HOST_TEAM_INDEX, match.hostTeamIndex);
 			values.put(VISIT_TEAM_INDEX, match.visitTeamIndex);
+			values.put(VISIT_TEAM_SCORE, match.visitTeamScore);
 			values.put(MATCH_GROUP, groupId);
 			values.put(HOST_TEAM_YELLOW, match.hostTeamYellow);
 			values.put(HOST_TEAM_RED, match.hostTeamRed);
 			values.put(VISIT_TEAM_YELLOW, match.visitTeamYellow);
 			values.put(VISIT_TEAM_RED, match.visitTeamRed);
-			values.put(LEAGUE_NAME, match.matchLeague);
+			values.put(LEAGUE_NAME, match.leagueName);
+			values.put(LEAGUE_COLOR, match.leagueColor);
 			db.insert(SCORE_TABLE_NAME, null, values);
 			db.close();
 			return SUCCESS;
@@ -274,6 +283,7 @@ public class ScoreDBHandler {
 	private final static String VISIT_TEAM_RED = "visit_team_red";// 客队红牌数
 	private final static String VISIT_TEAM_YELLOW = "visit_team_yellow";// 客队黄牌数
 	private final static String MATCH_SCORE = "match_livescore";// 实时比分
+	private final static String LEAGUE_COLOR = "league_color";//联赛颜色
 	private final static String MATCH_GROUP = "groupid";
 	private final static int CURRENT_VERSION = 1;
 
@@ -300,7 +310,7 @@ public class ScoreDBHandler {
 					+ " text," + HOST_TEAM_INDEX + " text," + HOST_TEAM_SCORE
 					+ " integer," + HOST_TEAM_RED + " integer,"
 					+ HOST_TEAM_YELLOW + " integer," + VISIT_TEAM_NAME
-					+ " text," + VISIT_TEAM_INDEX + " text," + VISIT_TEAM_SCORE
+					+ " text," + VISIT_TEAM_INDEX + " text,"+ LEAGUE_COLOR+" text," + VISIT_TEAM_SCORE
 					+ " integer," + VISIT_TEAM_RED + " integer," + MATCH_GROUP
 					+ " integer," + VISIT_TEAM_YELLOW + " integer" + ");");
 			db.execSQL("create table if not exists " + GROUP_TABLE_NAME + " ("

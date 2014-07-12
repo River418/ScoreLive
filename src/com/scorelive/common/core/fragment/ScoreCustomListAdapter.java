@@ -78,7 +78,7 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 			int leagueId = match.leagueId;
 			int color = Utility.pickLeagueColor(mContext, leagueId);
 			matchItem.setLeagueColor(color);
-			matchItem.setLeague(match.matchLeague);
+			matchItem.setLeague(match.leagueName);
 			matchItem.setHostName(match.hostTeamName);
 			matchItem.setHostIndex("(" + match.hostTeamIndex + ")");
 			matchItem.setHostYellow(match.hostTeamYellow);
@@ -87,7 +87,7 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 			matchItem.setVisitIndex("(" + match.visitTeamIndex + ")");
 			matchItem.setVisitYellow(match.visitTeamYellow);
 			matchItem.setVisitRed(match.visitTeamRed);
-			matchItem.setScore(match.matchScore);
+			matchItem.setScore(match.hostTeamScore+":"+match.visitTeamScore);
 			matchItem.setTime(match.matchTime);
 			switch (mAdapterType) {
 			case BetType.BJ:

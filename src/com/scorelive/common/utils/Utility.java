@@ -97,7 +97,9 @@ public class Utility {
 	}
 
 	public static int caculateMatchingTime(String startTime) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+
 		try {
 			long millStartTime = format.parse(startTime).getTime();
 			long time = Calendar.getInstance().getTimeInMillis()

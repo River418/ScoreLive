@@ -3,6 +3,7 @@ package com.scorelive.common.core.fragment;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -110,9 +111,11 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 		}
 		if (match != null) {
 			int leagueId = match.leagueId;
-			int color = Utility.pickLeagueColor(mContext, leagueId);
-			matchItem.setLeagueColor(color);
-			matchItem.setLeague(match.matchLeague);
+			if(!match.leagueColor.equalsIgnoreCase("")){
+				int color = Color.parseColor(match.leagueColor);
+				matchItem.setLeagueColor(color);
+			}
+			matchItem.setLeague(match.leagueName);
 			matchItem.setHostName(match.hostTeamName);
 			matchItem.setHostIndex("(" + match.hostTeamIndex + ")");
 			matchItem.setHostYellow(match.hostTeamYellow);
@@ -121,7 +124,7 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 			matchItem.setVisitIndex("(" + match.visitTeamIndex + ")");
 			matchItem.setVisitYellow(match.visitTeamYellow);
 			matchItem.setVisitRed(match.visitTeamRed);
-			matchItem.setScore(match.matchScore);
+			matchItem.setScore(match.hostTeamScore+":"+match.visitTeamScore);
 			matchItem.setTime(match.matchTime);
 			switch (mAdapterType) {
 			case BetType.BJ:

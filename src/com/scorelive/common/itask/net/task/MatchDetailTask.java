@@ -8,7 +8,7 @@ import com.scorelive.common.itask.INetTask;
 
 public class MatchDetailTask extends INetTask{
 
-	public MatchDetailTask(int type,long taskId,int id) {
+	public MatchDetailTask(int type,long taskId,String id) {
 		super(type,taskId);
 		// TODO Auto-generated constructor stub
 		mUrl = AppConstants.MATCH_DETAIL+"id="+id;

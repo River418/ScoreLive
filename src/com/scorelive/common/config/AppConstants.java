@@ -50,15 +50,17 @@ public class AppConstants {
 	}
 
 	public class MatchStatus {
-		public static final int UNSTART = 1;// 未开始
-		public static final int DELAY = 2;// 延期
-		public static final int CANCEL = 3;// 取消
-		public static final int MATCHING = 4;// 比赛中
-		public static final int MIDDLE = 5;// 中场休息
-		public static final int ENDED = 6;// 结束
+		public static final int UNSTART = 0;// 未开始
+		public static final int DELAY = -14;// 延期
+		public static final int CANCEL = -10;// 取消
+		public static final int MIDDLE = 2;// 中场休息
+		public static final int ENDED = -1;// 结束
+		public static final int UP = 1;//上半场
+		public static final int DOWN = 3;//下半场
+		public static final int ADDED = 4;//加时
 		public static final int UPADDED = 7;// 上半场补时
 		public static final int DOWNADDED = 8;// 下半场补时
-		public static final int PAUSEHURT = 9;// 受伤暂停
-		public static final int PAUSEFOUL = 10;// 犯规暂停
+		public static final int PAUSEHURT = -13;// 受伤暂停
+		public static final int PAUSEFOUL = -13;// 犯规暂停
 	}
 }

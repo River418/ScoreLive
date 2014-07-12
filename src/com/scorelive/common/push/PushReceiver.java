@@ -1,11 +1,14 @@
 package com.scorelive.common.push;
 
+import java.util.List;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.scorelive.MainActivity;
@@ -108,37 +111,42 @@ public class PushReceiver extends XGPushBaseReceiver {
 			return;
 		}
 		String text = "收到消息:" + message.toString();
+		Log.e("push", text);
 		String content = message.getContent();
-		PushInfo info = JsonUtils.pushJson2Match(content);
-		NotificationManager nm = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		Intent noticeIntent = new Intent();
-		String tickerText = "";
-		PendingIntent contentIntent = null;
-		StringBuffer sb = new StringBuffer();
-		String updateTitle = null;
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(
-				context.getApplicationContext());
-		builder.setWhen(System.currentTimeMillis());
-		builder.setAutoCancel(true);
+		List<PushInfo> list = JsonUtils.pushJson2Match(content);
+		for (PushInfo info : list) {
+			NotificationManager nm = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+			Intent noticeIntent = new Intent();
+			String tickerText = "";
+			PendingIntent contentIntent = null;
+			StringBuffer sb = new StringBuffer();
+			String updateTitle = null;
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+					context.getApplicationContext());
+			builder.setWhen(System.currentTimeMillis());
+			builder.setAutoCancel(true);
 
-		tickerText = message.getTitle();
-		builder.setTicker(tickerText);
-		updateTitle = info.homeName + "vs" + info.visitName;
-		builder.setSmallIcon(R.drawable.ic_launcher);
-		builder.setContentTitle(updateTitle);
-		builder.setContentText(info.homeGoal+":"+info.visitGoal);
-		noticeIntent.setClass(context, MainActivity.class);
-		noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-				| Intent.FLAG_ACTIVITY_NEW_TASK);
-		// notification = new Notification(R.drawable.icon_notify,
-		// tickerText, System.currentTimeMillis());
-		contentIntent = PendingIntent.getActivity(context, info.id, noticeIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		builder.setContentIntent(contentIntent);
-		Notification notification = builder.build();
-		nm.notify(info.id, notification);
-		ScoreToast.makeText(context, updateTitle+" "+info.homeGoal+":"+info.visitGoal, Toast.LENGTH_LONG).show();
+			tickerText = message.getTitle();
+			builder.setTicker(tickerText);
+			updateTitle = info.homeName + "vs" + info.visitName;
+			builder.setSmallIcon(R.drawable.ic_launcher);
+			builder.setContentTitle(updateTitle);
+			builder.setContentText(info.homeGoal + ":" + info.visitGoal);
+			noticeIntent.setClass(context, MainActivity.class);
+			noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK);
+			// notification = new Notification(R.drawable.icon_notify,
+			// tickerText, System.currentTimeMillis());
+			contentIntent = PendingIntent.getActivity(context, info.id,
+					noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			builder.setContentIntent(contentIntent);
+			Notification notification = builder.build();
+			nm.notify(info.id, notification);
+			ScoreToast.makeText(context,
+					updateTitle + " " + info.homeGoal + ":" + info.visitGoal,
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 	/**
