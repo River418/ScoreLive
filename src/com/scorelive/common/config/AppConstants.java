@@ -39,6 +39,7 @@ public class AppConstants {
 		public static final int ADD_GROUP = 0X7;
 		public static final int DEL_GROUP = 0X8;
 		public static final int CHANGE_MATCH_GROUP = 0X9;
+		public static final int REFRESH_TIME = 0X10;
 	}
 
 	public class BetType {
@@ -58,9 +59,34 @@ public class AppConstants {
 		public static final int UP = 1;//上半场
 		public static final int DOWN = 3;//下半场
 		public static final int ADDED = 4;//加时
+		
 		public static final int UPADDED = 7;// 上半场补时
 		public static final int DOWNADDED = 8;// 下半场补时
 		public static final int PAUSEHURT = -13;// 受伤暂停
 		public static final int PAUSEFOUL = -13;// 犯规暂停
+		
+		public static final int MATCHING = 10;
+	}
+	
+	public class EventType{
+	public static final int UP_START = 0;//上半场比赛开始
+	public static final int HOME_GOAL =1;//主队进球
+		public static final int VISIT_GOAL = 2;//客队进球
+		public static final int HOME_POINT_GOAL = 3;//主队点球
+		public static final int VISIT_POINT_GOAL = 4;//客队点球
+		public static final int HOME_SUICIDE_GOAL = 5;//主队乌龙球
+		public static final int VISIT_SUICIDE_GOAL = 6;//客队乌龙球
+		public static final int HOME_RED = 7;//主队红牌
+		public static final int VISIT_RED = 8;//客队红牌;
+		public static final int HOME_YELLOW = 9;//主队黄牌
+		public static final int VISIT_YELLOW = 10;//客队黄牌
+		public static final int UP_OVER = 11;//半场结束
+		public static final int DOWN_START = 12;//下半场开始
+		public static final int DOWN_OVER = 13;//全场结束
+		public static final int ADDED_START = 14;//进入加时
+		public static final int POINT_START = 15;//进入点球大战
+		public static final int MATCH_INTERUPT = 16;//比赛中断
+		public static final int MATCH_DELAY = 17;//比赛延期
+	
 	}
 }

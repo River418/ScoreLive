@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.scorelive.R;
@@ -96,11 +97,32 @@ public class Utility {
 		return false;
 	}
 
-	public static int caculateMatchingTime(String startTime) {
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+	public static String getDateOfToday(String format) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		int day = Calendar.getInstance().get(Calendar.DATE);
+		String mm = null;
+		if(month<10){
+			mm = "0"+month;
+		}else{
+			mm = String.valueOf(month);
+		}
+		if (format.equalsIgnoreCase("yyyy-MM-dd")) {
+			return year + "-" + mm + "-" + day;
+		} else {
+			Log.e("date",year + "" + mm + "" + day);
+			return year + "" + mm + "" + day;
+		}
+	}
 
+	public static int caculateMatchingTime(String startTime) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		// SimpleDateFormat format = new SimpleDateFormat("hh:mm")
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+		int day = Calendar.getInstance().get(Calendar.DATE)-1;
 		try {
+//			long millStartTime = format.parse(year +"-"+ month+"-"+day+" "+startTime+":00").getTime();
 			long millStartTime = format.parse(startTime).getTime();
 			long time = Calendar.getInstance().getTimeInMillis()
 					- millStartTime;
@@ -120,6 +142,14 @@ public class Utility {
 		}
 		return -1;
 	}
+	
+//	public static String updateMatchingTime(String startTime){
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		// SimpleDateFormat format = new SimpleDateFormat("hh:mm")
+//		int year = Calendar.getInstance().get(Calendar.YEAR);
+//		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+//		int day = Calendar.getInstance().get(Calendar.DATE);
+//	}
 
 	public static String parseTimeToDate(String startTime) {
 		return startTime.substring(0, 10);

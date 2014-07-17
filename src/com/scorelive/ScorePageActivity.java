@@ -33,6 +33,7 @@ import com.scorelive.common.itask.net.task.MatchListTask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.itask.quick.task.GroupListTask;
 import com.scorelive.common.utils.JsonUtils;
+import com.scorelive.common.utils.Utility;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.PagerSlidingTabStrip;
@@ -73,7 +74,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		// INetTask task = new MatchListTask(ThreadManager.getInstance()
 		// .getNewTaskId(), "20140419");
 		// task.setListener(this);
-		initMatchList("20140711");
+		initMatchList(Utility.getDateOfToday("yyyyMMdd"));
 //		initGroupList();
 		mGroupList = GroupListCacheHandler.getInstance().getGroupCache();
 		// ThreadManager.getInstance().addTask(task);
@@ -246,10 +247,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
 				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
 				break;
-			case ScorePageAdapter.CUSTOMIZE:
-				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
-				break;
+//			case ScorePageAdapter.CUSTOMIZE:
+//				fragment = mScoreFragmentPageAdapter.getFragment(i);
+//				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
+//				break;
 			}
 		}
 	}
@@ -285,19 +286,12 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		}
 	}
 
-	public List<Match> getAllList() {
-		return mAllList;
+	public void clearMatchCache(){
+		mAllMatchingList.clear();
 	}
-
-	public List<Match> getBJList() {
-		return mBJList;
-	}
-
-	public List<Match> getSMGList() {
-		return mSMGList;
-	}
-
+	
 	private void handleMatchList() {
+		clearMatchCache();
 		for (Match match : mAllList) {
 			String typeList = match.matchBet;
 			String[] typeArray = null;

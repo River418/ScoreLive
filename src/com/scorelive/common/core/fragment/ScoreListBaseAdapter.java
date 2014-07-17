@@ -101,7 +101,7 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 		Match match = (Match) getChild(groupPosition, childPosition);
 		int time = Utility.caculateMatchingTime(match.matchStartTime);
 		if (time > 95) {
-			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
+//			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
 		} else if (time < 95 && time > 90) {
 			match.matchTime = "下半场90'+";
 		} else if (time <= 90 && time > 45) {

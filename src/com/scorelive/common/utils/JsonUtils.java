@@ -46,7 +46,9 @@ public class JsonUtils {
 			JSONArray array = new JSONArray(str);
 			for(int i = 0;i<array.length();i++){
 				PushInfo match = new PushInfo();
-				JSONObject object = array.getJSONObject(i);
+				JSONObject content = array.getJSONObject(i);
+				int eventType = content.optInt("eventType");
+				JSONObject object = content.optJSONObject("matchEvent");
 				int id = object.optInt("matchId");
 				String homeGoal = object.optString("hg");
 				String visitGoal = object.optString("vg");
@@ -68,6 +70,7 @@ public class JsonUtils {
 				match.visitGoal = visitGoal;
 				match.homeName = homeName;
 				match.visitName = visitName;
+				match.type = eventType;
 				list.add(match);
 			}
 		} catch (JSONException e1) {

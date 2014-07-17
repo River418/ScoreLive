@@ -15,17 +15,17 @@ import com.scorelive.module.Group;
  */
 public class AddGroupTask extends IShortTask {
 
-	private String mGroupName = null;
+	private Group mGroup = null;
 
-	public AddGroupTask(int type, long taskId, String groupName) {
+	public AddGroupTask(int type, long taskId, Group group) {
 		super(type, taskId);
-		mGroupName = groupName;
+		mGroup = group;
 	}
 
 	@Override
 	public void run() {
 		try {
-			ScoreDBHandler.getInstance().addGroup(mGroupName);
+			ScoreDBHandler.getInstance().addGroup(mGroup);
 			ArrayList<Group> list = ScoreDBHandler.getInstance().getGroupList();
 			onFinish(list);
 		} catch (SQLiteException e) {

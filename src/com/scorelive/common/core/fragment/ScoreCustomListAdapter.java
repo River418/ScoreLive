@@ -37,8 +37,8 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		Group group = mGroupList.get(groupPosition);
-		mMatchMap.get(String.valueOf(group.id));
-		return mMatchMap.get(String.valueOf(group.id)).get(childPosition);
+		mMatchMap.get(String.valueOf(group.netId));
+		return mMatchMap.get(String.valueOf(group.netId)).get(childPosition);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 		Match match = (Match) getChild(groupPosition, childPosition);
 		int time = Utility.caculateMatchingTime(match.matchStartTime);
 		if (time > 95) {
-			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
+//			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
 		} else if (time < 95 && time > 90) {
 			match.matchTime = "下半场90'+";
 		} else if (time <= 90 && time > 45) {
@@ -108,7 +108,7 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 	public int getChildrenCount(int groupPosition) {
 		// TODO Auto-generated method stub
 		List<Match> list = mMatchMap.get(String.valueOf(mGroupList
-				.get(groupPosition).id));
+				.get(groupPosition).netId));
 		if (list != null) {
 			return list.size();
 		}

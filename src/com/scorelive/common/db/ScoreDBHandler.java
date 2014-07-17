@@ -66,7 +66,6 @@ public class ScoreDBHandler {
 					.getColumnIndex(HOST_TEAM_INDEX));
 			String visitIndex = cursor.getString(cursor
 					.getColumnIndex(VISIT_TEAM_INDEX));
-			int league_id = cursor.getInt(cursor.getColumnIndex(LEAGUE_ID));
 			String matchStartTime = cursor.getString(cursor
 					.getColumnIndex(MATCH_STARTTIME));
 			String match_bet = cursor.getString(cursor
@@ -87,7 +86,6 @@ public class ScoreDBHandler {
 			match.hostTeamIndex = hostIndex;
 			match.visitTeamName = visitName;
 			match.visitTeamIndex = visitIndex;
-			match.leagueId = league_id;
 			match.matchStartTime = matchStartTime;
 			match.matchBet = match_bet;
 			match.hostTeamScore = host_score;
@@ -141,7 +139,7 @@ public class ScoreDBHandler {
 			values.put(MATCH_STARTTIME, match.matchStartTime);
 			values.put(HOST_TEAM_NAME, match.hostTeamName);
 			values.put(VISIT_TEAM_NAME, match.visitTeamName);
-			values.put(LEAGUE_ID, match.leagueId);
+			values.put(LEAGUE_COLOR, match.leagueColor);
 			values.put(MATCH_BET, match.matchBet);
 			values.put(MATCH_STATE, match.matchState);
 			values.put(HOST_TEAM_SCORE, match.hostTeamScore);
@@ -223,10 +221,11 @@ public class ScoreDBHandler {
 	 * 
 	 * @param name
 	 */
-	public synchronized int addGroup(String name) throws SQLiteException {
+	public synchronized int addGroup(Group group) throws SQLiteException {
 		SQLiteDatabase db = mDBHelper.getReadableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(GROUP_NAME, name);
+		values.put(GROUP_NAME, group.grounName);
+		values.put(GROUP_NETID, group.netId);
 		db.insert(GROUP_TABLE_NAME, null, values);
 		db.close();
 		return SUCCESS;
@@ -266,7 +265,6 @@ public class ScoreDBHandler {
 	private final static String SCORE_TABLE_NAME = "live_score";
 	private final static String ID = "_id";
 	private final static String MATCH_ID = "match_id";// 比赛id
-	private final static String LEAGUE_ID = "league_id";// 赛事id
 	private final static String LEAGUE_NAME = "league_name";// 赛事名称
 	private final static String MATCH_BET = "match_bet";// 所属彩票类型,包括竞彩、北单、足彩
 	private final static String MATCH_STATE = "match_state";// 比赛开始、结束及中场休息的状态
@@ -282,7 +280,6 @@ public class ScoreDBHandler {
 	private final static String VISIT_TEAM_SCORE = "visit_team_score";// 客队积分
 	private final static String VISIT_TEAM_RED = "visit_team_red";// 客队红牌数
 	private final static String VISIT_TEAM_YELLOW = "visit_team_yellow";// 客队黄牌数
-	private final static String MATCH_SCORE = "match_livescore";// 实时比分
 	private final static String LEAGUE_COLOR = "league_color";//联赛颜色
 	private final static String MATCH_GROUP = "groupid";
 	private final static int CURRENT_VERSION = 1;
@@ -303,10 +300,9 @@ public class ScoreDBHandler {
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL("create table if not exists " + SCORE_TABLE_NAME + " ("
 					+ ID + " integer primary key autoincrement," + MATCH_ID
-					+ " long not null," + LEAGUE_NAME + " text," + LEAGUE_ID
-					+ " integer," + MATCH_BET + " text," + MATCH_STATE
+					+ " long not null," + LEAGUE_NAME + " text," + MATCH_BET + " text," + MATCH_STATE
 					+ " text," + MATCH_STARTTIME + " text," + MATCH_TIMEING
-					+ " text," + MATCH_SCORE + " text," + HOST_TEAM_NAME
+					+ " text," + HOST_TEAM_NAME
 					+ " text," + HOST_TEAM_INDEX + " text," + HOST_TEAM_SCORE
 					+ " integer," + HOST_TEAM_RED + " integer,"
 					+ HOST_TEAM_YELLOW + " integer," + VISIT_TEAM_NAME

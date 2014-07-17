@@ -12,6 +12,7 @@ public class PushInfo {
 	public int yellowVisiting;
 	public String homeName;
 	public String visitName;
+	public int type;
 	
 	
 }

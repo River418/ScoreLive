@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -24,7 +26,6 @@ import android.widget.Toast;
 
 import com.scorelive.R;
 import com.scorelive.ScoreDetailActivity;
-import com.scorelive.common.cache.GroupListCacheHandler;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.db.ScoreDBHandler;
 import com.scorelive.common.itask.IShortTaskListener;
@@ -36,8 +37,8 @@ import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.ScoreToast;
 import com.scorelive.ui.widget.dialog.EditGroupDialog;
-import com.scorelive.ui.widget.dialog.ProgressDialogMe;
 import com.scorelive.ui.widget.dialog.EditGroupDialog.ActionResult;
+import com.scorelive.ui.widget.dialog.ProgressDialogMe;
 
 public class ScoreNormalFragment extends ScoreBaseFragment implements
 		IShortTaskListener {
@@ -55,8 +56,19 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	public ScoreNormalFragment(int type) {
 		mFragmentType = type;
 		updateTimer = new Timer();
-		updateTimer.schedule(task, 1000*60, 1000*60);
 	}
+
+	TimerTask task = new TimerTask() {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			updateTime();
+			Log.e("refresh time", "我刷新日期了");
+			mHandler.sendEmptyMessage(AppConstants.MsgType.REFRESH_TIME);
+		}
+
+	};
 
 	private final MyHandler mHandler = new MyHandler();
 
@@ -123,6 +135,9 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 					break;
 				}
 				break;
+			case AppConstants.MsgType.REFRESH_TIME:
+				mAdapter.notifyDataSetChanged();
+				break;
 			}
 		}
 
@@ -134,6 +149,9 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		super.setData(unstart, matching, ended);
 		if (mFragmentType != AppConstants.BetType.CUSTOMIZE && mAdapter != null) {
 			mAdapter.setData(unstart, matching, ended);
+		}
+		if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -216,11 +234,11 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				if (list != null) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
-						if (group.id == match.groupId) {// 过滤到比赛所在分组
+						if (group.netId == match.groupId) {// 过滤到比赛所在分组
 							continue;
 						}
 						// item id 就是group id
-						menu.add(MENU_MANAGER_MATCH, group.id, i + 1, "移动到"
+						menu.add(MENU_MANAGER_MATCH, group.netId, i + 1, "移动到"
 								+ group.grounName);
 					}
 				}
@@ -239,7 +257,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				if (list.size() > 0) {
 					for (int i = 0; i < list.size(); i++) {
 						Group group = list.get(i);
-						menu.add(MENU_MANAGER_MATCH, group.id, i,
+						menu.add(MENU_MANAGER_MATCH, group.netId, i,
 								group.grounName);
 					}
 				}
@@ -274,7 +292,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 					msg.arg1 = ret;
 					Match match = (Match) mAdapter.getChild(groupPos, childPos);
 					switch (item.getOrder()) {
-					case 0://删除
+					case 0:// 删除
 						msg.what = AppConstants.MsgType.DEL_MATCH_IN_GROUP;
 						try {
 							ret = ScoreDBHandler.getInstance().delMatchInGroup(
@@ -283,7 +301,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 							ret = ScoreDBHandler.FAIL;
 						}
 						break;
-					default://移动到指定分组
+					default:// 移动到指定分组
 						msg.what = AppConstants.MsgType.CHANGE_MATCH_GROUP;
 						try {
 							ret = ScoreDBHandler.getInstance()
@@ -303,7 +321,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 						EditGroupDialog delDialog = new EditGroupDialog(
 								getActivity(), EditGroupDialog.DEL_GROUP,
 								group.grounName);
-						delDialog.setGroupId(group.id);
+						delDialog.setGroupId(group.netId);
 						delDialog.setActionResultListener(new ActionResult() {
 							public void onActionSuccess() {
 								initGroupList();
@@ -315,7 +333,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 						EditGroupDialog dialog = new EditGroupDialog(
 								getActivity(), EditGroupDialog.EDIT_NAME,
 								group.grounName);
-						dialog.setGroupId(group.id);
+						dialog.setGroupId(group.netId);
 						dialog.setActionResultListener(new ActionResult() {
 							public void onActionSuccess() {
 								initGroupList();
@@ -341,7 +359,8 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 						dialog.show();
 					} else {
 						int ret = 0;
-						Match match = (Match) mAdapter.getChild(groupPos, childPos);
+						Match match = (Match) mAdapter.getChild(groupPos,
+								childPos);
 						try {
 							ret = ScoreDBHandler.getInstance().addMatchToGroup(
 									item.getItemId(), match);
@@ -390,7 +409,10 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
-
+		for (int i = 0; i < mAdapter.getGroupCount(); i++) {
+			mListView.expandGroup(i);
+		}
+//		updateTimer.schedule(task, 1000 * 60, 1000 * 60);
 	}
 
 	@Override

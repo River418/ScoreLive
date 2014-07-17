@@ -44,25 +44,33 @@ public class GroupListCacheHandler implements IShortTaskListener {
 
 	/**
 	 * 添加一个分组
+	 * 
 	 * @param name
 	 */
 	public void addGroupToCache(String name) {
 		if (mGroupList == null) {
-			getGroupCache();
+			mGroupList = getGroupCache();
 		}
-		Group group = mGroupList.get(mGroupList.size() - 1);
 		Group newGroup = new Group();
-		newGroup.id = group.id + 1;
-		newGroup.grounName = name;
-		mGroupList.add(newGroup);
+		if (mGroupList.size() > 0) {
+			Group group = mGroupList.get(mGroupList.size() - 1);
+			newGroup.netId = group.netId + 1;
+			newGroup.grounName = name;
+			mGroupList.add(newGroup);
+		}else{
+			newGroup.netId = 1;
+			newGroup.grounName = name;
+			mGroupList.add(newGroup);
+		}
 		ITask task = new AddGroupTask(ITask.TYPE_ADD_GROUP, ThreadManager
-				.getInstance().getNewTaskId(), name);
+				.getInstance().getNewTaskId(), newGroup);
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}
 
 	/**
 	 * 删除一个分组
+	 * 
 	 * @param groupId
 	 */
 	public void delGroupInCache(int groupId) {
@@ -70,7 +78,7 @@ public class GroupListCacheHandler implements IShortTaskListener {
 			getGroupCache();
 		}
 		for (Group group : mGroupList) {
-			if (group.id == groupId) {
+			if (group.netId == groupId) {
 				mGroupList.remove(group);
 				break;
 			}
@@ -83,6 +91,7 @@ public class GroupListCacheHandler implements IShortTaskListener {
 
 	/**
 	 * 重命名一个分组
+	 * 
 	 * @param groupId
 	 * @param name
 	 */
@@ -91,14 +100,14 @@ public class GroupListCacheHandler implements IShortTaskListener {
 			getGroupCache();
 		}
 		for (Group group : mGroupList) {
-			if (group.id == groupId) {
+			if (group.netId == groupId) {
 				group.grounName = name;
 				break;
 			}
 		}
 
-		ITask task = new RenameGroupTask(ITask.TYPE_RENAME_GROUP,
-				ThreadManager.getInstance().getNewTaskId(), name, groupId);
+		ITask task = new RenameGroupTask(ITask.TYPE_RENAME_GROUP, ThreadManager
+				.getInstance().getNewTaskId(), name, groupId);
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}

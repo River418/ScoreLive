@@ -25,7 +25,7 @@ public class QueryMatchListByGroup extends IShortTask {
 			HashMap<String, ArrayList<Match>> mMap = new HashMap<String, ArrayList<Match>>();
 			if (mGroupList != null) {
 				for (Group group : mGroupList) {
-					int groupId = group.id;
+					int groupId = group.netId;
 					ArrayList<Match> matchList = ScoreDBHandler.getInstance()
 							.getMatchByGroupId(groupId);
 					mMap.put(String.valueOf(groupId), matchList);
