@@ -12,19 +12,11 @@
         android:layout_marginTop="12dp" >
 
         <TextView
-            android:id="@+id/team_index"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(12)"
-            android:textColor="@color/text_light_gray"
-            android:textSize="11dp" />
-
-        <TextView
             android:id="@+id/team_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/team_index"
-            android:text="奥萨苏纳"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:textColor="@color/text_dark_gray"
             android:textSize="11dp" />
     </RelativeLayout>

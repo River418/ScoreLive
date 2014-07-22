@@ -118,9 +118,9 @@ public class Utility {
 	public static int caculateMatchingTime(String startTime) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		// SimpleDateFormat format = new SimpleDateFormat("hh:mm")
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
-		int day = Calendar.getInstance().get(Calendar.DATE)-1;
+//		int year = Calendar.getInstance().get(Calendar.YEAR);
+//		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+//		int day = Calendar.getInstance().get(Calendar.DATE)-1;
 		try {
 //			long millStartTime = format.parse(year +"-"+ month+"-"+day+" "+startTime+":00").getTime();
 			long millStartTime = format.parse(startTime).getTime();

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -152,6 +153,7 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		case ITask.TYPE_MATCH_DETAIL:
 			try {
 				String str = Http.getString(is);
+				Log.e("detail",str);
 				mList = JsonUtils.json2MatchAccident(str);
 				mHandler.sendEmptyMessage(AppConstants.MsgType.GET_MATCH_DETAIL_SUCCESS);
 			} catch (IOException e) {

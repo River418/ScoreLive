@@ -412,7 +412,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		for (int i = 0; i < mAdapter.getGroupCount(); i++) {
 			mListView.expandGroup(i);
 		}
-//		updateTimer.schedule(task, 1000 * 60, 1000 * 60);
+		updateTimer.schedule(task, 1000 * 60, 1000 * 60);
 	}
 
 	@Override

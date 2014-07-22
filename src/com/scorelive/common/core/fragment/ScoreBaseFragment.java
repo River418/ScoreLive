@@ -23,9 +23,9 @@ public class ScoreBaseFragment extends Fragment {
 		mMatchingList = matching;
 		mEndedList = ended;
 	}
-
-	public void updateTime() {
-		Iterator<Match> iterator = mUnstartList.iterator();
+	
+	private void updateTime(ArrayList<Match> list){
+		Iterator<Match> iterator = list.iterator();
 		while (iterator.hasNext()) {
 			Match match = iterator.next();
 			int time = Utility.caculateMatchingTime(match.matchStartTime);
@@ -52,68 +52,17 @@ public class ScoreBaseFragment extends Fragment {
 				}
 				break;
 			case AppConstants.MatchStatus.ENDED:
+				match.matchTime = "比赛结束";
 				break;
 			default:
 				break;
 			}
-			if (time > 105) {
-				// match.matchTime =
-				// Utility.parseTimeToDate(match.matchStartTime);
-				match.matchTime = "比赛结束";
-				iterator.remove();
-				mEndedList.add(match);
-			} else if (0 < time && time < 110) {
-				mMatchingList.add(match);
-				if (time < 110 && time > 105) {
-					match.matchTime = "下半场90'+";
-				} else if (time <= 105 && time > 60) {
-					match.matchTime = "下半场" + (time - 15) + "'";
-				} else if (time >= 45 && time <= 50) {
-					match.matchTime = "上半场45'+";
-				} else if (0 < time && time < 45) {
-					match.matchTime = "上半场" + time + "'";
+		}
+	}
 
-				}
-			}
-		}
-		for (Match match : mUnstartList) {
-			int time = Utility.caculateMatchingTime(match.matchStartTime);
-			if (time > 95) {
-				// match.matchTime =
-				// Utility.parseTimeToDate(match.matchStartTime);
-			} else if (time < 95 && time > 90) {
-				match.matchTime = "下半场90'+";
-			} else if (time <= 90 && time > 45) {
-				match.matchTime = "下半场" + time + "'";
-			} else {
-				match.matchTime = "上半场" + time + "'";
-			}
-		}
-		for (Match match : mMatchingList) {
-			int time = Utility.caculateMatchingTime(match.matchStartTime);
-			if (time > 95) {
-				// match.matchTime =
-				// Utility.parseTimeToDate(match.matchStartTime);
-			} else if (time < 95 && time > 90) {
-				match.matchTime = "下半场90'+";
-			} else if (time <= 90 && time > 45) {
-				match.matchTime = "下半场" + time + "'";
-			} else {
-				match.matchTime = "上半场" + time + "'";
-			}
-		}
-		for (Match match : mEndedList) {
-			int time = Utility.caculateMatchingTime(match.matchStartTime);
-			if (time > 95) {
-				// match.matchTime =
-				// Utility.parseTimeToDate(match.matchStartTime);
-			} else if (time < 95 && time > 90) {
-				match.matchTime = "下半场90'+";
-			} else if (time <= 90 && time > 45) {
-				match.matchTime = "下半场" + time + "'";
-			} else {
-				match.matchTime = "上半场" + time + "'";
-			}
-		}
+	public void updateTime() {
+//		updateTime(mUnstartList);
+		updateTime(mMatchingList);
+//		updateTime(mEndedList);
 	}
 }

@@ -27,7 +27,7 @@ public class JsonUtils {
 	private static final String VISITYELLOW = "ycV";
 	private static final String STARTTIME = "sTime";
 	private static final String TYPE = "type";
-	private static final String ID = "id";
+	private static final String ID = "matchId";
 	private static final String NAME = "ln";
 	private static final String MATCHSTATUS = "mStatus";
 	private static final String HOSTSCORE = "hTG";
@@ -168,6 +168,9 @@ public class JsonUtils {
 		match.SMGNum = smgNum;
 		match.zcNum = zcNum;
 		match.hostTeamIndex = hostIndex;
+		if(hostName.contains("(中)")){
+			hostName = hostName.substring(0, hostName.indexOf("(中)"));
+		}
 		match.hostTeamName = hostName;
 		match.hostTeamRed = hostRed;
 		match.hostTeamYellow = hostYellow;

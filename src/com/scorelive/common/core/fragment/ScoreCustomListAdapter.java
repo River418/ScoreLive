@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,26 +66,56 @@ public class ScoreCustomListAdapter extends ScoreListBaseAdapter {
 		}
 		Match match = (Match) getChild(groupPosition, childPosition);
 		int time = Utility.caculateMatchingTime(match.matchStartTime);
-		if (time > 95) {
-//			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
-		} else if (time < 95 && time > 90) {
-			match.matchTime = "下半场90'+";
-		} else if (time <= 90 && time > 45) {
-			match.matchTime = "下半场" + time + "'";
-		} else {
-			match.matchTime = "上半场" + time + "'";
+		switch (match.matchState) {
+		case AppConstants.MatchStatus.UP:
+			if (time > 45) {
+				match.matchTime = "上半场45'+";
+			} else {
+				match.matchTime = "上半场" + time + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.DOWN:
+			if (time > 45) {
+				match.matchTime = "下半场90'+";
+			} else {
+				match.matchTime = "下半场" + (45+time) + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.ADDED:
+			if (time > 30) {
+				match.matchTime = "加时赛120'+";
+			} else {
+				match.matchTime = "加时赛" + (90+time) + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.ENDED:
+			match.matchTime = "比赛结束";
+			break;
+		case AppConstants.MatchStatus.MIDDLE:
+			match.matchTime = "中场休息";
+			break;
+		default:
+			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
+			break;
 		}
 		if (match != null) {
 			int leagueId = match.leagueId;
 			int color = Utility.pickLeagueColor(mContext, leagueId);
 			matchItem.setLeagueColor(color);
 			matchItem.setLeague(match.leagueName);
-			matchItem.setHostName(match.hostTeamName);
-			matchItem.setHostIndex("(" + match.hostTeamIndex + ")");
+			if (TextUtils.isEmpty(match.hostTeamIndex)
+					|| TextUtils.isEmpty(match.visitTeamIndex)) {
+				matchItem.setHostName(match.hostTeamName);
+				matchItem.setVisitName(match.visitTeamName);
+			} else {
+				matchItem.setHostName("(" + match.hostTeamIndex + ")"
+						+ match.hostTeamName);
+				matchItem.setVisitName("(" + match.visitTeamIndex + ")"
+						+ match.visitTeamName);
+			}
 			matchItem.setHostYellow(match.hostTeamYellow);
 			matchItem.setHostRed(match.hostTeamRed);
 			matchItem.setVisitName(match.visitTeamName);
-			matchItem.setVisitIndex("(" + match.visitTeamIndex + ")");
 			matchItem.setVisitYellow(match.visitTeamYellow);
 			matchItem.setVisitRed(match.visitTeamRed);
 			matchItem.setScore(match.hostTeamScore+":"+match.visitTeamScore);

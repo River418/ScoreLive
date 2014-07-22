@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -100,31 +101,63 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 		}
 		Match match = (Match) getChild(groupPosition, childPosition);
 		int time = Utility.caculateMatchingTime(match.matchStartTime);
-		if (time > 95) {
-//			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
-		} else if (time < 95 && time > 90) {
-			match.matchTime = "下半场90'+";
-		} else if (time <= 90 && time > 45) {
-			match.matchTime = "下半场" + time + "'";
-		} else {
-			match.matchTime = "上半场" + time + "'";
+		switch (match.matchState) {
+		case AppConstants.MatchStatus.UP:
+			if (time > 45) {
+				match.matchTime = "上半场45'+";
+			} else {
+				match.matchTime = "上半场" + time + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.DOWN:
+			if (time > 45) {
+				match.matchTime = "下半场90'+";
+			} else {
+				match.matchTime = "下半场" + (45+time) + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.ADDED:
+			if (time > 30) {
+				match.matchTime = "加时赛120'+";
+			} else {
+				match.matchTime = "加时赛" + (90+time) + "'";
+			}
+			break;
+		case AppConstants.MatchStatus.ENDED:
+			match.matchTime = "比赛结束";
+			break;
+		case AppConstants.MatchStatus.MIDDLE:
+			match.matchTime = "中场休息";
+			break;
+		default:
+			match.matchTime = Utility.parseTimeToDate(match.matchStartTime);
+			break;
 		}
 		if (match != null) {
 			int leagueId = match.leagueId;
-			if(!match.leagueColor.equalsIgnoreCase("")){
+			if (!match.leagueColor.equalsIgnoreCase("")) {
 				int color = Color.parseColor(match.leagueColor);
 				matchItem.setLeagueColor(color);
 			}
 			matchItem.setLeague(match.leagueName);
-			matchItem.setHostName(match.hostTeamName);
-			matchItem.setHostIndex("(" + match.hostTeamIndex + ")");
+
+			if (TextUtils.isEmpty(match.hostTeamIndex)
+					|| TextUtils.isEmpty(match.visitTeamIndex)) {
+				matchItem.setHostName(match.hostTeamName);
+				matchItem.setVisitName(match.visitTeamName);
+			} else {
+				matchItem.setHostName("(" + match.hostTeamIndex + ")"
+						+ match.hostTeamName);
+				matchItem.setVisitName("(" + match.visitTeamIndex + ")"
+						+ match.visitTeamName);
+			}
 			matchItem.setHostYellow(match.hostTeamYellow);
 			matchItem.setHostRed(match.hostTeamRed);
-			matchItem.setVisitName(match.visitTeamName);
-			matchItem.setVisitIndex("(" + match.visitTeamIndex + ")");
+
 			matchItem.setVisitYellow(match.visitTeamYellow);
 			matchItem.setVisitRed(match.visitTeamRed);
-			matchItem.setScore(match.hostTeamScore+":"+match.visitTeamScore);
+			matchItem
+					.setScore(match.hostTeamScore + ":" + match.visitTeamScore);
 			matchItem.setTime(match.matchTime);
 			switch (mAdapterType) {
 			case BetType.BJ:
@@ -138,15 +171,15 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 				break;
 			}
 		}
-//		convertView.setOnLongClickListener(new OnLongClickListener(){
-//
-//			@Override
-//			public boolean onLongClick(View v) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//			
-//		});
+		// convertView.setOnLongClickListener(new OnLongClickListener(){
+		//
+		// @Override
+		// public boolean onLongClick(View v) {
+		// // TODO Auto-generated method stub
+		// return false;
+		// }
+		//
+		// });
 
 		return convertView;
 	}
@@ -241,9 +274,7 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 	class MatchItem {
 		TextView league_tv;
 		TextView hostName_tv;
-		TextView hostIndex_tv;
 		TextView visitName_tv;
-		TextView visitIndex_tv;
 		TextView hostYellow_tv;
 		TextView hostRed_tv;
 		TextView visitYellow_tv;
@@ -265,14 +296,12 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 			}
 			View hostView = (View) view.findViewById(R.id.host_team);
 			hostName_tv = (TextView) hostView.findViewById(R.id.team_name);
-			hostIndex_tv = (TextView) hostView.findViewById(R.id.team_index);
 			hostYellow_tv = (TextView) hostView.findViewById(R.id.yellow_card);
 			hostRed_tv = (TextView) hostView.findViewById(R.id.red_card);
 			score_tv = (TextView) view.findViewById(R.id.score);
 			time_tv = (TextView) view.findViewById(R.id.time);
 			View visitView = (View) view.findViewById(R.id.visit_team);
 			visitName_tv = (TextView) visitView.findViewById(R.id.team_name);
-			visitIndex_tv = (TextView) visitView.findViewById(R.id.team_index);
 			visitYellow_tv = (TextView) visitView
 					.findViewById(R.id.yellow_card);
 			visitRed_tv = (TextView) visitView.findViewById(R.id.red_card);
@@ -298,9 +327,9 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 			hostName_tv.setText(name);
 		}
 
-		public void setHostIndex(String index) {
-			hostIndex_tv.setText(index);
-		}
+		// public void setHostIndex(String index) {
+		// hostIndex_tv.setText(index);
+		// }
 
 		public void setHostYellow(String count) {
 			hostYellow_tv.setText(count);
@@ -314,9 +343,9 @@ public class ScoreListBaseAdapter extends BaseExpandableListAdapter {
 			visitName_tv.setText(name);
 		}
 
-		public void setVisitIndex(String index) {
-			visitIndex_tv.setText(index);
-		}
+		// public void setVisitIndex(String index) {
+		// visitIndex_tv.setText(index);
+		// }
 
 		public void setVisitYellow(String count) {
 			visitYellow_tv.setText(count);

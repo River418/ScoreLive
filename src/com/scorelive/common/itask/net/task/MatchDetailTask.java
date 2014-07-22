@@ -11,7 +11,7 @@ public class MatchDetailTask extends INetTask{
 	public MatchDetailTask(int type,long taskId,String id) {
 		super(type,taskId);
 		// TODO Auto-generated constructor stub
-		mUrl = AppConstants.MATCH_DETAIL+"id="+id;
+		mUrl = AppConstants.MATCH_DETAIL+"matchid="+id;
 	}
 
 	@Override
