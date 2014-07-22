@@ -52,23 +52,11 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	private ProgressDialogMe mProgressDialog;
 	private ArrayList<Group> mGroupList;
 	private HashMap<String, ArrayList<Match>> mGroupMatchMap;
-
+	private TimerTask mTimerTask;
 	public ScoreNormalFragment(int type) {
 		mFragmentType = type;
-		updateTimer = new Timer();
 	}
 
-	TimerTask task = new TimerTask() {
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			updateTime();
-			Log.e("refresh time", "我刷新日期了");
-			mHandler.sendEmptyMessage(AppConstants.MsgType.REFRESH_TIME);
-		}
-
-	};
 
 	private final MyHandler mHandler = new MyHandler();
 
@@ -412,7 +400,8 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		for (int i = 0; i < mAdapter.getGroupCount(); i++) {
 			mListView.expandGroup(i);
 		}
-		updateTimer.schedule(task, 1000 * 60, 1000 * 60);
+		updateTimer = new Timer();
+		
 	}
 
 	@Override
@@ -427,13 +416,33 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		default:
 			mAdapter.setData(mUnstartList, mMatchingList, mEndedList);
 		}
+		mTimerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				updateTime();
+				Log.e("refresh time", "我刷新日期了");
+				mHandler.sendEmptyMessage(AppConstants.MsgType.REFRESH_TIME);
+			}
+
+		};
+		updateTimer.schedule(mTimerTask, 1000 * 60, 1000 * 60);
+	}
+	
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		mTimerTask.cancel();
 	}
 
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		updateTimer.cancel();
+		
 	}
 
 	@Override
