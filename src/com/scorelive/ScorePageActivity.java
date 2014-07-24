@@ -205,6 +205,15 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				}
 				mScoreFragmentPageAdapter.notifyDataSetChanged();
 				break;
+			case AppConstants.EventType.UP_OVER:
+				for(Match match:mAllMatchingList){
+					if(match.matchId.equalsIgnoreCase(matchId)){
+						match.matchState = AppConstants.MatchStatus.MIDDLE;
+					}
+					
+				}
+				mScoreFragmentPageAdapter.notifyDataSetChanged();
+				break;
 			case AppConstants.EventType.DOWN_START:
 				for(Match match:mAllMatchingList){
 					if(match.matchId.equalsIgnoreCase(matchId)){
