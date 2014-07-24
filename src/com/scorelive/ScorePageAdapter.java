@@ -120,6 +120,14 @@ public class ScorePageAdapter extends FragmentPagerAdapter {
 		return super.getPageTitle(position);
 	}
 	
+	public void notifyDataSetChanged(){
+			((ScoreNormalFragment)mAllFragment).notifyDataSetChanged();
+			((ScoreNormalFragment)mBJFragment).notifyDataSetChanged();
+			((ScoreNormalFragment)mSMGFragment).notifyDataSetChanged();
+			((ScoreNormalFragment)mZCFragment).notifyDataSetChanged();
+			
+	}
+	
 	public void refreshFragment(int position){
 		((ScoreNormalFragment)getFragment(position)).refreshCustomFragment();
 	}

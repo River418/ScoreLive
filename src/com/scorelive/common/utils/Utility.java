@@ -152,7 +152,7 @@ public class Utility {
 //	}
 
 	public static String parseTimeToDate(String startTime) {
-		return startTime.substring(0, 10);
+		return startTime.substring(5, 16);
 	}
 
 	/**

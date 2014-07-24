@@ -2,7 +2,7 @@ package com.scorelive.module;
 
 public class PushInfo {
 
-	public int id;
+	public String id;
 	public String homeGoal;
 	public String visitGoal;
 	public String time;
@@ -13,6 +13,7 @@ public class PushInfo {
 	public String homeName;
 	public String visitName;
 	public int type;
+	public String sTime;
 	
 	
 }

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.scorelive.common.cache.GroupListCacheHandler;
 import com.scorelive.common.config.AppConstants;
@@ -64,6 +67,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	protected ArrayList<Match> mSMGUnstartList= new ArrayList<Match>(),mSMGMatchingList= new ArrayList<Match>(),mSMGEndedList= new ArrayList<Match>();
 	protected ArrayList<Match> mZCUnstartList= new ArrayList<Match>(),mZCMatchingList= new ArrayList<Match>(),mZCEndedList= new ArrayList<Match>();
 
+	private IntentFilter mUpdateFilter;
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
 		// TODO Auto-generated method stub
@@ -168,10 +172,98 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		super.onPause();
 	}
 
+	private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver(){
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			int eventType = intent.getIntExtra("type", 0);
+			String sTime = intent.getStringExtra("stime");
+			String matchId = intent.getStringExtra("matchId");
+			switch(eventType){
+			case AppConstants.EventType.UP_START://上半场开始，将比赛从未开始队列移动到进行中队列，并维护
+				for(Match match:mAllUnstartList){
+					if(match.matchId.equalsIgnoreCase(matchId)){
+						removeFromUnstartList(match);
+						match.matchState = AppConstants.MatchStatus.UP;
+						match.matchStartTime = sTime;
+						String typeList = match.matchBet;
+						String[] typeArray = null;
+						if (typeList.contains(",")) {
+							typeArray = typeList.split(",");
+							for (int i = 0; i < typeArray.length; i++) {
+								addMatchToBetList(Integer.valueOf(typeArray[i]), match);
+							}
+						} else if(!typeList.equalsIgnoreCase("")){
+							addMatchToBetList(Integer.valueOf(typeList), match);
+						}
+						addMatchToAllList(match);
+						mAllUnstartList.remove(match);
+						break;
+					}
+					
+				}
+				mScoreFragmentPageAdapter.notifyDataSetChanged();
+				break;
+			case AppConstants.EventType.DOWN_START:
+				for(Match match:mAllMatchingList){
+					if(match.matchId.equalsIgnoreCase(matchId)){
+						match.matchState = AppConstants.MatchStatus.DOWN;
+						match.matchStartTime = sTime;
+					}
+					
+				}
+				mScoreFragmentPageAdapter.notifyDataSetChanged();
+				break;
+			case AppConstants.EventType.ALL_OVER:
+				for(Match match:mAllMatchingList){
+					removeFromMatchingList(match);
+					if(match.matchId.equalsIgnoreCase(matchId)){
+						Toast.makeText(mContext, match.hostTeamName+":比赛结束了", Toast.LENGTH_SHORT).show();
+						match.matchState = AppConstants.MatchStatus.ENDED;
+						String typeList = match.matchBet;
+						String[] typeArray = null;
+						if (typeList.contains(",")) {
+							typeArray = typeList.split(",");
+							for (int i = 0; i < typeArray.length; i++) {
+								addMatchToBetList(Integer.valueOf(typeArray[i]), match);
+							}
+						} else if(!typeList.equalsIgnoreCase("")){
+							addMatchToBetList(Integer.valueOf(typeList), match);
+						}
+						addMatchToAllList(match);
+						mAllMatchingList.remove(match);
+						break;
+					}
+					
+				}
+				mScoreFragmentPageAdapter.notifyDataSetChanged();
+				break;
+			}
+		}
+		
+	};
+	
+	private void removeFromUnstartList(Match match){
+		mBJUnstartList.remove(match);
+		mZCUnstartList.remove(match);
+		mSMGUnstartList.remove(match);
+	}
+	
+	private void removeFromMatchingList(Match match){
+		mBJMatchingList.remove(match);
+		mZCMatchingList.remove(match);
+		mSMGMatchingList.remove(match);
+	}
+	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		if(mUpdateFilter == null){
+			mUpdateFilter = new IntentFilter(AppConstants.ActionType.UPDATE_MATCH_INFO);
+		}
+		registerReceiver(mUpdateReceiver, mUpdateFilter);
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class MatchListCacheHandler {
 	}
 
 	/**
-	 * 处理比赛列表
+	 * 初始化时处理比赛列表
 	 */
 	private void handleMatchList() {
 		clearMatchCache();

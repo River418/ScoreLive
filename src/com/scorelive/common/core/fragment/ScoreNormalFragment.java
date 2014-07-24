@@ -131,6 +131,12 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 
 	}
 
+	public void notifyDataSetChanged(){
+		if(mAdapter != null){
+			mAdapter.notifyDataSetChanged();
+		}
+	}
+	
 	@Override
 	public void setData(ArrayList<Match> unstart, ArrayList<Match> matching,
 			ArrayList<Match> ended) {
@@ -421,7 +427,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				updateTime();
+//				updateTime();
 				Log.e("refresh time", "我刷新日期了");
 				mHandler.sendEmptyMessage(AppConstants.MsgType.REFRESH_TIME);
 			}

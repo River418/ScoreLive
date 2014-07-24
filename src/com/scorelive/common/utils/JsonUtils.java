@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.scorelive.module.Match;
 import com.scorelive.module.MatchAccident;
 import com.scorelive.module.PushInfo;
@@ -49,7 +51,7 @@ public class JsonUtils {
 				JSONObject content = array.getJSONObject(i);
 				int eventType = content.optInt("eventType");
 				JSONObject object = content.optJSONObject("matchEvent");
-				int id = object.optInt("matchId");
+				String id = object.optString("matchId");
 				String homeGoal = object.optString("hg");
 				String visitGoal = object.optString("vg");
 				String time = object.optString("rt");
@@ -59,6 +61,8 @@ public class JsonUtils {
 				int yellowVisiting = object.optInt("vyc");
 				String homeName = object.optString("hn");
 				String visitName = object.optString("vn");
+				String sTime = object.optString("rt");
+				Log.e("时间",sTime);
 				match.homeName = homeName;
 				match.id = id;
 				match.time = time;
@@ -71,6 +75,7 @@ public class JsonUtils {
 				match.homeName = homeName;
 				match.visitName = visitName;
 				match.type = eventType;
+				match.sTime = sTime;
 				list.add(match);
 			}
 		} catch (JSONException e1) {

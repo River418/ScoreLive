@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.scorelive.MainActivity;
 import com.scorelive.R;
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.PushInfo;
 import com.scorelive.ui.widget.ScoreToast;
@@ -115,37 +116,56 @@ public class PushReceiver extends XGPushBaseReceiver {
 		String content = message.getContent();
 		List<PushInfo> list = JsonUtils.pushJson2Match(content);
 		for (PushInfo info : list) {
-			NotificationManager nm = (NotificationManager) context
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-			Intent noticeIntent = new Intent();
-			String tickerText = "";
-			PendingIntent contentIntent = null;
-			StringBuffer sb = new StringBuffer();
-			String updateTitle = null;
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(
-					context.getApplicationContext());
-			builder.setWhen(System.currentTimeMillis());
-			builder.setAutoCancel(true);
+			Intent intent = new Intent(AppConstants.ActionType.UPDATE_MATCH_INFO);
+			intent.putExtra("type", info.type);
+			intent.putExtra("stime", info.sTime);
+			intent.putExtra("matchId", info.id);
+			switch (info.type) {
+			case AppConstants.EventType.UP_START:
+			case AppConstants.EventType.DOWN_START:
+			case AppConstants.EventType.UP_OVER:
+			case AppConstants.EventType.DOWN_OVER:
+			case AppConstants.EventType.ADDED_START:
+			case AppConstants.EventType.ADDED_OVER:
+			case AppConstants.EventType.ALL_OVER:
+				context.sendBroadcast(intent);
+				break;
+			default:
+				NotificationManager nm = (NotificationManager) context
+						.getSystemService(Context.NOTIFICATION_SERVICE);
+				Intent noticeIntent = new Intent();
+				String tickerText = "";
+				PendingIntent contentIntent = null;
+				StringBuffer sb = new StringBuffer();
+				String updateTitle = null;
+				NotificationCompat.Builder builder = new NotificationCompat.Builder(
+						context.getApplicationContext());
+				builder.setWhen(System.currentTimeMillis());
+				builder.setAutoCancel(true);
 
-			tickerText = message.getTitle();
-			builder.setTicker(tickerText);
-			updateTitle = info.homeName + "vs" + info.visitName;
-			builder.setSmallIcon(R.drawable.ic_launcher);
-			builder.setContentTitle(updateTitle);
-			builder.setContentText(info.homeGoal + ":" + info.visitGoal);
-			noticeIntent.setClass(context, MainActivity.class);
-			noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			// notification = new Notification(R.drawable.icon_notify,
-			// tickerText, System.currentTimeMillis());
-			contentIntent = PendingIntent.getActivity(context, info.id,
-					noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-			builder.setContentIntent(contentIntent);
-			Notification notification = builder.build();
-			nm.notify(info.id, notification);
-			ScoreToast.makeText(context,
-					updateTitle + " " + info.homeGoal + ":" + info.visitGoal,
-					Toast.LENGTH_LONG).show();
+				tickerText = message.getTitle();
+				builder.setTicker(tickerText);
+				updateTitle = info.homeName + "vs" + info.visitName;
+				builder.setSmallIcon(R.drawable.ic_launcher);
+				builder.setContentTitle(updateTitle);
+				builder.setContentText(info.homeGoal + ":" + info.visitGoal);
+				noticeIntent.setClass(context, MainActivity.class);
+				noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				// notification = new Notification(R.drawable.icon_notify,
+				// tickerText, System.currentTimeMillis());
+				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.id),
+						noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				builder.setContentIntent(contentIntent);
+				Notification notification = builder.build();
+				nm.notify(Integer.valueOf(info.id), notification);
+				ScoreToast.makeText(
+						context,
+						updateTitle + " " + info.homeGoal + ":"
+								+ info.visitGoal, Toast.LENGTH_LONG).show();
+				break;
+			}
+
 		}
 	}
 
