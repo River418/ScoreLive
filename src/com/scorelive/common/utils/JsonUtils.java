@@ -42,12 +42,12 @@ public class JsonUtils {
 	private static final String LEAGUECOLOR = "lc";
 	private static final String RUNTIME = "rTime";
 
-	public static List<PushInfo> pushJson2Match(String str) {
-		List<PushInfo> list = new ArrayList<PushInfo>();
+	public static ArrayList<Match> pushJson2Match(String str) {
+		ArrayList<Match> list = new ArrayList<Match>();
 		try {
 			JSONArray array = new JSONArray(str);
 			for(int i = 0;i<array.length();i++){
-				PushInfo match = new PushInfo();
+				Match match = new Match();
 				JSONObject content = array.getJSONObject(i);
 				int eventType = content.optInt("eventType");
 				JSONObject object = content.optJSONObject("matchEvent");
@@ -63,19 +63,19 @@ public class JsonUtils {
 				String visitName = object.optString("vn");
 				String sTime = object.optString("rt");
 				Log.e("时间",sTime);
-				match.homeName = homeName;
-				match.id = id;
-				match.time = time;
-				match.redHome = redHome;
-				match.redVisiting = redVisiting;
-				match.yellowHome = yellowHome;
-				match.yellowVisiting = yellowVisiting;
-				match.homeGoal = homeGoal;
-				match.visitGoal = visitGoal;
-				match.homeName = homeName;
-				match.visitName = visitName;
-				match.type = eventType;
-				match.sTime = sTime;
+				match.hostTeamName = homeName;
+				match.matchId = id;
+//				match.time = time;
+				match.hostTeamRed = String.valueOf(redHome);
+				match.visitTeamRed = String.valueOf(redVisiting);
+				match.hostTeamYellow = String.valueOf(yellowHome);
+				match.visitTeamYellow = String.valueOf(yellowVisiting);
+				match.hostTeamScore = homeGoal;
+				match.visitTeamScore = visitGoal;
+//				match.homeName = homeName;
+				match.visitTeamName = visitName;
+				match.matchState = eventType;
+				match.matchStartTime = sTime;
 				list.add(match);
 			}
 		} catch (JSONException e1) {

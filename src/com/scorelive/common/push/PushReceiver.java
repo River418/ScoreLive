@@ -1,12 +1,13 @@
 package com.scorelive.common.push;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import com.scorelive.MainActivity;
 import com.scorelive.R;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.utils.JsonUtils;
-import com.scorelive.module.PushInfo;
+import com.scorelive.module.Match;
 import com.scorelive.ui.widget.ScoreToast;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -114,13 +115,13 @@ public class PushReceiver extends XGPushBaseReceiver {
 		String text = "收到消息:" + message.toString();
 		Log.e("push", text);
 		String content = message.getContent();
-		List<PushInfo> list = JsonUtils.pushJson2Match(content);
-		for (PushInfo info : list) {
-			Intent intent = new Intent(AppConstants.ActionType.UPDATE_MATCH_INFO);
-			intent.putExtra("type", info.type);
-			intent.putExtra("stime", info.sTime);
-			intent.putExtra("matchId", info.id);
-			switch (info.type) {
+		ArrayList<Match> list = JsonUtils.pushJson2Match(content);
+		Intent intent = new Intent(AppConstants.ActionType.UPDATE_MATCH_INFO);
+		for (Match info : list) {
+//			intent.putExtra("type", info.type);
+//			intent.putExtra("stime", info.sTime);
+//			intent.putExtra("matchId", info.id);
+			switch (info.matchState) {
 			case AppConstants.EventType.UP_START:
 			case AppConstants.EventType.DOWN_START:
 			case AppConstants.EventType.UP_OVER:
@@ -128,7 +129,6 @@ public class PushReceiver extends XGPushBaseReceiver {
 			case AppConstants.EventType.ADDED_START:
 			case AppConstants.EventType.ADDED_OVER:
 			case AppConstants.EventType.ALL_OVER:
-				context.sendBroadcast(intent);
 				break;
 			default:
 				NotificationManager nm = (NotificationManager) context
@@ -145,28 +145,33 @@ public class PushReceiver extends XGPushBaseReceiver {
 
 				tickerText = message.getTitle();
 				builder.setTicker(tickerText);
-				updateTitle = info.homeName + "vs" + info.visitName;
+				updateTitle = info.hostTeamName + "vs" + info.visitTeamName;
 				builder.setSmallIcon(R.drawable.ic_launcher);
 				builder.setContentTitle(updateTitle);
-				builder.setContentText(info.homeGoal + ":" + info.visitGoal);
+				builder.setContentText(info.hostTeamScore + ":" + info.visitTeamScore);
 				noticeIntent.setClass(context, MainActivity.class);
 				noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
 				// notification = new Notification(R.drawable.icon_notify,
 				// tickerText, System.currentTimeMillis());
-				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.id),
+				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.hostTeamScore),
 						noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.setContentIntent(contentIntent);
 				Notification notification = builder.build();
-				nm.notify(Integer.valueOf(info.id), notification);
+				nm.notify(Integer.valueOf(info.matchId), notification);
 				ScoreToast.makeText(
 						context,
-						updateTitle + " " + info.homeGoal + ":"
-								+ info.visitGoal, Toast.LENGTH_LONG).show();
+						updateTitle + " " + info.hostTeamScore + ":"
+								+ info.visitTeamScore, Toast.LENGTH_LONG).show();
 				break;
 			}
 
 		}
+		Bundle bundle = new Bundle();
+		bundle.putParcelableArrayList("push_info", list);
+//		intent.putExtra("push_info", list);
+		intent.putExtras(bundle);
+		context.sendBroadcast(intent);
 	}
 
 	/**

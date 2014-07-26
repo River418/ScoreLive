@@ -62,12 +62,21 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	private ArrayList<Group> mGroupList;
 	private DatePickerDialog mDatePickerDialog;
 	private Context mContext;
-	protected ArrayList<Match> mAllUnstartList = new ArrayList<Match>(),mAllMatchingList= new ArrayList<Match>(),mAllEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mBJUnstartList= new ArrayList<Match>(),mBJMatchingList= new ArrayList<Match>(),mBJEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mSMGUnstartList= new ArrayList<Match>(),mSMGMatchingList= new ArrayList<Match>(),mSMGEndedList= new ArrayList<Match>();
-	protected ArrayList<Match> mZCUnstartList= new ArrayList<Match>(),mZCMatchingList= new ArrayList<Match>(),mZCEndedList= new ArrayList<Match>();
+	protected ArrayList<Match> mAllUnstartList = new ArrayList<Match>(),
+			mAllMatchingList = new ArrayList<Match>(),
+			mAllEndedList = new ArrayList<Match>();
+	protected ArrayList<Match> mBJUnstartList = new ArrayList<Match>(),
+			mBJMatchingList = new ArrayList<Match>(),
+			mBJEndedList = new ArrayList<Match>();
+	protected ArrayList<Match> mSMGUnstartList = new ArrayList<Match>(),
+			mSMGMatchingList = new ArrayList<Match>(),
+			mSMGEndedList = new ArrayList<Match>();
+	protected ArrayList<Match> mZCUnstartList = new ArrayList<Match>(),
+			mZCMatchingList = new ArrayList<Match>(),
+			mZCEndedList = new ArrayList<Match>();
 
 	private IntentFilter mUpdateFilter;
+
 	@Override
 	protected void onCreate(Bundle savedInstantceState) {
 		// TODO Auto-generated method stub
@@ -79,7 +88,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		// .getNewTaskId(), "20140419");
 		// task.setListener(this);
 		initMatchList(Utility.getDateOfToday("yyyyMMdd"));
-//		initGroupList();
+		// initGroupList();
 		mGroupList = GroupListCacheHandler.getInstance().getGroupCache();
 		// ThreadManager.getInstance().addTask(task);
 		// ScoreDBHandler.getInstance().addGroup("自定义分组1");
@@ -135,14 +144,19 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								int year = mDatePickerDialog.getDatePicker().getYear();
-								int month = mDatePickerDialog.getDatePicker().getMonth()+1;
-								int day = mDatePickerDialog.getDatePicker().getDayOfMonth();
+								int year = mDatePickerDialog.getDatePicker()
+										.getYear();
+								int month = mDatePickerDialog.getDatePicker()
+										.getMonth() + 1;
+								int day = mDatePickerDialog.getDatePicker()
+										.getDayOfMonth();
 								String date = null;
-								if(month<10){
-									date = year+"0"+month+day;
-								}else{
-									date = String.valueOf(year)+String.valueOf(month)+String.valueOf(day);
+								if (month < 10) {
+									date = year + "0" + month + day;
+								} else {
+									date = String.valueOf(year)
+											+ String.valueOf(month)
+											+ String.valueOf(day);
 								}
 								initMatchList(date);
 							}
@@ -172,105 +186,151 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		super.onPause();
 	}
 
-	private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver(){
+	private BroadcastReceiver mUpdateReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			int eventType = intent.getIntExtra("type", 0);
-			String sTime = intent.getStringExtra("stime");
-			String matchId = intent.getStringExtra("matchId");
-			switch(eventType){
-			case AppConstants.EventType.UP_START://上半场开始，将比赛从未开始队列移动到进行中队列，并维护
-				for(Match match:mAllUnstartList){
-					if(match.matchId.equalsIgnoreCase(matchId)){
-						removeFromUnstartList(match);
-						match.matchState = AppConstants.MatchStatus.UP;
-						match.matchStartTime = sTime;
-						String typeList = match.matchBet;
-						String[] typeArray = null;
-						if (typeList.contains(",")) {
-							typeArray = typeList.split(",");
-							for (int i = 0; i < typeArray.length; i++) {
-								addMatchToBetList(Integer.valueOf(typeArray[i]), match);
+			// int eventType = intent.getIntExtra("type", 0);
+			// String sTime = intent.getStringExtra("stime");
+			// String matchId = intent.getStringExtra("matchId");
+			ArrayList<Match> list = intent
+					.getParcelableArrayListExtra("push_info");
+			for (Match pushInfo : list) {
+				int eventType = pushInfo.matchState;
+				switch (eventType) {
+				case AppConstants.EventType.UP_START:// 上半场开始，将比赛从未开始队列移动到进行中队列，并维护
+					for (Match match : mAllUnstartList) {
+						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+							removeFromUnstartList(match);
+							match.matchState = AppConstants.MatchStatus.UP;
+							match.matchStartTime = pushInfo.matchStartTime;
+							String typeList = match.matchBet;
+							String[] typeArray = null;
+							if (typeList.contains(",")) {
+								typeArray = typeList.split(",");
+								for (int i = 0; i < typeArray.length; i++) {
+									addMatchToBetList(
+											Integer.valueOf(typeArray[i]),
+											match);
+								}
+							} else if (!typeList.equalsIgnoreCase("")) {
+								addMatchToBetList(Integer.valueOf(typeList),
+										match);
 							}
-						} else if(!typeList.equalsIgnoreCase("")){
-							addMatchToBetList(Integer.valueOf(typeList), match);
+							addMatchToAllList(match);
+							mAllUnstartList.remove(match);
+							break;
 						}
-						addMatchToAllList(match);
-						mAllUnstartList.remove(match);
-						break;
+
 					}
-					
-				}
-				mScoreFragmentPageAdapter.notifyDataSetChanged();
-				break;
-			case AppConstants.EventType.UP_OVER:
-				for(Match match:mAllMatchingList){
-					if(match.matchId.equalsIgnoreCase(matchId)){
-						match.matchState = AppConstants.MatchStatus.MIDDLE;
+					mScoreFragmentPageAdapter.notifyDataSetChanged();
+					break;
+				case AppConstants.EventType.UP_OVER:
+					for (Match match : mAllMatchingList) {
+						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+							match.matchState = AppConstants.MatchStatus.MIDDLE;
+						}
+
 					}
-					
-				}
-				mScoreFragmentPageAdapter.notifyDataSetChanged();
-				break;
-			case AppConstants.EventType.DOWN_START:
-				for(Match match:mAllMatchingList){
-					if(match.matchId.equalsIgnoreCase(matchId)){
-						match.matchState = AppConstants.MatchStatus.DOWN;
-						match.matchStartTime = sTime;
+					mScoreFragmentPageAdapter.notifyDataSetChanged();
+					break;
+				case AppConstants.EventType.DOWN_START:
+					for (Match match : mAllMatchingList) {
+						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+							match.matchState = AppConstants.MatchStatus.DOWN;
+							match.matchStartTime = pushInfo.matchStartTime;
+						}
+
 					}
-					
-				}
-				mScoreFragmentPageAdapter.notifyDataSetChanged();
-				break;
-			case AppConstants.EventType.ALL_OVER:
-				for(Match match:mAllMatchingList){
-					removeFromMatchingList(match);
-					if(match.matchId.equalsIgnoreCase(matchId)){
-						Toast.makeText(mContext, match.hostTeamName+":比赛结束了", Toast.LENGTH_SHORT).show();
-						match.matchState = AppConstants.MatchStatus.ENDED;
-						String typeList = match.matchBet;
-						String[] typeArray = null;
-						if (typeList.contains(",")) {
-							typeArray = typeList.split(",");
-							for (int i = 0; i < typeArray.length; i++) {
-								addMatchToBetList(Integer.valueOf(typeArray[i]), match);
+					mScoreFragmentPageAdapter.notifyDataSetChanged();
+					break;
+				case AppConstants.EventType.ALL_OVER:
+					for (Match match : mAllMatchingList) {
+						removeFromMatchingList(match);
+						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+							Toast.makeText(mContext,
+									match.hostTeamName + ":比赛结束了",
+									Toast.LENGTH_SHORT).show();
+							match.matchState = AppConstants.MatchStatus.ENDED;
+							String typeList = match.matchBet;
+							String[] typeArray = null;
+							if (typeList.contains(",")) {
+								typeArray = typeList.split(",");
+								for (int i = 0; i < typeArray.length; i++) {
+									addMatchToBetList(
+											Integer.valueOf(typeArray[i]),
+											match);
+								}
+							} else if (!typeList.equalsIgnoreCase("")) {
+								addMatchToBetList(Integer.valueOf(typeList),
+										match);
 							}
-						} else if(!typeList.equalsIgnoreCase("")){
-							addMatchToBetList(Integer.valueOf(typeList), match);
+							addMatchToAllList(match);
+							mAllMatchingList.remove(match);
+							break;
 						}
-						addMatchToAllList(match);
-						mAllMatchingList.remove(match);
-						break;
+
 					}
-					
+					mScoreFragmentPageAdapter.notifyDataSetChanged();
+					break;
+				default:
+					for (Match match : mAllMatchingList) {
+//						removeFromMatchingList(match);
+						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+//							match.matchState = AppConstants.MatchStatus.ENDED;
+							match.hostTeamScore = pushInfo.hostTeamScore;
+							match.visitTeamScore = pushInfo.visitTeamScore;
+							match.hostTeamYellow = pushInfo.hostTeamYellow;
+							match.visitTeamYellow = pushInfo.visitTeamYellow;
+							match.hostTeamRed = pushInfo.hostTeamRed;
+							match.visitTeamRed = pushInfo.visitTeamRed;
+//							String typeList = match.matchBet;
+//							String[] typeArray = null;
+//							if (typeList.contains(",")) {
+//								typeArray = typeList.split(",");
+//								for (int i = 0; i < typeArray.length; i++) {
+//									addMatchToBetList(
+//											Integer.valueOf(typeArray[i]),
+//											match);
+//								}
+//							} else if (!typeList.equalsIgnoreCase("")) {
+//								addMatchToBetList(Integer.valueOf(typeList),
+//										match);
+//							}
+//							addMatchToAllList(match);
+//							mAllMatchingList.remove(match);
+//							break;
+						}
+
+					}
+					mScoreFragmentPageAdapter.notifyDataSetChanged();
+					break;
 				}
-				mScoreFragmentPageAdapter.notifyDataSetChanged();
-				break;
 			}
 		}
-		
+
 	};
-	
-	private void removeFromUnstartList(Match match){
+
+	private void removeFromUnstartList(Match match) {
 		mBJUnstartList.remove(match);
 		mZCUnstartList.remove(match);
 		mSMGUnstartList.remove(match);
 	}
-	
-	private void removeFromMatchingList(Match match){
+
+	private void removeFromMatchingList(Match match) {
 		mBJMatchingList.remove(match);
 		mZCMatchingList.remove(match);
 		mSMGMatchingList.remove(match);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if(mUpdateFilter == null){
-			mUpdateFilter = new IntentFilter(AppConstants.ActionType.UPDATE_MATCH_INFO);
+		if (mUpdateFilter == null) {
+			mUpdateFilter = new IntentFilter(
+					AppConstants.ActionType.UPDATE_MATCH_INFO);
 		}
 		registerReceiver(mUpdateReceiver, mUpdateFilter);
 	}
@@ -348,10 +408,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
 				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
 				break;
-//			case ScorePageAdapter.CUSTOMIZE:
-//				fragment = mScoreFragmentPageAdapter.getFragment(i);
-//				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
-//				break;
+			// case ScorePageAdapter.CUSTOMIZE:
+			// fragment = mScoreFragmentPageAdapter.getFragment(i);
+			// fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
+			// break;
 			}
 		}
 	}
@@ -374,10 +434,11 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		case ITask.TYPE_MATCH_LIST:
 			try {
 				String str = Http.getString(is);
-				Log.e("json",str);
+				Log.e("json", str);
 				mAllList = JsonUtils.json2MatchList(str);
 				handleMatchList();
-				mHandler.obtainMessage(AppConstants.MsgType.GET_SCORE_LIST_SUCCESS)
+				mHandler.obtainMessage(
+						AppConstants.MsgType.GET_SCORE_LIST_SUCCESS)
 						.sendToTarget();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -387,10 +448,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		}
 	}
 
-	public void clearMatchCache(){
+	public void clearMatchCache() {
 		mAllMatchingList.clear();
 	}
-	
+
 	private void handleMatchList() {
 		clearMatchCache();
 		for (Match match : mAllList) {
@@ -401,7 +462,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 				for (int i = 0; i < typeArray.length; i++) {
 					addMatchToBetList(Integer.valueOf(typeArray[i]), match);
 				}
-			} else if(!typeList.equalsIgnoreCase("")){
+			} else if (!typeList.equalsIgnoreCase("")) {
 				addMatchToBetList(Integer.valueOf(typeList), match);
 			}
 			addMatchToAllList(match);
