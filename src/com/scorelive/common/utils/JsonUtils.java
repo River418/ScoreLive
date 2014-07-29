@@ -162,6 +162,7 @@ public class JsonUtils {
 		String runTime = object.optString(RUNTIME);
 		Match match = new Match();
 		match.matchTime = runTime;
+		match.matchOfficalTime = runTime;
 		match.hostTeamHalfScore = homeHalfScore;
 		match.visitTeamHalfScore = visitHalfScore;
 		match.hostTeamScore = hostScore;
@@ -197,15 +198,15 @@ public class JsonUtils {
 		ArrayList<MatchAccident> list = new ArrayList<MatchAccident>();
 		try {
 			JSONObject object = new JSONObject(str);
-			JSONArray array = object.optJSONArray("smalist");
+			JSONArray array = object.optJSONArray("medSet");
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject accident = array.getJSONObject(i);
 				MatchAccident aMatch = new MatchAccident();
 				aMatch.accident_content = accident
 						.optString("accident_content");
-				aMatch.accident_time = accident.optString("accident_time");
-				aMatch.accident_type = accident.optInt("accident_type");
-				aMatch.accident_team = accident.optInt("which_team");
+				aMatch.accident_time = accident.optString("eventTime");
+				aMatch.accident_type = accident.optInt("eventType");
+				aMatch.accident_team = accident.optInt("owner");
 				list.add(aMatch);
 			}
 		} catch (JSONException e) {

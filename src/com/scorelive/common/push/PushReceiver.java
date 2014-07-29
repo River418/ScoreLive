@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.scorelive.MainActivity;
@@ -157,6 +158,8 @@ public class PushReceiver extends XGPushBaseReceiver {
 				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.hostTeamScore),
 						noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.setContentIntent(contentIntent);
+				RemoteViews view = new RemoteViews(context.getPackageName(),R.layout.score_match_item);
+				builder.setContent(view);
 				Notification notification = builder.build();
 				nm.notify(Integer.valueOf(info.matchId), notification);
 				ScoreToast.makeText(

@@ -249,6 +249,8 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 					for (Match match : mAllMatchingList) {
 						removeFromMatchingList(match);
 						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
+							match.matchState = AppConstants.MatchStatus.ENDED;
+							match.matchTime = "比赛结束";
 							Toast.makeText(mContext,
 									match.hostTeamName + ":比赛结束了",
 									Toast.LENGTH_SHORT).show();

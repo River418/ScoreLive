@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,13 +109,23 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 	private void processData() {
 
 		mTitleTV.setText(mMatch.leagueName);
-		mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
-				+ mMatch.hostTeamName);
-		mVisitNameTV.setText(mMatch.visitTeamName + "(" + mMatch.visitTeamIndex
-				+ ")");
-		mStartTimeTV.setText(mMatch.matchStartTime);
+		if (TextUtils.isEmpty(mMatch.hostTeamIndex)
+				|| TextUtils.isEmpty(mMatch.visitTeamIndex)) {
+			mHostNameTV.setText(mMatch.hostTeamName);
+			mVisitNameTV.setText(mMatch.visitTeamName);
+		} else {
+			mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
+					+ mMatch.hostTeamName);
+			mVisitNameTV.setText(mMatch.visitTeamName+"(" + mMatch.visitTeamIndex + ")");
+		}
+//		mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
+//				+ mMatch.hostTeamName);
+//		mVisitNameTV.setText(mMatch.visitTeamName + "(" + mMatch.visitTeamIndex
+//				+ ")");
+		mStartTimeTV.setText(mMatch.matchOfficalTime);
 		mHostScoreTV.setText(mMatch.hostTeamScore);
 		mVisitScoreTV.setText(mMatch.visitTeamScore);
+		mStatusTV.setText(mMatch.matchTime);
 	}
 
 	private final MyHandler mHandler = new MyHandler();

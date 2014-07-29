@@ -7,7 +7,11 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -102,15 +106,15 @@ public class Utility {
 		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
 		int day = Calendar.getInstance().get(Calendar.DATE);
 		String mm = null;
-		if(month<10){
-			mm = "0"+month;
-		}else{
+		if (month < 10) {
+			mm = "0" + month;
+		} else {
 			mm = String.valueOf(month);
 		}
 		if (format.equalsIgnoreCase("yyyy-MM-dd")) {
 			return year + "-" + mm + "-" + day;
 		} else {
-			Log.e("date",year + "" + mm + "" + day);
+			Log.e("date", year + "" + mm + "" + day);
 			return year + "" + mm + "" + day;
 		}
 	}
@@ -118,11 +122,12 @@ public class Utility {
 	public static int caculateMatchingTime(String startTime) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		// SimpleDateFormat format = new SimpleDateFormat("hh:mm")
-//		int year = Calendar.getInstance().get(Calendar.YEAR);
-//		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
-//		int day = Calendar.getInstance().get(Calendar.DATE)-1;
+		// int year = Calendar.getInstance().get(Calendar.YEAR);
+		// int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+		// int day = Calendar.getInstance().get(Calendar.DATE)-1;
 		try {
-//			long millStartTime = format.parse(year +"-"+ month+"-"+day+" "+startTime+":00").getTime();
+			// long millStartTime = format.parse(year +"-"+
+			// month+"-"+day+" "+startTime+":00").getTime();
 			long millStartTime = format.parse(startTime).getTime();
 			long time = Calendar.getInstance().getTimeInMillis()
 					- millStartTime;
@@ -142,14 +147,14 @@ public class Utility {
 		}
 		return -1;
 	}
-	
-//	public static String updateMatchingTime(String startTime){
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//		// SimpleDateFormat format = new SimpleDateFormat("hh:mm")
-//		int year = Calendar.getInstance().get(Calendar.YEAR);
-//		int month = Calendar.getInstance().get(Calendar.MONTH)+1;
-//		int day = Calendar.getInstance().get(Calendar.DATE);
-//	}
+
+	// public static String updateMatchingTime(String startTime){
+	// SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	// // SimpleDateFormat format = new SimpleDateFormat("hh:mm")
+	// int year = Calendar.getInstance().get(Calendar.YEAR);
+	// int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+	// int day = Calendar.getInstance().get(Calendar.DATE);
+	// }
 
 	public static String parseTimeToDate(String startTime) {
 		return startTime.substring(5, 16);
@@ -224,6 +229,38 @@ public class Utility {
 
 	public static Bitmap getBitmapFromFile(String path) {
 		return BitmapFactory.decodeFile(path);
+	}
+
+	
+	/**
+	 * 判断App是否在后台
+	 * @param context
+	 * @return
+	 */
+	public static boolean isBackgroundRunning(Context context) {
+		ActivityManager activityManager = (ActivityManager) context
+				.getSystemService(context.ACTIVITY_SERVICE);
+		KeyguardManager keyguardManager = (KeyguardManager) context
+				.getSystemService(context.KEYGUARD_SERVICE);
+
+		if (activityManager == null)
+			return false;
+		// get running application processes
+		List<ActivityManager.RunningAppProcessInfo> processList = activityManager
+				.getRunningAppProcesses();
+		for (ActivityManager.RunningAppProcessInfo process : processList) {
+			if (process.processName.equals(context.getPackageName())) {
+				boolean isBackground = process.importance != RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+						&& process.importance != RunningAppProcessInfo.IMPORTANCE_VISIBLE;
+				boolean isLockedState = keyguardManager
+						.inKeyguardRestrictedInputMode();
+				if (isBackground || isLockedState)
+					return true;
+				else
+					return false;
+			}
+		}
+		return false;
 	}
 
 }

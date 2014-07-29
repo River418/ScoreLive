@@ -32,6 +32,7 @@ public class Match implements Parcelable {
 	public String zcP;//足彩期数
 	public int groupId;//分组id
 	public String matchTime;//比赛进行时间
+	public String matchOfficalTime;//官方比赛时间
 
 	@Override
 	public int describeContents() {
@@ -69,7 +70,7 @@ public class Match implements Parcelable {
 		dest.writeString(hostTeamHalfScore);
 		dest.writeString(visitTeamHalfScore);
 		dest.writeString(matchTime);
-		
+		dest.writeString(matchOfficalTime);
 	}
 
 	
@@ -106,6 +107,7 @@ public class Match implements Parcelable {
 			match.hostTeamHalfScore = source.readString();
 			match.visitTeamHalfScore = source.readString();
 			match.matchTime = source.readString();
+			match.matchOfficalTime = source.readString();
 			return match;
 		}
 

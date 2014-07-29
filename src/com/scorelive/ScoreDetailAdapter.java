@@ -62,6 +62,8 @@ public class ScoreDetailAdapter extends BaseAdapter {
 		View visitView = convertView.findViewById(R.id.visit_accident);
 		TextView accidentContent = null;
 		ImageView accidentIMG = null;
+		TextView accidentTime = (TextView)convertView.findViewById(R.id.accident_time);
+		accidentTime.setText(accident.accident_time);
 		switch (accident.accident_team) {
 		case 0:// 客队事件
 			homeView.setVisibility(View.INVISIBLE);
