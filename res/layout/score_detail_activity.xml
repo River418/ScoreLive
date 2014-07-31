@@ -78,7 +78,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="7dp"
-                android:text="04-08 23:00"
                 android:textColor="@color/white"
                 android:textSize="11dp"
                 android:textStyle="bold" />
@@ -90,7 +89,6 @@
                 android:layout_below="@id/start_time"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="7dp"
-                android:text="下半场 90+"
                 android:textColor="@color/white"
                 android:textSize="11dp" >
             </TextView>
@@ -138,7 +136,6 @@
                 android:layout_below="@id/score"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="半场 1:1"
                 android:textColor="@color/white"
                 android:textSize="11dp" />
         </RelativeLayout>

@@ -94,8 +94,13 @@ public class AppConstants {
 		public static final int MATCH_INTERUPTE= 18;//比赛腰斩
 		public static final int MATCH_UNDECIDE= 19;//比赛待定
 		public static final int MATCH_CANCEL= 20;//比赛取消
-		public static final int ADDED_OVER = 21;//加时赛结束
-		public static final int DOWN_OVER = 22;//下半场结束
+		public static final int MATCH_OTHER_SITUATION=21;//比赛其他变化
+		public static final int HOME_YELLOW_TO_RED= 22;//主队两黄变一红
+		public static final int VISIT_YELLOW_TO_RED=23;//客队两黄变一红
+		public static final int HOME_CHANGE=24;//主队换人
+		public static final int VISIT_CHANGE = 25;//客队换人
+		public static final int ADDED_OVER = 41;//加时赛结束
+		public static final int DOWN_OVER = 42;//下半场结束
 
 	}
 }

@@ -1,7 +1,8 @@
 package com.scorelive.common.utils;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +12,6 @@ import android.util.Log;
 
 import com.scorelive.module.Match;
 import com.scorelive.module.MatchAccident;
-import com.scorelive.module.PushInfo;
 
 public class JsonUtils {
 
@@ -203,7 +203,7 @@ public class JsonUtils {
 				JSONObject accident = array.getJSONObject(i);
 				MatchAccident aMatch = new MatchAccident();
 				aMatch.accident_content = accident
-						.optString("accident_content");
+						.optString("players");
 				aMatch.accident_time = accident.optString("eventTime");
 				aMatch.accident_type = accident.optInt("eventType");
 				aMatch.accident_team = accident.optInt("owner");
@@ -213,6 +213,18 @@ public class JsonUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Collections.sort(list, new Comparator<MatchAccident>(){
+
+			@Override
+			public int compare(MatchAccident lhs, MatchAccident rhs) {
+				if(Integer.valueOf(lhs.accident_time)>Integer.valueOf(rhs.accident_time)){
+					return -1;
+				}else{
+					return 1;
+				}
+			}
+			
+		});
 		return list;
 	}
 }

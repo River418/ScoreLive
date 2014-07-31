@@ -141,15 +141,37 @@ public class PushReceiver extends XGPushBaseReceiver {
 				String updateTitle = null;
 				NotificationCompat.Builder builder = new NotificationCompat.Builder(
 						context.getApplicationContext());
+//				RemoteViews view = new RemoteViews(context.getPackageName(),R.layout.score_match_item);
+//				builder.setContent(view);
 				builder.setWhen(System.currentTimeMillis());
 				builder.setAutoCancel(true);
 
-				tickerText = message.getTitle();
-				builder.setTicker(tickerText);
-				updateTitle = info.hostTeamName + "vs" + info.visitTeamName;
+				updateTitle = info.hostTeamName + " VS " + info.visitTeamName;
 				builder.setSmallIcon(R.drawable.ic_launcher);
 				builder.setContentTitle(updateTitle);
-				builder.setContentText(info.hostTeamScore + ":" + info.visitTeamScore);
+				String contentText = null;
+				switch(info.matchState){
+				case AppConstants.EventType.HOME_GOAL:
+					contentText = info.hostTeamName+"进球了！";
+					break;
+				case AppConstants.EventType.VISIT_GOAL:
+					contentText = info.visitTeamName+"进球了！";
+					break;
+				case AppConstants.EventType.HOME_YELLOW:
+					contentText = info.hostTeamName+"黄牌了！";
+					break;
+				case AppConstants.EventType.VISIT_YELLOW:
+					contentText = info.visitTeamName+"黄牌了！";
+					break;
+				case AppConstants.EventType.HOME_RED:
+					contentText = info.hostTeamName+"红牌了！";
+					break;
+				case AppConstants.EventType.VISIT_RED:
+					contentText = info.visitTeamName+"红牌了！";
+					break;
+					
+				}
+				builder.setContentText(contentText);
 				noticeIntent.setClass(context, MainActivity.class);
 				noticeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -158,8 +180,7 @@ public class PushReceiver extends XGPushBaseReceiver {
 				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.hostTeamScore),
 						noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.setContentIntent(contentIntent);
-				RemoteViews view = new RemoteViews(context.getPackageName(),R.layout.score_match_item);
-				builder.setContent(view);
+				builder.setTicker(contentText);
 				Notification notification = builder.build();
 				nm.notify(Integer.valueOf(info.matchId), notification);
 				ScoreToast.makeText(
@@ -177,6 +198,10 @@ public class PushReceiver extends XGPushBaseReceiver {
 		context.sendBroadcast(intent);
 	}
 
+	private void setRemoteViewContent(RemoteViews view,Match match){
+//		view.
+	}
+	
 	/**
 	 * 通知被打开结果反馈
 	 * 

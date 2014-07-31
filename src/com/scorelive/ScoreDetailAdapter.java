@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scorelive.common.config.AppConstants;
 import com.scorelive.module.MatchAccident;
 
 public class ScoreDetailAdapter extends BaseAdapter {
@@ -63,7 +64,7 @@ public class ScoreDetailAdapter extends BaseAdapter {
 		TextView accidentContent = null;
 		ImageView accidentIMG = null;
 		TextView accidentTime = (TextView)convertView.findViewById(R.id.accident_time);
-		accidentTime.setText(accident.accident_time);
+		accidentTime.setText(accident.accident_time+"'");
 		switch (accident.accident_team) {
 		case 0:// 客队事件
 			homeView.setVisibility(View.INVISIBLE);
@@ -83,24 +84,31 @@ public class ScoreDetailAdapter extends BaseAdapter {
 			break;
 		}
 		switch (accident.accident_type) {
-		case 1:
+		case AppConstants.EventType.HOME_RED:
+		case AppConstants.EventType.HOME_YELLOW_TO_RED:
+		case AppConstants.EventType.VISIT_RED:
+		case AppConstants.EventType.VISIT_YELLOW_TO_RED:
 			accidentIMG.setBackgroundResource(R.drawable.redcardsmall);
 			break;
-		case 2:
+		case AppConstants.EventType.HOME_YELLOW:
+		case AppConstants.EventType.VISIT_YELLOW:
 			accidentIMG.setBackgroundResource(R.drawable.yellowcardsmall);
 			break;
-		case 3:
+		case AppConstants.EventType.HOME_GOAL:
+		case AppConstants.EventType.VISIT_GOAL:
 			accidentIMG.setBackgroundResource(R.drawable.goal);
 			break;
-		case 4:
-			accidentIMG.setBackgroundResource(R.drawable.goal);
+		case AppConstants.EventType.HOME_POINT_GOAL:
+		case AppConstants.EventType.VISIT_POINT_GOAL:
+			accidentIMG.setBackgroundResource(R.drawable.penaltykick);
 			break;
-		case 5:
-			accidentIMG.setBackgroundResource(R.drawable.goal);
+		case AppConstants.EventType.HOME_SUICIDE_GOAL:
+		case AppConstants.EventType.VISIT_SUICIDE_GOAL:
+			accidentIMG.setBackgroundResource(R.drawable.suicide_goal);
 			break;
-		case 6:
-			accidentIMG.setBackgroundResource(R.drawable.subsitution);
-			break;
+//		case 6:
+//			accidentIMG.setBackgroundResource(R.drawable.subsitution);
+//			break;
 		}
 		return convertView;
 	}

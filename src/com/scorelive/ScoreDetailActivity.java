@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -85,12 +87,17 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		mCollectBtn.setBackgroundResource(R.drawable.collect_normal);
 		mRefreshBtn = (ImageView) findViewById(R.id.refresh_btn);
 		mRefreshBtn.setBackgroundResource(R.drawable.refresh);
+		final RotateAnimation animation = new RotateAnimation(0.0f,360.0f);
+		animation.setRepeatMode(Animation.INFINITE);
+		animation.setFillAfter(false);
+		animation.setDuration(500);
 		mRefreshBtn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				getMatchDetail();
+				mRefreshBtn.startAnimation(animation);
 			}
 			
 		});
