@@ -374,7 +374,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	 * 
 	 * @param date
 	 */
-	private void initMatchList(String date) {
+	public void initMatchList(String date) {
 		ITask task = new MatchListTask(ITask.TYPE_MATCH_LIST, ThreadManager
 				.getInstance().getNewTaskId(), date);
 		task.setListener(this);
@@ -452,6 +452,22 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 
 	public void clearMatchCache() {
 		mAllMatchingList.clear();
+		mBJList.clear();
+		mSMGList.clear();
+		mZCList.clear();
+		mAllUnstartList.clear();
+		mAllMatchingList.clear();
+		mAllEndedList.clear();
+		mBJUnstartList.clear();
+		mBJMatchingList.clear();
+		mBJEndedList.clear();
+		mSMGUnstartList.clear();
+		mSMGMatchingList.clear();
+		mSMGEndedList.clear();
+		mZCUnstartList.clear();
+		mZCMatchingList.clear();
+		mZCEndedList.clear();
+
 	}
 
 	private void handleMatchList() {

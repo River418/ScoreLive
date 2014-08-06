@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.scorelive.R;
 import com.scorelive.ScoreDetailActivity;
+import com.scorelive.ScorePageActivity;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.db.ScoreDBHandler;
 import com.scorelive.common.itask.IShortTaskListener;
@@ -33,6 +36,7 @@ import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.itask.quick.task.GroupListTask;
 import com.scorelive.common.itask.quick.task.QueryMatchListByGroup;
+import com.scorelive.common.utils.Utility;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.ScoreToast;
@@ -43,7 +47,7 @@ import com.scorelive.ui.widget.dialog.ProgressDialogMe;
 public class ScoreNormalFragment extends ScoreBaseFragment implements
 		IShortTaskListener {
 	private ExpandableListView mListView;
-
+	private SwipeRefreshLayout mPullDownView;
 	private int mFragmentType;
 	private ScoreListBaseAdapter mAdapter;
 	private Context mContext;
@@ -53,10 +57,10 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	private ArrayList<Group> mGroupList;
 	private HashMap<String, ArrayList<Match>> mGroupMatchMap;
 	private TimerTask mTimerTask;
+
 	public ScoreNormalFragment(int type) {
 		mFragmentType = type;
 	}
-
 
 	private final MyHandler mHandler = new MyHandler();
 
@@ -131,12 +135,15 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 
 	}
 
-	public void notifyDataSetChanged(){
-		if(mAdapter != null){
+	public void notifyDataSetChanged() {
+		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}
+		if(mPullDownView != null && mPullDownView.isRefreshing()){
+			mPullDownView.setRefreshing(false);
+		}
 	}
-	
+
 	@Override
 	public void setData(ArrayList<Match> unstart, ArrayList<Match> matching,
 			ArrayList<Match> ended) {
@@ -146,6 +153,9 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		}
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
+		}
+		if(mPullDownView != null && mPullDownView.isRefreshing()){
+			mPullDownView.setRefreshing(false);
 		}
 	}
 
@@ -157,6 +167,16 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				false);
 		mListView = (ExpandableListView) rootView
 				.findViewById(R.id.match_listview);
+		mPullDownView = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_ly);
+		mPullDownView.setColorScheme(R.color.light_blue, R.color.white, android.R.color.holo_green_light, R.color.white);
+		mPullDownView.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				// Do work to refresh the list here.
+				((ScorePageActivity)getActivity()).initMatchList(Utility.getDateOfToday("yyyyMMdd"));
+				Toast.makeText(mContext, "下拉刷新了", Toast.LENGTH_SHORT).show();
+			}
+		});
 		View v = null;
 		switch (mFragmentType) {
 		case AppConstants.BetType.ALL:
@@ -407,7 +427,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 			mListView.expandGroup(i);
 		}
 		updateTimer = new Timer();
-		
+
 	}
 
 	@Override
@@ -427,7 +447,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-//				updateTime();
+				// updateTime();
 				Log.e("refresh time", "我刷新日期了");
 				mHandler.sendEmptyMessage(AppConstants.MsgType.REFRESH_TIME);
 			}
@@ -435,7 +455,6 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 		};
 		updateTimer.schedule(mTimerTask, 1000 * 60, 1000 * 60);
 	}
-	
 
 	@Override
 	public void onPause() {
@@ -448,7 +467,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		
+
 	}
 
 	@Override
