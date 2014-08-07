@@ -1,5 +1,7 @@
 package com.scorelive;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -437,6 +439,14 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			try {
 				String str = Http.getString(is);
 				Log.e("json", str);
+				File file = new File(AppConstants.SCORELIVE_FOLDER+"json.txt");
+				if(!file.exists()){
+					file.createNewFile();
+				}
+				FileOutputStream fos = new FileOutputStream(file);
+				fos.write(str.getBytes());
+				fos.flush();
+				fos.close();
 				mAllList = JsonUtils.json2MatchList(str);
 				handleMatchList();
 				mHandler.obtainMessage(

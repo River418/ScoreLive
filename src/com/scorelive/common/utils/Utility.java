@@ -102,21 +102,23 @@ public class Utility {
 	}
 
 	public static String getDateOfToday(String format) {
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		int day = Calendar.getInstance().get(Calendar.DATE);
-		String mm = null;
-		if (month < 10) {
-			mm = "0" + month;
-		} else {
-			mm = String.valueOf(month);
-		}
-		if (format.equalsIgnoreCase("yyyy-MM-dd")) {
-			return year + "-" + mm + "-" + day;
-		} else {
-			Log.e("date", year + "" + mm + "" + day);
-			return year + "" + mm + "" + day;
-		}
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(Calendar.getInstance().getTime());
+//		int year = Calendar.getInstance().get(Calendar.YEAR);
+//		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+//		int day = Calendar.getInstance().get(Calendar.DATE);
+//		String mm = null;
+//		if (month < 10) {
+//			mm = "0" + month;
+//		} else {
+//			mm = String.valueOf(month);
+//		}
+//		if (format.equalsIgnoreCase("yyyy-MM-dd")) {
+//			return year + "-" + mm + "-" + day;
+//		} else {
+//			Log.e("date", year + "" + mm + "" + day);
+//			return year + "" + mm + "" + day;
+//		}
 	}
 
 	public static int caculateMatchingTime(String startTime) {
