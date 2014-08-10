@@ -33,34 +33,7 @@ public class ScorePageAdapter extends FragmentPagerAdapter {
 	}
 
 	public ScoreBaseFragment getFragment(int id) {
-		switch (id) {
-		case ALL:
-			if (mAllFragment == null) {
-				mAllFragment = new ScoreNormalFragment(AppConstants.BetType.ALL);
-			}
-			return mAllFragment;
-		case BJ:
-			if (mBJFragment == null) {
-				mBJFragment = new ScoreNormalFragment(AppConstants.BetType.BJ);
-			}
-			return mBJFragment;
-		case SMG:
-			if (mSMGFragment == null) {
-				mSMGFragment = new ScoreNormalFragment(AppConstants.BetType.SMG);
-			}
-			return mSMGFragment;
-		case ZC:
-			if (mZCFragment == null) {
-				mZCFragment = new ScoreNormalFragment(AppConstants.BetType.ZC);
-			}
-			return mZCFragment;
-		case CUSTOMIZE:
-			if (mCustomizeFragment == null) {
-				mCustomizeFragment = new ScoreNormalFragment(AppConstants.BetType.CUSTOMIZE);
-			}
-			return mCustomizeFragment;
-		}
-		return null;
+		return (ScoreBaseFragment) getItem(id);
 	}
 
 	@Override
@@ -74,7 +47,8 @@ public class ScorePageAdapter extends FragmentPagerAdapter {
 			return mAllFragment;
 		case CUSTOMIZE:
 			if (mCustomizeFragment == null) {
-				mCustomizeFragment = new ScoreNormalFragment(AppConstants.BetType.CUSTOMIZE);
+				mCustomizeFragment = new ScoreNormalFragment(
+						AppConstants.BetType.CUSTOMIZE);
 			}
 			return mCustomizeFragment;
 		case BJ:
@@ -119,17 +93,25 @@ public class ScorePageAdapter extends FragmentPagerAdapter {
 		}
 		return super.getPageTitle(position);
 	}
-	
-	public void notifyDataSetChanged(){
-			((ScoreNormalFragment)mAllFragment).notifyDataSetChanged();
-			((ScoreNormalFragment)mBJFragment).notifyDataSetChanged();
-			((ScoreNormalFragment)mSMGFragment).notifyDataSetChanged();
-			((ScoreNormalFragment)mZCFragment).notifyDataSetChanged();
-			
+
+	public void notifyDataSetChanged() {
+		if (mAllFragment != null) {
+			((ScoreNormalFragment) mAllFragment).notifyDataSetChanged();
+		}
+		if (mBJFragment != null) {
+			((ScoreNormalFragment) mBJFragment).notifyDataSetChanged();
+		}
+		if (mSMGFragment != null) {
+			((ScoreNormalFragment) mSMGFragment).notifyDataSetChanged();
+		}
+		if (mZCFragment != null) {
+			((ScoreNormalFragment) mZCFragment).notifyDataSetChanged();
+		}
+
 	}
-	
-	public void refreshFragment(int position){
-		((ScoreNormalFragment)getFragment(position)).refreshCustomFragment();
+
+	public void refreshFragment(int position) {
+		((ScoreNormalFragment) getItem(position)).refreshCustomFragment();
 	}
 
 }

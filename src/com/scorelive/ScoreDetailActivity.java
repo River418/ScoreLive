@@ -56,12 +56,32 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		mMatch = getIntent().getParcelableExtra("match");
 		if (mMatch != null) {
 			processData();
-			getMatchDetail();
+//			getMatchDetail();
 		} else {
 			// TODO 增加判空的逻辑，不过一般不会出现null
 		}
 	}
 
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		super.onWindowFocusChanged(hasFocus);
+		refresh();
+	}
+
+	private void refresh(){
+		mAdapter.cleadrData();
+		final RotateAnimation animation = new RotateAnimation(0.0f,
+				360.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		animation.setRepeatMode(Animation.RESTART);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setFillAfter(false);
+		animation.setDuration(500);
+		mRefreshBtn.startAnimation(animation);
+		getMatchDetail();
+	}
+	
 	private void getMatchDetail() {
 
 		MatchDetailTask task = new MatchDetailTask(ITask.TYPE_MATCH_DETAIL,
@@ -87,19 +107,14 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		mCollectBtn.setBackgroundResource(R.drawable.collect_normal);
 		mRefreshBtn = (ImageView) findViewById(R.id.refresh_btn);
 		mRefreshBtn.setBackgroundResource(R.drawable.refresh);
-		final RotateAnimation animation = new RotateAnimation(0.0f,360.0f);
-		animation.setRepeatMode(Animation.INFINITE);
-		animation.setFillAfter(false);
-		animation.setDuration(500);
-		mRefreshBtn.setOnClickListener(new OnClickListener(){
+		mRefreshBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				getMatchDetail();
-				mRefreshBtn.startAnimation(animation);
+				refresh();
 			}
-			
+
 		});
 		mTitleTV = (TextView) findViewById(R.id.middle_title);
 		mHostNameTV = (TextView) findViewById(R.id.host_name);
@@ -123,12 +138,14 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		} else {
 			mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
 					+ mMatch.hostTeamName);
-			mVisitNameTV.setText(mMatch.visitTeamName+"(" + mMatch.visitTeamIndex + ")");
+			mVisitNameTV.setText(mMatch.visitTeamName + "("
+					+ mMatch.visitTeamIndex + ")");
 		}
-//		mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
-//				+ mMatch.hostTeamName);
-//		mVisitNameTV.setText(mMatch.visitTeamName + "(" + mMatch.visitTeamIndex
-//				+ ")");
+		// mHostNameTV.setText("(" + mMatch.hostTeamIndex + ")"
+		// + mMatch.hostTeamName);
+		// mVisitNameTV.setText(mMatch.visitTeamName + "(" +
+		// mMatch.visitTeamIndex
+		// + ")");
 		mStartTimeTV.setText(mMatch.matchOfficalTime);
 		mHostScoreTV.setText(mMatch.hostTeamScore);
 		mVisitScoreTV.setText(mMatch.visitTeamScore);
@@ -157,6 +174,9 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 
 	private void setDetailView() {
 		mAdapter.setData(mList);
+		if(mRefreshBtn != null){
+			mRefreshBtn.clearAnimation();
+		}
 	}
 
 	@Override
@@ -171,7 +191,7 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		case ITask.TYPE_MATCH_DETAIL:
 			try {
 				String str = Http.getString(is);
-				Log.e("detail",str);
+				Log.e("detail", str);
 				mList = JsonUtils.json2MatchAccident(str);
 				mHandler.sendEmptyMessage(AppConstants.MsgType.GET_MATCH_DETAIL_SUCCESS);
 			} catch (IOException e) {

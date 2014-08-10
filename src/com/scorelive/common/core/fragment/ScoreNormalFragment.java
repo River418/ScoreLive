@@ -423,6 +423,9 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
+		if(mPullDownView != null && !mPullDownView.isRefreshing() && AppConstants.isPullingMatchList){
+			mPullDownView.setRefreshing(true);
+		}
 		for (int i = 0; i < mAdapter.getGroupCount(); i++) {
 			mListView.expandGroup(i);
 		}

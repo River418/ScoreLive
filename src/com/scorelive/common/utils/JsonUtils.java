@@ -160,8 +160,10 @@ public class JsonUtils {
 		String homeHalfScore = object.optString(HOSTHALFSCORE);
 		String visitHalfScore = object.optString(VISITHALFSCORE);
 		String runTime = object.optString(RUNTIME);
+		int leagueId = object.optInt("lid");
 		Match match = new Match();
 		match.matchTime = runTime;
+		match.leagueId = leagueId;
 		match.matchOfficalTime = runTime;
 		match.hostTeamHalfScore = homeHalfScore;
 		match.visitTeamHalfScore = visitHalfScore;

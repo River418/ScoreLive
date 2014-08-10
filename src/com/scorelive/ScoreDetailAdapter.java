@@ -25,6 +25,11 @@ public class ScoreDetailAdapter extends BaseAdapter {
 		mList = list;
 		notifyDataSetChanged();
 	}
+	
+	public void cleadrData(){
+		mList.clear();
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public int getCount() {

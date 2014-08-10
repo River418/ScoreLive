@@ -1,11 +1,10 @@
 package com.scorelive;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
@@ -23,9 +22,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scorelive.common.cache.GroupListCacheHandler;
+import com.scorelive.common.cache.MatchListCacheHandler;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.core.fragment.ScoreBaseFragment;
 import com.scorelive.common.http.Http;
@@ -36,12 +35,12 @@ import com.scorelive.common.itask.IShortTaskListener;
 import com.scorelive.common.itask.ITask;
 import com.scorelive.common.itask.net.task.MatchListTask;
 import com.scorelive.common.itask.pool.ThreadManager;
-import com.scorelive.common.itask.quick.task.GroupListTask;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.common.utils.Utility;
 import com.scorelive.module.Group;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.PagerSlidingTabStrip;
+import com.scorelive.ui.widget.dialog.LeagueFilterDialog;
 
 /**
  * 即时比分Activity
@@ -56,26 +55,10 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	private ViewPager mViewPager;
 	private PagerSlidingTabStrip mTabs;
 	private TextView mTitle;
-	private ArrayList<Match> mAllList = new ArrayList<Match>(),
-			mBJList = new ArrayList<Match>(),
-			mSMGList = new ArrayList<Match>(),
-			mZCList = new ArrayList<Match>();
 	private ImageView mLeftBtn, mRightBtn;
 	private ArrayList<Group> mGroupList;
 	private DatePickerDialog mDatePickerDialog;
 	private Context mContext;
-	protected ArrayList<Match> mAllUnstartList = new ArrayList<Match>(),
-			mAllMatchingList = new ArrayList<Match>(),
-			mAllEndedList = new ArrayList<Match>();
-	protected ArrayList<Match> mBJUnstartList = new ArrayList<Match>(),
-			mBJMatchingList = new ArrayList<Match>(),
-			mBJEndedList = new ArrayList<Match>();
-	protected ArrayList<Match> mSMGUnstartList = new ArrayList<Match>(),
-			mSMGMatchingList = new ArrayList<Match>(),
-			mSMGEndedList = new ArrayList<Match>();
-	protected ArrayList<Match> mZCUnstartList = new ArrayList<Match>(),
-			mZCMatchingList = new ArrayList<Match>(),
-			mZCEndedList = new ArrayList<Match>();
 
 	private IntentFilter mUpdateFilter;
 
@@ -179,6 +162,16 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		mLeftBtn.setBackgroundResource(R.drawable.calendar);
 		mRightBtn = (ImageView) findViewById(R.id.right_btn);
 		mRightBtn.setBackgroundResource(R.drawable.filter);
+		mRightBtn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				LeagueFilterDialog dialog = new LeagueFilterDialog(ScorePageActivity.this);
+				dialog.show();
+			}
+			
+		});
 
 	}
 
@@ -198,135 +191,12 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			// String matchId = intent.getStringExtra("matchId");
 			ArrayList<Match> list = intent
 					.getParcelableArrayListExtra("push_info");
-			for (Match pushInfo : list) {
-				int eventType = pushInfo.matchState;
-				switch (eventType) {
-				case AppConstants.EventType.UP_START:// 上半场开始，将比赛从未开始队列移动到进行中队列，并维护
-					for (Match match : mAllUnstartList) {
-						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
-							removeFromUnstartList(match);
-							match.matchState = AppConstants.MatchStatus.UP;
-							match.matchStartTime = pushInfo.matchStartTime;
-							String typeList = match.matchBet;
-							String[] typeArray = null;
-							if (typeList.contains(",")) {
-								typeArray = typeList.split(",");
-								for (int i = 0; i < typeArray.length; i++) {
-									addMatchToBetList(
-											Integer.valueOf(typeArray[i]),
-											match);
-								}
-							} else if (!typeList.equalsIgnoreCase("")) {
-								addMatchToBetList(Integer.valueOf(typeList),
-										match);
-							}
-							addMatchToAllList(match);
-							mAllUnstartList.remove(match);
-							break;
-						}
-
-					}
-					mScoreFragmentPageAdapter.notifyDataSetChanged();
-					break;
-				case AppConstants.EventType.UP_OVER:
-					for (Match match : mAllMatchingList) {
-						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
-							match.matchState = AppConstants.MatchStatus.MIDDLE;
-						}
-
-					}
-					mScoreFragmentPageAdapter.notifyDataSetChanged();
-					break;
-				case AppConstants.EventType.DOWN_START:
-					for (Match match : mAllMatchingList) {
-						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
-							match.matchState = AppConstants.MatchStatus.DOWN;
-							match.matchStartTime = pushInfo.matchStartTime;
-						}
-
-					}
-					mScoreFragmentPageAdapter.notifyDataSetChanged();
-					break;
-				case AppConstants.EventType.ALL_OVER:
-					for (Match match : mAllMatchingList) {
-						removeFromMatchingList(match);
-						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
-							match.matchState = AppConstants.MatchStatus.ENDED;
-							match.matchTime = "比赛结束";
-							Toast.makeText(mContext,
-									match.hostTeamName + ":比赛结束了",
-									Toast.LENGTH_SHORT).show();
-							match.matchState = AppConstants.MatchStatus.ENDED;
-							String typeList = match.matchBet;
-							String[] typeArray = null;
-							if (typeList.contains(",")) {
-								typeArray = typeList.split(",");
-								for (int i = 0; i < typeArray.length; i++) {
-									addMatchToBetList(
-											Integer.valueOf(typeArray[i]),
-											match);
-								}
-							} else if (!typeList.equalsIgnoreCase("")) {
-								addMatchToBetList(Integer.valueOf(typeList),
-										match);
-							}
-							addMatchToAllList(match);
-							mAllMatchingList.remove(match);
-							break;
-						}
-
-					}
-					mScoreFragmentPageAdapter.notifyDataSetChanged();
-					break;
-				default:
-					for (Match match : mAllMatchingList) {
-//						removeFromMatchingList(match);
-						if (match.matchId.equalsIgnoreCase(pushInfo.matchId)) {
-//							match.matchState = AppConstants.MatchStatus.ENDED;
-							match.hostTeamScore = pushInfo.hostTeamScore;
-							match.visitTeamScore = pushInfo.visitTeamScore;
-							match.hostTeamYellow = pushInfo.hostTeamYellow;
-							match.visitTeamYellow = pushInfo.visitTeamYellow;
-							match.hostTeamRed = pushInfo.hostTeamRed;
-							match.visitTeamRed = pushInfo.visitTeamRed;
-//							String typeList = match.matchBet;
-//							String[] typeArray = null;
-//							if (typeList.contains(",")) {
-//								typeArray = typeList.split(",");
-//								for (int i = 0; i < typeArray.length; i++) {
-//									addMatchToBetList(
-//											Integer.valueOf(typeArray[i]),
-//											match);
-//								}
-//							} else if (!typeList.equalsIgnoreCase("")) {
-//								addMatchToBetList(Integer.valueOf(typeList),
-//										match);
-//							}
-//							addMatchToAllList(match);
-//							mAllMatchingList.remove(match);
-//							break;
-						}
-
-					}
-					mScoreFragmentPageAdapter.notifyDataSetChanged();
-					break;
-				}
-			}
+			MatchListCacheHandler.getInstance().updateMatchStatus(list);
+			mScoreFragmentPageAdapter.notifyDataSetChanged();
 		}
 
 	};
 
-	private void removeFromUnstartList(Match match) {
-		mBJUnstartList.remove(match);
-		mZCUnstartList.remove(match);
-		mSMGUnstartList.remove(match);
-	}
-
-	private void removeFromMatchingList(Match match) {
-		mBJMatchingList.remove(match);
-		mZCMatchingList.remove(match);
-		mSMGMatchingList.remove(match);
-	}
 
 	@Override
 	protected void onResume() {
@@ -367,6 +237,7 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		switch (msg.what) {
 		case AppConstants.MsgType.GET_SCORE_LIST_SUCCESS:
 			refreshFragment();
+			AppConstants.isPullingMatchList = false;
 			break;
 		}
 	}
@@ -377,40 +248,64 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 	 * @param date
 	 */
 	public void initMatchList(String date) {
+		AppConstants.isPullingMatchList = true;
 		ITask task = new MatchListTask(ITask.TYPE_MATCH_LIST, ThreadManager
 				.getInstance().getNewTaskId(), date);
 		task.setListener(this);
 		ThreadManager.getInstance().addTask(task);
 	}
 
-	private void initGroupList() {
-		ITask task = new GroupListTask(ITask.TYPE_GROUP_LIST, ThreadManager
-				.getInstance().getNewTaskId());
-		task.setListener(this);
-		ThreadManager.getInstance().addTask(task);
-	}
+	// private void initGroupList() {
+	// ITask task = new GroupListTask(ITask.TYPE_GROUP_LIST, ThreadManager
+	// .getInstance().getNewTaskId());
+	// task.setListener(this);
+	// ThreadManager.getInstance().addTask(task);
+	// }
 
 	private void refreshFragment() {
 		ScoreBaseFragment fragment = null;
 		for (int i = 0; i < 5; i++) {
+			HashMap<Integer, ArrayList<Match>> map = null;
 			switch (i) {
 			case ScorePageAdapter.ALL:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mAllUnstartList, mAllMatchingList,
-						mAllEndedList);
+				map = MatchListCacheHandler.getInstance().getMatchList(
+						AppConstants.BetType.ALL);
+				fragment.setData(map.get(AppConstants.MatchStatus.UNSTART),
+						map.get(AppConstants.MatchStatus.MATCHING),
+						map.get(AppConstants.MatchStatus.ENDED));
+				// fragment.setData(mAllUnstartList, mAllMatchingList,
+				// mAllEndedList);
 				break;
 			case ScorePageAdapter.BJ:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mBJUnstartList, mBJMatchingList, mBJEndedList);
+				map = MatchListCacheHandler.getInstance().getMatchList(
+						AppConstants.BetType.BJ);
+				// fragment.setData(mBJUnstartList, mBJMatchingList,
+				// mBJEndedList);
+				fragment.setData(map.get(AppConstants.MatchStatus.UNSTART),
+						map.get(AppConstants.MatchStatus.MATCHING),
+						map.get(AppConstants.MatchStatus.ENDED));
 				break;
 			case ScorePageAdapter.SMG:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mSMGUnstartList, mSMGMatchingList,
-						mSMGEndedList);
+				map = MatchListCacheHandler.getInstance().getMatchList(
+						AppConstants.BetType.SMG);
+				// fragment.setData(mSMGUnstartList, mSMGMatchingList,
+				// mSMGEndedList);
+				fragment.setData(map.get(AppConstants.MatchStatus.UNSTART),
+						map.get(AppConstants.MatchStatus.MATCHING),
+						map.get(AppConstants.MatchStatus.ENDED));
 				break;
 			case ScorePageAdapter.ZC:
 				fragment = mScoreFragmentPageAdapter.getFragment(i);
-				fragment.setData(mZCUnstartList, mZCMatchingList, mZCEndedList);
+				map = MatchListCacheHandler.getInstance().getMatchList(
+						AppConstants.BetType.ZC);
+				// fragment.setData(mZCUnstartList, mZCMatchingList,
+				// mZCEndedList);
+				fragment.setData(map.get(AppConstants.MatchStatus.UNSTART),
+						map.get(AppConstants.MatchStatus.MATCHING),
+						map.get(AppConstants.MatchStatus.ENDED));
 				break;
 			// case ScorePageAdapter.CUSTOMIZE:
 			// fragment = mScoreFragmentPageAdapter.getFragment(i);
@@ -439,16 +334,11 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 			try {
 				String str = Http.getString(is);
 				Log.e("json", str);
-				File file = new File(AppConstants.SCORELIVE_FOLDER+"json.txt");
-				if(!file.exists()){
-					file.createNewFile();
-				}
-				FileOutputStream fos = new FileOutputStream(file);
-				fos.write(str.getBytes());
-				fos.flush();
-				fos.close();
-				mAllList = JsonUtils.json2MatchList(str);
-				handleMatchList();
+				// 由内存管理的类来处理比赛列表
+				MatchListCacheHandler.getInstance().setAllList(
+						JsonUtils.json2MatchList(str));
+				// mAllList = JsonUtils.json2MatchList(str);
+				// handleMatchList();
 				mHandler.obtainMessage(
 						AppConstants.MsgType.GET_SCORE_LIST_SUCCESS)
 						.sendToTarget();
@@ -460,124 +350,124 @@ public class ScorePageActivity extends ScoreBaseActivity implements
 		}
 	}
 
-	public void clearMatchCache() {
-		mAllMatchingList.clear();
-		mBJList.clear();
-		mSMGList.clear();
-		mZCList.clear();
-		mAllUnstartList.clear();
-		mAllMatchingList.clear();
-		mAllEndedList.clear();
-		mBJUnstartList.clear();
-		mBJMatchingList.clear();
-		mBJEndedList.clear();
-		mSMGUnstartList.clear();
-		mSMGMatchingList.clear();
-		mSMGEndedList.clear();
-		mZCUnstartList.clear();
-		mZCMatchingList.clear();
-		mZCEndedList.clear();
-
-	}
-
-	private void handleMatchList() {
-		clearMatchCache();
-		for (Match match : mAllList) {
-			String typeList = match.matchBet;
-			String[] typeArray = null;
-			if (typeList.contains(",")) {
-				typeArray = typeList.split(",");
-				for (int i = 0; i < typeArray.length; i++) {
-					addMatchToBetList(Integer.valueOf(typeArray[i]), match);
-				}
-			} else if (!typeList.equalsIgnoreCase("")) {
-				addMatchToBetList(Integer.valueOf(typeList), match);
-			}
-			addMatchToAllList(match);
-		}
-	}
-
-	private void addMatchToAllList(Match match) {
-		switch (match.matchState) {
-		case AppConstants.MatchStatus.UNSTART:
-			mAllUnstartList.add(match);
-			break;
-		case AppConstants.MatchStatus.MIDDLE:
-		case AppConstants.MatchStatus.UP:
-		case AppConstants.MatchStatus.DOWN:
-		case AppConstants.MatchStatus.ADDED:
-			mAllMatchingList.add(match);
-			break;
-		case AppConstants.MatchStatus.CANCEL:
-		case AppConstants.MatchStatus.ENDED:
-		case AppConstants.MatchStatus.DELAY:
-			mAllEndedList.add(match);
-			break;
-		}
-	}
-
-	private void addMatchToBetList(int betType, Match match) {
-		switch (betType) {
-		case AppConstants.BetType.BJ:
-			switch (match.matchState) {
-			case AppConstants.MatchStatus.UNSTART:
-				mBJUnstartList.add(match);
-				break;
-			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UP:
-			case AppConstants.MatchStatus.DOWN:
-			case AppConstants.MatchStatus.ADDED:
-				mBJMatchingList.add(match);
-				break;
-			case AppConstants.MatchStatus.CANCEL:
-			case AppConstants.MatchStatus.ENDED:
-			case AppConstants.MatchStatus.DELAY:
-				mBJEndedList.add(match);
-				break;
-			}
-			mBJList.add(match);
-			break;
-		case AppConstants.BetType.SMG:
-			switch (match.matchState) {
-			case AppConstants.MatchStatus.UNSTART:
-				mSMGUnstartList.add(match);
-				break;
-			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UP:
-			case AppConstants.MatchStatus.DOWN:
-			case AppConstants.MatchStatus.ADDED:
-				mSMGMatchingList.add(match);
-				break;
-			case AppConstants.MatchStatus.CANCEL:
-			case AppConstants.MatchStatus.ENDED:
-			case AppConstants.MatchStatus.DELAY:
-				mSMGEndedList.add(match);
-				break;
-			}
-			mSMGList.add(match);
-			break;
-		case AppConstants.BetType.ZC:
-			switch (match.matchState) {
-			case AppConstants.MatchStatus.UNSTART:
-				mZCUnstartList.add(match);
-				break;
-			case AppConstants.MatchStatus.MIDDLE:
-			case AppConstants.MatchStatus.UP:
-			case AppConstants.MatchStatus.DOWN:
-			case AppConstants.MatchStatus.ADDED:
-				mZCMatchingList.add(match);
-				break;
-			case AppConstants.MatchStatus.CANCEL:
-			case AppConstants.MatchStatus.ENDED:
-			case AppConstants.MatchStatus.DELAY:
-				mZCEndedList.add(match);
-				break;
-			}
-			mZCList.add(match);
-			break;
-		}
-
-	}
+//	public void clearMatchCache() {
+//		mAllMatchingList.clear();
+//		mBJList.clear();
+//		mSMGList.clear();
+//		mZCList.clear();
+//		mAllUnstartList.clear();
+//		mAllMatchingList.clear();
+//		mAllEndedList.clear();
+//		mBJUnstartList.clear();
+//		mBJMatchingList.clear();
+//		mBJEndedList.clear();
+//		mSMGUnstartList.clear();
+//		mSMGMatchingList.clear();
+//		mSMGEndedList.clear();
+//		mZCUnstartList.clear();
+//		mZCMatchingList.clear();
+//		mZCEndedList.clear();
+//
+//	}
+//
+//	private void handleMatchList() {
+//		clearMatchCache();
+//		for (Match match : mAllList) {
+//			String typeList = match.matchBet;
+//			String[] typeArray = null;
+//			if (typeList.contains(",")) {
+//				typeArray = typeList.split(",");
+//				for (int i = 0; i < typeArray.length; i++) {
+//					addMatchToBetList(Integer.valueOf(typeArray[i]), match);
+//				}
+//			} else if (!typeList.equalsIgnoreCase("")) {
+//				addMatchToBetList(Integer.valueOf(typeList), match);
+//			}
+//			addMatchToAllList(match);
+//		}
+//	}
+//
+//	private void addMatchToAllList(Match match) {
+//		switch (match.matchState) {
+//		case AppConstants.MatchStatus.UNSTART:
+//			mAllUnstartList.add(match);
+//			break;
+//		case AppConstants.MatchStatus.MIDDLE:
+//		case AppConstants.MatchStatus.UP:
+//		case AppConstants.MatchStatus.DOWN:
+//		case AppConstants.MatchStatus.ADDED:
+//			mAllMatchingList.add(match);
+//			break;
+//		case AppConstants.MatchStatus.CANCEL:
+//		case AppConstants.MatchStatus.ENDED:
+//		case AppConstants.MatchStatus.DELAY:
+//			mAllEndedList.add(match);
+//			break;
+//		}
+//	}
+//
+//	private void addMatchToBetList(int betType, Match match) {
+//		switch (betType) {
+//		case AppConstants.BetType.BJ:
+//			switch (match.matchState) {
+//			case AppConstants.MatchStatus.UNSTART:
+//				mBJUnstartList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.MIDDLE:
+//			case AppConstants.MatchStatus.UP:
+//			case AppConstants.MatchStatus.DOWN:
+//			case AppConstants.MatchStatus.ADDED:
+//				mBJMatchingList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.CANCEL:
+//			case AppConstants.MatchStatus.ENDED:
+//			case AppConstants.MatchStatus.DELAY:
+//				mBJEndedList.add(match);
+//				break;
+//			}
+//			mBJList.add(match);
+//			break;
+//		case AppConstants.BetType.SMG:
+//			switch (match.matchState) {
+//			case AppConstants.MatchStatus.UNSTART:
+//				mSMGUnstartList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.MIDDLE:
+//			case AppConstants.MatchStatus.UP:
+//			case AppConstants.MatchStatus.DOWN:
+//			case AppConstants.MatchStatus.ADDED:
+//				mSMGMatchingList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.CANCEL:
+//			case AppConstants.MatchStatus.ENDED:
+//			case AppConstants.MatchStatus.DELAY:
+//				mSMGEndedList.add(match);
+//				break;
+//			}
+//			mSMGList.add(match);
+//			break;
+//		case AppConstants.BetType.ZC:
+//			switch (match.matchState) {
+//			case AppConstants.MatchStatus.UNSTART:
+//				mZCUnstartList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.MIDDLE:
+//			case AppConstants.MatchStatus.UP:
+//			case AppConstants.MatchStatus.DOWN:
+//			case AppConstants.MatchStatus.ADDED:
+//				mZCMatchingList.add(match);
+//				break;
+//			case AppConstants.MatchStatus.CANCEL:
+//			case AppConstants.MatchStatus.ENDED:
+//			case AppConstants.MatchStatus.DELAY:
+//				mZCEndedList.add(match);
+//				break;
+//			}
+//			mZCList.add(match);
+//			break;
+//		}
+//
+//	}
 
 	@Override
 	public void onTaskFinish(ITask task, Object object) {

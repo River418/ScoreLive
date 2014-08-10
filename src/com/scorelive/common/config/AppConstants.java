@@ -4,12 +4,15 @@ import java.io.File;
 
 public class AppConstants {
 
+	//接口地址
 	public static final String SERVER_URL = "http://203.195.200.238:8080/ScoreLive/";
 	public static final String MATCH_INFO = SERVER_URL + "MatchInfoService?";
 	public static final String MATCH_DETAIL = SERVER_URL
 			+ "MatchEventDetailService?";
 	public static final String LOGIN_URL = SERVER_URL + "SignInService?";
+	public static final String MATCH_INFO_BY_LEAGUE = SERVER_URL+"LeagueService?";
 
+	//文件路径
 	public static final String SDCARD_PATH = android.os.Environment
 			.getExternalStorageDirectory().getPath();
 	public static final String SCORELIVE_FOLDER = SDCARD_PATH + File.separator
@@ -18,16 +21,18 @@ public class AppConstants {
 	public static final String ASSET_PATH = "file:///android_asset/www/";
 	public static final String INDEX = ASSET_PATH + "index.html";
 
+	//开放平台相关信息
 	public static final String SINA_APP_KEY = "3456776882";
-
 	public static final String Tencent_APP_ID = "1101484810";
-
 	public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
-
 	public static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
 			+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
 			+ "follow_app_official_microblog," + "invitation_write";
 
+	//程序的一些“全局”静态变量
+	public volatile static boolean isPullingMatchList = false;
+	
+   //Handler的MSG类型
 	public class MsgType {
 		public static final int GET_SCORE_LIST_SUCCESS = 0X0;
 		public static final int GET_MATCH_DETAIL_SUCCESS = 0X1;
@@ -42,10 +47,12 @@ public class AppConstants {
 		public static final int REFRESH_TIME = 0X10;
 	}
 	
+	//Intent的Action类型
 	public class ActionType{
 		public static final String UPDATE_MATCH_INFO = "com.scorelive.updatematchinfo";
 	}
 
+	//竞彩类型
 	public class BetType {
 		public static final int ALL = 1;
 		public static final int BJ = 2;
@@ -54,6 +61,7 @@ public class AppConstants {
 		public static final int CUSTOMIZE = 0;
 	}
 
+	//比赛状态类型
 	public class MatchStatus {
 		public static final int UNSTART = 0;// 未开始
 		public static final int DELAY = -14;// 延期
@@ -72,6 +80,7 @@ public class AppConstants {
 		public static final int MATCHING = 10;
 	}
 
+	//推送的事件类型
 	public class EventType {
 		public static final int UP_START = 0;// 上半场比赛开始
 		public static final int HOME_GOAL = 1;// 主队进球
