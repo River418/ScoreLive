@@ -32,8 +32,8 @@ public class MatchListCacheHandler {
 	private ArrayList<Match> mZCUnstartList = new ArrayList<Match>(),
 			mZCMatchingList = new ArrayList<Match>(),
 			mZCEndedList = new ArrayList<Match>();
-	private HashMap<String,ArrayList<Match>> mMatchLeagueMap = new HashMap<String,ArrayList<Match>>();
-	private HashMap<String,League> mLeagueMap = new HashMap<String,League>();
+	private HashMap<String, ArrayList<Match>> mMatchLeagueMap = new HashMap<String, ArrayList<Match>>();
+	private HashMap<String, League> mLeagueMap = new HashMap<String, League>();
 	private ArrayList<League> mLeagueList = new ArrayList<League>();
 
 	public static MatchListCacheHandler getInstance() {
@@ -87,6 +87,9 @@ public class MatchListCacheHandler {
 	 */
 	private void handleMatchList() {
 		clearMatchCache();
+		if (mLeagueMap != null) {
+			mLeagueMap.clear();
+		}
 		for (Match match : mAllList) {
 			String typeList = match.matchBet;
 			String[] typeArray = null;
@@ -101,7 +104,9 @@ public class MatchListCacheHandler {
 			addMatchToAllList(match);
 			handleMatchLeague(match);
 		}
-		changeLeagueMapToList();
+		if (mLeagueList.size() == 0) {
+			changeLeagueMapToList();
+		}
 	}
 
 	/**
@@ -127,12 +132,13 @@ public class MatchListCacheHandler {
 			break;
 		}
 	}
-	
+
 	/**
 	 * 添加比赛和联赛的映射关系
+	 * 
 	 * @param match
 	 */
-	private void handleMatchLeague(Match match){
+	private void handleMatchLeague(Match match) {
 		int leagueId = match.leagueId;
 		String leagueName = match.leagueName;
 		String leagueColor = match.leagueColor;
@@ -140,22 +146,24 @@ public class MatchListCacheHandler {
 		league.name = leagueName;
 		league.color = leagueColor;
 		league.id = leagueId;
-		//比赛从服务器拉取，不再本地列表处理。注释掉以下
-//		ArrayList<Match> list = mMatchLeagueMap.get(leagueId);
-//		if(list == null){
-//			list = new ArrayList<Match>();
-//			mMatchLeagueMap.put(leagueName, list);
-//		}
-//		list.add(match);
-		//注释掉以上
+		league.isSelected = true;
+		// 比赛从服务器拉取，不再本地列表处理。注释掉以下
+		// ArrayList<Match> list = mMatchLeagueMap.get(leagueId);
+		// if(list == null){
+		// list = new ArrayList<Match>();
+		// mMatchLeagueMap.put(leagueName, list);
+		// }
+		// list.add(match);
+		// 注释掉以上
 		mLeagueMap.put(leagueName, league);
 	}
-	
-	private void changeLeagueMapToList(){
+
+	private void changeLeagueMapToList() {
 		mLeagueList.clear();
 		Iterator<Entry<String, League>> it = mLeagueMap.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry<String,League> entry = (Map.Entry<String,League>)it.next();
+		while (it.hasNext()) {
+			Map.Entry<String, League> entry = (Map.Entry<String, League>) it
+					.next();
 			mLeagueList.add(entry.getValue());
 		}
 	}
@@ -391,8 +399,12 @@ public class MatchListCacheHandler {
 		mSMGMatchingList.remove(match);
 		mAllMatchingList.remove(match);
 	}
+
+	public synchronized void clearLeagueList(){
+		mLeagueList.clear();
+	}
 	
-	public ArrayList<League> getLeagueList(){
+	public synchronized ArrayList<League> getLeagueList() {
 		return mLeagueList;
 	}
 }

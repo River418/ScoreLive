@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 
 import com.scorelive.R;
@@ -49,10 +51,27 @@ public class LeagueFilterDialog extends BaseDialog {
 			if (convertView == null) {
 				convertView = new CheckBox(act);
 			}
+			final int index = position;
+			League league = MatchListCacheHandler.getInstance().getLeagueList()
+					.get(index);
 			CheckBox box = (CheckBox) convertView;
-			box.setText(((League) (getItem(position))).name);
-			box.setChecked(true);
-			return convertView;
+			box.setText(league.name);
+			box.setChecked(league.isSelected);
+			box.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView,
+						boolean isChecked) {
+					League league = (League) getItem(index);
+					if (buttonView.getText().toString()
+							.equalsIgnoreCase(league.name)) {
+						MatchListCacheHandler.getInstance().getLeagueList()
+								.get(index).isSelected = isChecked;
+					}
+				}
+
+			});
+			return box;
 		}
 
 	}
