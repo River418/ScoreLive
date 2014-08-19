@@ -19,5 +19,8 @@
     <string name="login_mobile_text">账户登录</string>
     <string name="login_sina_text">  微博登录</string>
      <string name="login_qq_text">  QQ登录</string>
+     
+     <string name="setting">设置</string>
+     <string name="about">关于</string>
 
 </resources>

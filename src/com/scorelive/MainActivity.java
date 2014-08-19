@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
 
+import com.scorelive.common.monitor.Debug;
 import com.scorelive.ui.widget.TabItem;
 import com.scorelive.ui.widget.TabItem.OnCheckedChangeListener;
+import com.tencent.android.tpush.XGPro;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.stat.StatConfig;
+import com.tencent.stat.StatReportStrategy;
+import com.tencent.stat.StatService;
 
 public class MainActivity extends TabActivity implements
 		OnCheckedChangeListener {
@@ -20,16 +25,23 @@ public class MainActivity extends TabActivity implements
 	private TabItem radio_button0;
 	private TabItem radio_button1;
 	private TabItem radio_button2;
-	private final static String TAB_SCORE="mScore_tab";
-	private final static String TAB_INDEX="mIndex_tab";
-	private final static String TAB_PROFILE="mProfile_tab";
+	private final static String TAB_SCORE = "mScore_tab";
+	private final static String TAB_INDEX = "mIndex_tab";
+	private final static String TAB_PROFILE = "mProfile_tab";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maintabs);
+		try {
+			XGPro.enableXGPro(getApplicationContext(), true);
+		} catch (Exception e) {
+			// 开启信鸽Pro失败，请严格按照文档检查MTA是否添加且版本是否对应
+			e.printStackTrace();
+		}
 		XGPushManager.registerPush(getApplicationContext());
+		initMTA();
 		this.mScoreIntent = new Intent(this, ScorePageActivity.class);
 		this.mIndexIntent = new Intent(this, IndexActivity.class);
 		this.mProfileIntent = new Intent(this, ProfileFragmentActivity.class);
@@ -40,8 +52,15 @@ public class MainActivity extends TabActivity implements
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		StatService.onResume(this);
+	}
+
+	@Override
 	public void onPause() {
 		super.onPause();
+		StatService.onPause(this);
 	}
 
 	@Override
@@ -50,8 +69,6 @@ public class MainActivity extends TabActivity implements
 		super.onNewIntent(intent);
 	}
 
-	
-	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -118,12 +135,12 @@ public class MainActivity extends TabActivity implements
 			}
 		}
 	}
-	
+
 	private void setDefaultCheck(int tabIndex) {
 		int tag = -1;
 		if (tabIndex != -1) {
 			tag = tabIndex;
-		} 
+		}
 		if (tag == 0) {
 			mHost.setCurrentTabByTag(TAB_SCORE);
 			radio_button0.setChecked(true);
@@ -139,6 +156,20 @@ public class MainActivity extends TabActivity implements
 			radio_button2.setChecked(true);
 			radio_button0.setChecked(false);
 			radio_button1.setChecked(false);
-		} 
+		}
+	}
+
+	private void initMTA() {
+		if (Debug.isDebug) {
+			StatConfig.setDebugEnable(true);
+			StatConfig.setStatSendStrategy(StatReportStrategy.BATCH);
+		} else {
+			// 禁止MTA打印日志
+			StatConfig.setDebugEnable(false);
+			// 根据情况，决定是否开启MTA对app未处理异常的捕获
+			StatConfig.setAutoExceptionCaught(true);
+			// 选择默认的上报策略
+			StatConfig.setStatSendStrategy(StatReportStrategy.APP_LAUNCH);
+		}
 	}
 }

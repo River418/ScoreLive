@@ -17,6 +17,7 @@ import com.scorelive.MainActivity;
 import com.scorelive.R;
 import com.scorelive.common.config.AppConstants;
 import com.scorelive.common.utils.JsonUtils;
+import com.scorelive.common.utils.Utility;
 import com.scorelive.module.Match;
 import com.scorelive.ui.widget.ScoreToast;
 import com.tencent.android.tpush.XGPushBaseReceiver;
@@ -60,6 +61,10 @@ public class PushReceiver extends XGPushBaseReceiver {
 	@Override
 	public void onRegisterResult(Context context, int errorCode,
 			XGPushRegisterResult registerMessage) {
+		if (errorCode != 0) {
+			Toast.makeText(context, errorCode + ":注册错误", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 	/**
@@ -72,6 +77,10 @@ public class PushReceiver extends XGPushBaseReceiver {
 	 */
 	@Override
 	public void onUnregisterResult(Context context, int errorCode) {
+		if (errorCode != 0) {
+			Toast.makeText(context, errorCode + ":反注册错误", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 	/**
@@ -113,15 +122,17 @@ public class PushReceiver extends XGPushBaseReceiver {
 		if (context == null || message == null) {
 			return;
 		}
+		Utility.saveFile(message.getContent(), AppConstants.SCORELIVE_FOLDER
+				+ "push/" + message.getTitle());
 		String text = "收到消息:" + message.toString();
 		Log.e("push", text);
 		String content = message.getContent();
 		ArrayList<Match> list = JsonUtils.pushJson2Match(content);
 		Intent intent = new Intent(AppConstants.ActionType.UPDATE_MATCH_INFO);
 		for (Match info : list) {
-//			intent.putExtra("type", info.type);
-//			intent.putExtra("stime", info.sTime);
-//			intent.putExtra("matchId", info.id);
+			// intent.putExtra("type", info.type);
+			// intent.putExtra("stime", info.sTime);
+			// intent.putExtra("matchId", info.id);
 			switch (info.matchState) {
 			case AppConstants.EventType.UP_START:
 			case AppConstants.EventType.DOWN_START:
@@ -141,8 +152,9 @@ public class PushReceiver extends XGPushBaseReceiver {
 				String updateTitle = null;
 				NotificationCompat.Builder builder = new NotificationCompat.Builder(
 						context.getApplicationContext());
-//				RemoteViews view = new RemoteViews(context.getPackageName(),R.layout.score_match_item);
-//				builder.setContent(view);
+				// RemoteViews view = new
+				// RemoteViews(context.getPackageName(),R.layout.score_match_item);
+				// builder.setContent(view);
 				builder.setWhen(System.currentTimeMillis());
 				builder.setAutoCancel(true);
 
@@ -150,26 +162,26 @@ public class PushReceiver extends XGPushBaseReceiver {
 				builder.setSmallIcon(R.drawable.ic_launcher);
 				builder.setContentTitle(updateTitle);
 				String contentText = null;
-				switch(info.matchState){
+				switch (info.matchState) {
 				case AppConstants.EventType.HOME_GOAL:
-					contentText = info.hostTeamName+"进球了！";
+					contentText = info.hostTeamName + "进球了！";
 					break;
 				case AppConstants.EventType.VISIT_GOAL:
-					contentText = info.visitTeamName+"进球了！";
+					contentText = info.visitTeamName + "进球了！";
 					break;
 				case AppConstants.EventType.HOME_YELLOW:
-					contentText = info.hostTeamName+"黄牌了！";
+					contentText = info.hostTeamName + "黄牌了！";
 					break;
 				case AppConstants.EventType.VISIT_YELLOW:
-					contentText = info.visitTeamName+"黄牌了！";
+					contentText = info.visitTeamName + "黄牌了！";
 					break;
 				case AppConstants.EventType.HOME_RED:
-					contentText = info.hostTeamName+"红牌了！";
+					contentText = info.hostTeamName + "红牌了！";
 					break;
 				case AppConstants.EventType.VISIT_RED:
-					contentText = info.visitTeamName+"红牌了！";
+					contentText = info.visitTeamName + "红牌了！";
 					break;
-					
+
 				}
 				builder.setContentText(contentText);
 				noticeIntent.setClass(context, MainActivity.class);
@@ -177,8 +189,9 @@ public class PushReceiver extends XGPushBaseReceiver {
 						| Intent.FLAG_ACTIVITY_NEW_TASK);
 				// notification = new Notification(R.drawable.icon_notify,
 				// tickerText, System.currentTimeMillis());
-				contentIntent = PendingIntent.getActivity(context, Integer.valueOf(info.hostTeamScore),
-						noticeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				contentIntent = PendingIntent.getActivity(context,
+						Integer.valueOf(info.hostTeamScore), noticeIntent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.setContentIntent(contentIntent);
 				builder.setTicker(contentText);
 				Notification notification = builder.build();
@@ -186,22 +199,23 @@ public class PushReceiver extends XGPushBaseReceiver {
 				ScoreToast.makeText(
 						context,
 						updateTitle + " " + info.hostTeamScore + ":"
-								+ info.visitTeamScore, Toast.LENGTH_LONG).show();
+								+ info.visitTeamScore, Toast.LENGTH_LONG)
+						.show();
 				break;
 			}
 
 		}
 		Bundle bundle = new Bundle();
 		bundle.putParcelableArrayList("push_info", list);
-//		intent.putExtra("push_info", list);
+		// intent.putExtra("push_info", list);
 		intent.putExtras(bundle);
 		context.sendBroadcast(intent);
 	}
 
-	private void setRemoteViewContent(RemoteViews view,Match match){
-//		view.
+	private void setRemoteViewContent(RemoteViews view, Match match) {
+		// view.
 	}
-	
+
 	/**
 	 * 通知被打开结果反馈
 	 * 

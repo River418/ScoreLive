@@ -14,6 +14,7 @@ public abstract class ITask implements Runnable {
 	public static final int TYPE_ADD_MATCH2GROUP = 7;
 	public static final int TYPE_QUERY_MATCH_BY_GROUP = 8;
 	public static final int TYPE_DOWNLOAD_PIC = 9;
+	public static final int TYPE_LEAGUE_MATCH_LIST=10;
 
 	public ITask(int type, long taskId) {
 		mType = type;

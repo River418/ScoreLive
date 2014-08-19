@@ -167,6 +167,7 @@ public class ScoreNormalFragment extends ScoreBaseFragment implements
 				false);
 		mListView = (ExpandableListView) rootView
 				.findViewById(R.id.match_listview);
+		mListView.setFastScrollEnabled(true);
 		mPullDownView = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_ly);
 		mPullDownView.setColorScheme(R.color.light_blue, R.color.white, android.R.color.holo_green_light, R.color.white);
 		mPullDownView.setOnRefreshListener(new OnRefreshListener() {

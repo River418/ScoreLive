@@ -194,6 +194,36 @@ public class Utility {
 		// 返回Bitmap对象
 		return output;
 	}
+	
+	public static boolean saveFile(String str,String path){
+		File file = new File(path);
+		if (!file.exists()) {
+			if (!file.getParentFile().exists()) {
+				file.mkdirs();
+			}
+			try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(file);
+			fos.write(str.getBytes());
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			if (file != null) {
+				file.delete();
+			}
+			return false;
+		}
+		return true;
+	}
 
 	public static boolean saveFile(InputStream is, String path) {
 		File file = new File(path);

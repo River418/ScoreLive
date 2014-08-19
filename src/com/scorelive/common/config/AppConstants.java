@@ -10,7 +10,7 @@ public class AppConstants {
 	public static final String MATCH_DETAIL = SERVER_URL
 			+ "MatchEventDetailService?";
 	public static final String LOGIN_URL = SERVER_URL + "SignInService?";
-	public static final String MATCH_INFO_BY_LEAGUE = SERVER_URL+"LeagueService?";
+	public static final String MATCH_INFO_BY_LEAGUE = SERVER_URL+"LeagueFilterService?";
 
 	//文件路径
 	public static final String SDCARD_PATH = android.os.Environment
@@ -22,12 +22,13 @@ public class AppConstants {
 	public static final String INDEX = ASSET_PATH + "index.html";
 
 	//开放平台相关信息
-	public static final String SINA_APP_KEY = "3456776882";
-	public static final String Tencent_APP_ID = "1101484810";
+	public static final String SINA_APP_KEY = "3456776882";//新浪开放
+	public static final String Tencent_APP_ID = "1101484810";//腾讯开放
 	public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
 	public static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
 			+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
 			+ "follow_app_official_microblog," + "invitation_write";
+	public static final String MTA_APPKEY="A85WXNM81REJ";//MTA的app key
 
 	//程序的一些“全局”静态变量
 	public volatile static boolean isPullingMatchList = false;

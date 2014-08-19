@@ -38,9 +38,7 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 	private static final String TAG = "WeiBo_Login";
 	private Context mContext;
 	/** 微博按钮 */
-	private RelativeLayout mWeiboButton;
-	/** QQ按钮 */
-	private RelativeLayout mQQBtn;
+	private RelativeLayout mWeiboButton,mQQBtn,mSettingBtn,mAboutBtn;
 
 	private Bitmap mAvator;
 	private ImageView mAvatorIV;
@@ -85,6 +83,8 @@ public class ProfileFragmentActivity extends ScoreBaseActivity implements
 			mAvatorIV.setImageBitmap(mAvator);
 			mNameTV.setText(Config.getNickName(mContext));
 		}
+		mSettingBtn = (RelativeLayout)findViewById(R.id.setting);
+		mAboutBtn = (RelativeLayout)findViewById(R.id.about);
 
 		setLoginLayout();
 

@@ -8,8 +8,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -28,6 +31,7 @@ import com.scorelive.common.itask.pool.ThreadManager;
 import com.scorelive.common.utils.JsonUtils;
 import com.scorelive.module.Match;
 import com.scorelive.module.MatchAccident;
+import com.tencent.stat.StatService;
 
 /**
  * 比分详情页
@@ -35,7 +39,7 @@ import com.scorelive.module.MatchAccident;
  * @author River
  * 
  */
-public class ScoreDetailActivity extends Activity implements INetTaskListener {
+public class ScoreDetailActivity extends ScoreBaseActivity implements INetTaskListener {
 
 	private ImageView mBackBtn;
 	private ImageView mCollectBtn;
@@ -60,6 +64,41 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 		} else {
 			// TODO 增加判空的逻辑，不过一般不会出现null
 		}
+	}
+
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
+
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		StatService.onPause(this);
+	}
+
+
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		StatService.onResume(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+//		getMenuInflater().inflate(R.menu.actionmenu, menu);
+//		MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+//		MenuItemCompat.setShowAsAction(menu.add("1").setIcon(R.drawable.refresh), MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+		return false;
 	}
 
 	@Override
@@ -93,6 +132,8 @@ public class ScoreDetailActivity extends Activity implements INetTaskListener {
 	}
 
 	private void initUI() {
+//		ActionBar actionbar = getSupportActionBar();
+//		 actionbar.show();
 		mBackBtn = (ImageView) findViewById(R.id.left_btn);
 		mBackBtn.setBackgroundResource(R.drawable.back);
 		mBackBtn.setOnClickListener(new OnClickListener() {

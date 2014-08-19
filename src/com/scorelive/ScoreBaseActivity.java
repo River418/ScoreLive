@@ -3,8 +3,6 @@ package com.scorelive;
 import android.app.ProgressDialog;
 import android.support.v4.app.FragmentActivity;
 
-import com.scorelive.ui.widget.dialog.ProgressDialogMe;
-
 public class ScoreBaseActivity extends FragmentActivity {
 
 	// protected ProgressDialogMe mProgressDialog;

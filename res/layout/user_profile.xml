@@ -15,10 +15,10 @@
         android:id="@+id/splash_logo"
         android:layout_width="116dp"
         android:layout_height="116dp"
+        android:layout_below="@id/title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/login_logo_marginTop"
-        android:background="@drawable/avator_circle_bg"
-        android:layout_below="@id/title" >
+        android:background="@drawable/avator_circle_bg" >
 
         <ImageView
             android:id="@+id/splash_logo_image"
@@ -28,23 +28,22 @@
             android:src="@drawable/login_logo" />
     </RelativeLayout>
 
-    <TextView 
+    <TextView
         android:id="@+id/nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/splash_logo"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-/>
-    
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
     <LinearLayout
         android:id="@+id/login_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/login_text_marginBottom"
+         android:layout_below="@id/splash_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="@dimen/login_margin"
         android:layout_marginRight="@dimen/login_margin"
         android:orientation="vertical" >
@@ -87,6 +86,72 @@
                 android:drawableLeft="@drawable/login_qq_logo"
                 android:text="@string/login_qq_text"
                 android:textColor="@color/white"
+                android:textSize="18.0dp" />
+        </RelativeLayout>
+    </LinearLayout>
+    
+
+    <LinearLayout
+        android:id="@+id/setting_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/login_text_marginBottom"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/setting"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_text_height"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/full_width_textview_bg"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:paddingLeft="16.0dip" >
+            
+            <ImageView
+                android:id="@+id/setting_img"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/settings_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/setting_img"
+                android:layout_marginLeft="16dp"
+                android:text="@string/setting"
+                android:textColor="@color/black"
+                android:textSize="18.0dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/about"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/login_text_height"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/full_width_textview_bg"
+            android:onClick="onClick"
+            android:orientation="horizontal"
+            android:paddingLeft="16.0dip" >
+
+            <ImageView
+                android:id="@+id/about_img"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/about_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/setting_img"
+                android:layout_marginLeft="16dp"
+                android:text="@string/about"
+                android:textColor="@color/black"
                 android:textSize="18.0dp" />
         </RelativeLayout>
     </LinearLayout>
