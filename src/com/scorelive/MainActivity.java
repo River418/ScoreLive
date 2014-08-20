@@ -3,14 +3,18 @@ package com.scorelive;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 
 import com.scorelive.common.monitor.Debug;
 import com.scorelive.ui.widget.TabItem;
 import com.scorelive.ui.widget.TabItem.OnCheckedChangeListener;
+import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPro;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.common.Constants;
+import com.tencent.android.tpush.service.cache.CacheManager;
 import com.tencent.stat.StatConfig;
 import com.tencent.stat.StatReportStrategy;
 import com.tencent.stat.StatService;
@@ -34,13 +38,7 @@ public class MainActivity extends TabActivity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maintabs);
-		try {
-			XGPro.enableXGPro(getApplicationContext(), true);
-		} catch (Exception e) {
-			// 开启信鸽Pro失败，请严格按照文档检查MTA是否添加且版本是否对应
-			e.printStackTrace();
-		}
-		XGPushManager.registerPush(getApplicationContext());
+		initXGPush();
 		initMTA();
 		this.mScoreIntent = new Intent(this, ScorePageActivity.class);
 		this.mIndexIntent = new Intent(this, IndexActivity.class);
@@ -169,7 +167,32 @@ public class MainActivity extends TabActivity implements
 			// 根据情况，决定是否开启MTA对app未处理异常的捕获
 			StatConfig.setAutoExceptionCaught(true);
 			// 选择默认的上报策略
-			StatConfig.setStatSendStrategy(StatReportStrategy.APP_LAUNCH);
+			StatConfig.setStatSendStrategy(StatReportStrategy.ONLY_WIFI);
 		}
+	}
+	
+	private void initXGPush(){
+		try {
+			XGPro.enableXGPro(getApplicationContext(), true);
+		} catch (Exception e) {
+			// 开启信鸽Pro失败，请严格按照文档检查MTA是否添加且版本是否对应
+			e.printStackTrace();
+		}
+		XGPushManager.registerPush(getApplicationContext(),new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+                Log.w(Constants.LogTag,
+                        "+++ register push sucess. token:" + data);
+                CacheManager.getRegisterInfo();
+            }
+
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                Log.w(Constants.LogTag,
+                        "+++ register push fail. token:" + data
+                                + ", errCode:" + errCode + ",msg:"
+                                + msg);
+            }
+        });
 	}
 }
